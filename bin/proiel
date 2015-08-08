@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+STDOUT.sync = true
+
+$:.unshift File.join(File.dirname(__FILE__), *%w{ .. lib })
+
+require 'proiel/cli'
+
+Mercenary.program(:proiel) do |p|
+  p.version PROIEL::VERSION
+  p.description 'proiel is a command-line interface for treebank using the PROIEL annotation framework'
+  p.syntax 'proiel <subcommand> [options]'
+
+  p.option 'verbose', '-V', '--verbose', 'Display verbose information'
+
+  PROIEL::Command.subclasses.each { |c| c.init_with_program(p) }
+
+  p.action do |args, options|
+    if args.empty?
+      puts p
+    else
+      unless p.has_command?(args.first)
+        STDERR.puts 'Invalid command. Use --help for more information.'
+        exit 1
+      end
+    end
+  end
+end

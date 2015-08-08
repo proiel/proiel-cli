@@ -1,0 +1,6 @@
+#!/bin/bash
+ln -sf "$1" a
+ln -sf "$2" b
+plain2snt a b
+snt2cooc a.vcb b.vcb a_b.snt > corp.cooc
+GIZA++ -S a.vcb -T b.vcb -C a_b.snt -CoocurrenceFile corp.cooc -o alignment > alignment.log

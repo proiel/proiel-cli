@@ -1,0 +1,18 @@
+#!/bin/bash
+tmpdir=$(mktemp -dt "$0.XXXXXXXXXX")
+lexcfile=${tmpdir}/output.lexc
+scriptfile=${tmpdir}/output.script
+fstfile=output.fst
+
+proiel=../bin/proiel
+foma=foma
+#foma=xfst
+
+../bin/proiel convert lexc -V $@ > ${lexcfile} || exit 1
+echo "read lexc ${lexcfile}" > ${scriptfile}
+echo "save stack ${fstfile}" >> ${scriptfile}
+
+${foma} -f ${scriptfile}
+
+echo
+echo "Generated transducer is ${fstfile}. Try 'echo wordform | flookup ${fstfile}' to test."

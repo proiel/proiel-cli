@@ -1,0 +1,32 @@
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'proiel/cli/version'
+
+Gem::Specification.new do |spec|
+  spec.name          = "proiel-cli"
+  spec.version       = PROIEL::CLI::VERSION
+  spec.authors       = ["Marius L. Jøhndal", "Dag Haug"]
+  spec.email         = ["mariuslj@ifi.uio.no"]
+  spec.summary       = %q{A command-line interface for working with PROIEL treebanks}
+  spec.description   = %q{This provides a command-line interface to various tools that manipulate treebanks that use the PROIEL dependency format.}
+  spec.homepage      = "http://proiel.github.com"
+  spec.license       = "MIT"
+
+  spec.files         = Dir["{bin,examples,contrib,lib}/**/*"] + %w(README.md LICENSE)
+  spec.executables   = %w(proiel)
+  spec.require_paths = ["lib"]
+
+  spec.add_dependency 'builder', '~> 3.2.2'
+  spec.add_dependency 'mercenary', '~> 0.3.5'
+  spec.add_dependency 'colorize', '~> 0.7'
+  spec.add_dependency 'proiel', '~> 0.1.0'
+
+  spec.add_development_dependency 'bundler', '~> 1.10'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.2'
+  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'cucumber', '~> 2.0.2'
+  spec.add_development_dependency 'aruba', '~> 0.8.1'
+end

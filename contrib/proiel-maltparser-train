@@ -1,0 +1,6 @@
+#!/bin/sh
+java \
+  -jar maltparser-1.8.jar \
+  -c test \
+  -m learn \
+  -i $1
