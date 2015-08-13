@@ -7,7 +7,7 @@ require 'proiel/cli'
 
 Mercenary.program(:proiel) do |p|
   p.version PROIEL::VERSION
-  p.description 'proiel is a command-line interface for treebank using the PROIEL annotation framework'
+  p.description 'proiel is a command-line interface for PROIEL treebanks'
   p.syntax 'proiel <subcommand> [options]'
 
   p.option 'verbose', '-V', '--verbose', 'Display verbose information'
