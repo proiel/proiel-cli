@@ -31,13 +31,18 @@ module PROIEL
           puts
 
           tb.sources.each_with_index do |source, i|
+            n = source.statistics.sentence_count
+            r = source.statistics.reviewed_sentence_count * 100.0 / n
+            a = source.statistics.annotated_sentence_count * 100.0 / n
+
             puts "#{i + 1}. #{source.pretty_title}".yellow
             puts "   Version:      #{source.date}"
             puts "   License:      #{source.pretty_license}"
             puts "   Language:     #{source.pretty_language}"
             puts "   Printed text: #{source.pretty_printed_text_info}"
             puts "   Electr. text: #{source.pretty_electronic_text_info}"
-            puts "   Size:         #{source.statistics.sentence_count} sentence(s), #{source.statistics.token_count} token(s)"
+            puts "   Size:         #{n} sentence(s), #{source.statistics.token_count} token(s)"
+            puts "   Annotation:   %.2f%% reviewed, %.2f%% annotated" % [r, a]
           end
         end
       end
