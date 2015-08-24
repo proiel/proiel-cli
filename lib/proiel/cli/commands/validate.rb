@@ -23,12 +23,16 @@ module PROIEL
 
             if errors.empty?
               puts "#{filename} is valid".green
+
+              exit 0
             else
               puts "#{filename} is invalid".red
 
               errors.each do |error|
                 puts "* #{error}"
               end
+
+              exit 1
             end
           end
         end
