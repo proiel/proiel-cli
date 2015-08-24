@@ -33,6 +33,12 @@ module PROIEL
               f.action { |args, options| process(args, options, PROIEL::Converter::CoNLLX) }
             end
 
+            c.command(:"conll-u") do |f|
+              f.syntax 'filename(s)'
+              f.description 'Convert to CoNLL-U format'
+              f.action { |args, options| process(args, options, PROIEL::Converter::CoNLLU) }
+            end
+
             c.command(:tiger) do |f|
               f.syntax 'filename(s)'
               f.description 'Convert to TIGER XML format'
