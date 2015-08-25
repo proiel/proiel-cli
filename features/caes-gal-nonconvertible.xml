@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proiel export-time="2015-06-15T09:52:26+02:00" schema-version="2.0">
+  <annotation>
+    <relations>
+      <value tag="adnom" summary="adnominal" primary="true" secondary="true"/>
+      <value tag="adv" summary="adverbial" primary="true" secondary="true"/>
+      <value tag="ag" summary="agens" primary="true" secondary="true"/>
+      <value tag="apos" summary="apposition" primary="true" secondary="true"/>
+      <value tag="arg" summary="argument (object or oblique)" primary="true" secondary="true"/>
+      <value tag="atr" summary="attribute" primary="true" secondary="true"/>
+      <value tag="aux" summary="auxiliary" primary="true" secondary="true"/>
+      <value tag="comp" summary="complement" primary="true" secondary="true"/>
+      <value tag="expl" summary="expletive" primary="true" secondary="true"/>
+      <value tag="narg" summary="adnominal argument" primary="true" secondary="true"/>
+      <value tag="nonsub" summary="non-subject (object, oblique or adverbial)" primary="true" secondary="true"/>
+      <value tag="obj" summary="object" primary="true" secondary="true"/>
+      <value tag="obl" summary="oblique" primary="true" secondary="true"/>
+      <value tag="parpred" summary="parenthetical predication" primary="true" secondary="true"/>
+      <value tag="part" summary="partitive" primary="true" secondary="true"/>
+      <value tag="per" summary="peripheral (oblique or adverbial)" primary="true" secondary="true"/>
+      <value tag="pid" summary="Predicate identity" primary="false" secondary="true"/>
+      <value tag="pred" summary="predicate" primary="true" secondary="true"/>
+      <value tag="rel" summary="apposition or attribute" primary="true" secondary="true"/>
+      <value tag="sub" summary="subject" primary="true" secondary="true"/>
+      <value tag="voc" summary="vocative" primary="true" secondary="true"/>
+      <value tag="xadv" summary="open adverbial complement" primary="true" secondary="true"/>
+      <value tag="xobj" summary="open objective complement" primary="true" secondary="true"/>
+      <value tag="xsub" summary="external subject" primary="false" secondary="true"/>
+    </relations>
+    <parts-of-speech>
+      <value tag="A-" summary="adjective"/>
+      <value tag="Df" summary="adverb"/>
+      <value tag="S-" summary="article"/>
+      <value tag="Ma" summary="cardinal numeral"/>
+      <value tag="Nb" summary="common noun"/>
+      <value tag="C-" summary="conjunction"/>
+      <value tag="Pd" summary="demonstrative pronoun"/>
+      <value tag="F-" summary="foreign word"/>
+      <value tag="Px" summary="indefinite pronoun"/>
+      <value tag="N-" summary="infinitive marker"/>
+      <value tag="I-" summary="interjection"/>
+      <value tag="Du" summary="interrogative adverb"/>
+      <value tag="Pi" summary="interrogative pronoun"/>
+      <value tag="Mo" summary="ordinal numeral"/>
+      <value tag="Pp" summary="personal pronoun"/>
+      <value tag="Pk" summary="personal reflexive pronoun"/>
+      <value tag="Ps" summary="possessive pronoun"/>
+      <value tag="Pt" summary="possessive reflexive pronoun"/>
+      <value tag="R-" summary="preposition"/>
+      <value tag="Ne" summary="proper noun"/>
+      <value tag="Py" summary="quantifier"/>
+      <value tag="Pc" summary="reciprocal pronoun"/>
+      <value tag="Dq" summary="relative adverb"/>
+      <value tag="Pr" summary="relative pronoun"/>
+      <value tag="G-" summary="subjunction"/>
+      <value tag="V-" summary="verb"/>
+      <value tag="X-" summary="unassigned"/>
+    </parts-of-speech>
+    <morphology>
+      <field tag="person">
+        <value tag="1" summary="first person"/>
+        <value tag="2" summary="second person"/>
+        <value tag="3" summary="third person"/>
+        <value tag="x" summary="uncertain person"/>
+      </field>
+      <field tag="number">
+        <value tag="s" summary="singular"/>
+        <value tag="d" summary="dual"/>
+        <value tag="p" summary="plural"/>
+        <value tag="x" summary="uncertain number"/>
+      </field>
+      <field tag="tense">
+        <value tag="p" summary="present"/>
+        <value tag="i" summary="imperfect"/>
+        <value tag="r" summary="perfect"/>
+        <value tag="s" summary="resultative"/>
+        <value tag="a" summary="aorist"/>
+        <value tag="u" summary="past"/>
+        <value tag="l" summary="pluperfect"/>
+        <value tag="f" summary="future"/>
+        <value tag="t" summary="future perfect"/>
+        <value tag="x" summary="uncertain tense"/>
+      </field>
+      <field tag="mood">
+        <value tag="i" summary="indicative"/>
+        <value tag="s" summary="subjunctive"/>
+        <value tag="m" summary="imperative"/>
+        <value tag="o" summary="optative"/>
+        <value tag="n" summary="infinitive"/>
+        <value tag="p" summary="participle"/>
+        <value tag="d" summary="gerund"/>
+        <value tag="g" summary="gerundive"/>
+        <value tag="u" summary="supine"/>
+        <value tag="x" summary="uncertain mood"/>
+      </field>
+      <field tag="voice">
+        <value tag="a" summary="active"/>
+        <value tag="m" summary="middle"/>
+        <value tag="p" summary="passive"/>
+        <value tag="e" summary="middle or passive"/>
+      </field>
+      <field tag="gender">
+        <value tag="m" summary="masculine"/>
+        <value tag="f" summary="feminine"/>
+        <value tag="n" summary="neuter"/>
+        <value tag="p" summary="masculine or feminine"/>
+        <value tag="o" summary="masculine or neuter"/>
+        <value tag="r" summary="feminine or neuter"/>
+        <value tag="q" summary="masculine, feminine or neuter"/>
+        <value tag="x" summary="uncertain gender"/>
+      </field>
+      <field tag="case">
+        <value tag="n" summary="nominative"/>
+        <value tag="a" summary="accusative"/>
+        <value tag="o" summary="oblique"/>
+        <value tag="g" summary="genitive"/>
+        <value tag="c" summary="genitive or dative"/>
+        <value tag="d" summary="dative"/>
+        <value tag="b" summary="ablative"/>
+        <value tag="i" summary="instrumental"/>
+        <value tag="l" summary="locative"/>
+        <value tag="v" summary="vocative"/>
+        <value tag="x" summary="uncertain case"/>
+      </field>
+      <field tag="degree">
+        <value tag="p" summary="positive"/>
+        <value tag="c" summary="comparative"/>
+        <value tag="s" summary="superlative"/>
+        <value tag="x" summary="uncertain degree"/>
+      </field>
+      <field tag="strength">
+        <value tag="w" summary="weak"/>
+        <value tag="s" summary="strong"/>
+        <value tag="t" summary="weak or strong"/>
+      </field>
+      <field tag="inflection">
+        <value tag="n" summary="non-inflecting"/>
+        <value tag="i" summary="inflecting"/>
+      </field>
+    </morphology>
+    <information-statuses>
+      <value tag="new" summary="new"/>
+      <value tag="kind" summary="kind"/>
+      <value tag="acc_gen" summary="acc-gen"/>
+      <value tag="acc_sit" summary="acc-sit"/>
+      <value tag="acc_inf" summary="acc-inf"/>
+      <value tag="old" summary="old"/>
+      <value tag="old_inact" summary="old-inact"/>
+      <value tag="no_info_status" summary="annotatable (undecided)"/>
+      <value tag="info_unannotatable" summary="unannotatable"/>
+      <value tag="quant" summary="quantifier restriction"/>
+      <value tag="non_spec" summary="non-specific"/>
+      <value tag="non_spec_inf" summary="inferred from non-specific"/>
+      <value tag="non_spec_old" summary="non-specific old"/>
+    </information-statuses>
+  </annotation>
+  <source id="caes-gal" language="lat">
+    <title>Commentarii belli Gallici</title>
+    <author>Caesar</author>
+    <citation-part>Caes. Gal.</citation-part>
+    <principal>Dag Trygve Truslew Haug</principal>
+    <funder>Department of Classics, History of Arts and Ideas</funder>
+    <distributor>Department of Classics, History of Arts and Ideas</distributor>
+    <distributor-address>PO Box 1020 Blindern, N-0315 Oslo</distributor-address>
+    <date>15 June 2015</date>
+    <license>CC BY-NC-SA 3.0</license>
+    <license-url>http://creativecommons.org/licenses/by-nc-sa/3.0/us/</license-url>
+    <reference-system>book, chapter, section</reference-system>
+    <editor>Dag Trygve Truslew Haug</editor>
+    <annotator>Øyvind Strand (853 sentences), Per Erik Solberg (332 sentences), Marek Majer (212 sentences), Þorsteinn Vilhjálmsson (30 sentences), Dag Haug (19 sentences), and Eirikur Kristjansson (7 sentences)</annotator>
+    <reviewer>Marek Majer (1058 sentences), Eirikur Kristjansson (319 sentences), Dag Haug (59 sentences), and Øyvind Strand (6 sentences)</reviewer>
+    <electronic-text-editor>Gregory Crane</electronic-text-editor>
+    <electronic-text-title>De bello gallico</electronic-text-title>
+    <electronic-text-publisher>Perseus Digital Library</electronic-text-publisher>
+    <electronic-text-place>Tufts University, Medford MA</electronic-text-place>
+    <electronic-text-original-url> http://www.perseus.tufts.edu/hopper/opensource/download</electronic-text-original-url>
+    <electronic-text-license>Free, non-commercial</electronic-text-license>
+    <printed-text-editor>T. Rice Holmes</printed-text-editor>
+    <printed-text-title>C. Iuli Commentarii Rerum in Gallia Gestarum VII A. Hirti Commentarius VII</printed-text-title>
+    <printed-text-publisher>Oxford University Press</printed-text-publisher>
+    <printed-text-place>Oxford</printed-text-place>
+    <printed-text-date>1914</printed-text-date>
+    <div>
+      <title>Caes., various</title>
+      <sentence id="52577" status="reviewed" presentation-after=" ">
+        <token id="681243" form="damnatum" citation-part="1.4.1" lemma="damno" part-of-speech="V-" morphology="-srppma--i" head-id="681245" relation="xadv" presentation-after=" ">
+          <slash target-id="681245" relation="xsub"/>
+        </token>
+        <token id="681244" form="poenam" citation-part="1.4.1" lemma="poena" part-of-speech="Nb" morphology="-s---fa--i" head-id="681245" relation="sub" information-status="new" presentation-after=" "/>
+        <token id="681245" form="sequi" citation-part="1.4.1" lemma="sequor" part-of-speech="V-" morphology="--pnp----i" head-id="681246" relation="comp" presentation-after=" "/>
+        <token id="681246" form="oportebat" citation-part="1.4.1" lemma="oportet" part-of-speech="V-" morphology="3siia----i" relation="pred" presentation-after=", "/>
+        <token id="681247" form="ut" citation-part="1.4.1" lemma="ut" part-of-speech="G-" morphology="---------n" head-id="681244" relation="apos" presentation-after=" "/>
+        <token id="681248" form="igni" citation-part="1.4.1" lemma="ignis" part-of-speech="Nb" morphology="-s---mb--i" head-id="681249" relation="adv" information-status="non_spec" presentation-after=" "/>
+        <token id="681249" form="cremaretur" citation-part="1.4.1" lemma="cremo" part-of-speech="V-" morphology="3sisp----i" head-id="681247" relation="apos" presentation-after=". "/>
+        <token id="1179695" empty-token-sort="P" citation-part="1.4.1" head-id="681249" relation="sub" antecedent-id="681237" information-status="old"/>
+      </sentence>
+      <sentence id="52599" status="reviewed" presentation-after=" ">
+        <token id="756070" form="Tamen" citation-part="1.7.5" lemma="tamen" part-of-speech="Df" morphology="---------n" head-id="756081" relation="aux" presentation-after=", "/>
+        <token id="756071" form="ut" citation-part="1.7.5" lemma="ut" part-of-speech="G-" morphology="---------n" head-id="756081" relation="adv" presentation-after=" "/>
+        <token id="756072" form="spatium" citation-part="1.7.5" lemma="spatium" part-of-speech="Nb" morphology="-s---nn--i" head-id="756074" relation="sub" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="756073" form="intercedere" citation-part="1.7.5" lemma="intercedo" part-of-speech="V-" morphology="--pna----i" head-id="756074" relation="xobj" presentation-after=" ">
+          <slash target-id="756072" relation="xsub"/>
+        </token>
+        <token id="756074" form="posset" citation-part="1.7.5" lemma="possum" part-of-speech="V-" morphology="3sisa----i" head-id="756071" relation="adv" presentation-after=" "/>
+        <token id="756075" form="dum" citation-part="1.7.5" lemma="dum" part-of-speech="G-" morphology="---------n" head-id="756074" relation="adv" presentation-after=" "/>
+        <token id="756076" form="milites" citation-part="1.7.5" lemma="miles" part-of-speech="Nb" morphology="-p---mn--i" head-id="756079" relation="sub" antecedent-id="681583" information-status="old" presentation-after=" "/>
+        <token id="756077" form="quos" citation-part="1.7.5" lemma="qui" part-of-speech="Pr" morphology="-p---ma--i" head-id="854805" relation="obj" presentation-after=" "/>
+        <token id="756078" form="imperaverat" citation-part="1.7.5" lemma="impero" part-of-speech="V-" morphology="3slia----i" head-id="756076" relation="atr" presentation-after=" "/>
+        <token id="756079" form="convenirent" citation-part="1.7.5" lemma="convenio" part-of-speech="V-" morphology="3pisa----i" head-id="756075" relation="pred" presentation-after=", "/>
+        <token id="756080" form="legatis" citation-part="1.7.5" lemma="legatus" part-of-speech="Nb" morphology="-p---md--i" head-id="756081" relation="obl" antecedent-id="681615" information-status="old" presentation-after=" "/>
+        <token id="756081" form="respondit" citation-part="1.7.5" lemma="respondeo" part-of-speech="V-" morphology="3sria----i" relation="pred" presentation-after=" "/>
+        <token id="756082" form="diem" citation-part="1.7.5" lemma="dies" part-of-speech="Nb" morphology="-s---ma--i" head-id="756086" relation="obj" information-status="non_spec" presentation-after=" "/>
+        <token id="756083" form="se" citation-part="1.7.5" lemma="se" part-of-speech="Pk" morphology="3s---qa--i" head-id="756086" relation="sub" antecedent-id="1181075" information-status="old" presentation-after=" "/>
+        <token id="756084" form="ad" citation-part="1.7.5" lemma="ad" part-of-speech="R-" morphology="---------n" head-id="756086" relation="adv" presentation-after=" "/>
+        <token id="756085" form="deliberandum" citation-part="1.7.5" lemma="delibero" part-of-speech="V-" morphology="---d--a--i" head-id="756084" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="756086" form="sumpturum" citation-part="1.7.5" lemma="sumo" part-of-speech="V-" morphology="-sfpama--i" head-id="756081" relation="comp" presentation-after=": "/>
+        <token id="854805" empty-token-sort="V" citation-part="1.7.5" head-id="756078" relation="comp"/>
+        <token id="1181075" empty-token-sort="P" citation-part="1.7.5" head-id="756081" relation="sub" antecedent-id="1181257" information-status="old"/>
+        <token id="1181257" empty-token-sort="P" citation-part="1.7.5" head-id="756078" relation="sub" antecedent-id="1181074" information-status="old"/>
+      </sentence>
+      <sentence id="52677" status="reviewed" presentation-after=" ">
+        <token id="683281" form="Si" citation-part="1.18.9" lemma="si" part-of-speech="G-" morphology="---------n" head-id="683292" relation="adv" presentation-after=" "/>
+        <token id="683282" form="quid" citation-part="1.18.9" lemma="quis" part-of-speech="Px" morphology="-s---nn--i" head-id="683283" relation="sub" information-status="non_spec" presentation-after=" "/>
+        <token id="683283" form="accidat" citation-part="1.18.9" lemma="accido" part-of-speech="V-" morphology="3spsa----i" head-id="683281" relation="adv" presentation-after=" "/>
+        <token id="683284" form="Romanis" citation-part="1.18.9" lemma="Romanus" part-of-speech="Nb" morphology="-p---md--i" head-id="683283" relation="obl" antecedent-id="683265" information-status="old" presentation-after=", "/>
+        <token id="683285" form="summam" citation-part="1.18.9" lemma="summus" part-of-speech="A-" morphology="-s---fap-i" head-id="683287" relation="atr" presentation-after=" "/>
+        <token id="683286" form="in" citation-part="1.18.9" lemma="in" part-of-speech="R-" morphology="---------n" head-id="683292" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="683287" form="spem" citation-part="1.18.9" lemma="spes" part-of-speech="Nb" morphology="-s---fa--i" head-id="683286" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="683288" form="per" citation-part="1.18.9" lemma="per" part-of-speech="R-" morphology="---------n" head-id="683291" relation="adv" presentation-after=" "/>
+        <token id="683289" form="Helvetios" citation-part="1.18.9" lemma="Helvetii" part-of-speech="Nb" morphology="-p---ma--i" head-id="683288" relation="obl" antecedent-id="683253" information-status="old" presentation-after=" "/>
+        <token id="683290" form="regni" citation-part="1.18.9" lemma="regnum" part-of-speech="Nb" morphology="-s---ng--i" head-id="683291" relation="sub" antecedent-id="683172" information-status="acc_inf" presentation-after=" "/>
+        <token id="683291" form="obtinendi" citation-part="1.18.9" lemma="obtineo" part-of-speech="V-" morphology="-s-g-ng--i" head-id="683287" relation="narg" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="683292" form="venire" citation-part="1.18.9" lemma="venio" part-of-speech="V-" morphology="--pna----i" head-id="756614" relation="comp" presentation-after="; "/>
+        <token id="756614" empty-token-sort="V" citation-part="1.18.9" relation="pred"/>
+        <token id="1190259" empty-token-sort="P" citation-part="1.18.9" head-id="683292" relation="sub" antecedent-id="683268" information-status="old"/>
+      </sentence>
+      <sentence id="52719" status="reviewed">
+        <token id="684092" form="Helvetii" citation-part="1.24.4" lemma="Helvetii" part-of-speech="Nb" morphology="-p---mn--i" head-id="684102" relation="sub" antecedent-id="856971" information-status="old" presentation-after=" "/>
+        <token id="684093" form="cum" citation-part="1.24.4" lemma="cum" part-of-speech="G-" morphology="---------n" head-id="684097" relation="adv" presentation-after=" "/>
+        <token id="684094" form="omnibus" citation-part="1.24.4" lemma="omnis" part-of-speech="Px" morphology="-p---qb--i" head-id="684096" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684095" form="suis" citation-part="1.24.4" lemma="suus" part-of-speech="Pt" morphology="3p---qb--i" head-id="684096" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684096" form="carris" citation-part="1.24.4" lemma="carrus" part-of-speech="Nb" morphology="-p---mb--i" head-id="684093" relation="obl" antecedent-id="684092" information-status="quant" presentation-after=" "/>
+        <token id="684097" form="secuti" citation-part="1.24.4" lemma="sequor" part-of-speech="V-" morphology="-prppmn--i" head-id="684102" relation="xadv" presentation-after=" ">
+          <slash target-id="684092" relation="xsub"/>
+        </token>
+        <token id="684098" form="impedimenta" citation-part="1.24.4" lemma="impedimentum" part-of-speech="Nb" morphology="-p---na--i" head-id="684102" relation="obj" antecedent-id="684092" information-status="acc_inf" presentation-after=" "/>
+        <token id="684099" form="in" citation-part="1.24.4" lemma="in" part-of-speech="R-" morphology="---------n" head-id="684102" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684100" form="unum" citation-part="1.24.4" lemma="unus" part-of-speech="Ma" morphology="-s---oa--i" head-id="684101" relation="atr" presentation-after=" "/>
+        <token id="684101" form="locum" citation-part="1.24.4" lemma="locus" part-of-speech="Nb" morphology="-s---ma--i" head-id="684099" relation="obl" information-status="new" presentation-after=" "/>
+        <token id="684102" form="contulerunt" citation-part="1.24.4" lemma="confero" part-of-speech="V-" morphology="3pria----i" relation="pred" presentation-after="; "/>
+      </sentence>
+      <sentence id="52742" status="reviewed" presentation-after=" ">
+        <token id="684562" form="Quod" citation-part="1.28.1" lemma="qui" part-of-speech="Pr" morphology="-s---na--i" head-id="684565" relation="obj" antecedent-id="793225" information-status="old" presentation-after=" "/>
+        <token id="684563" form="ubi" citation-part="1.28.1" lemma="ubi" part-of-speech="Dq" morphology="---------n" head-id="684565" relation="adv" presentation-after=" "/>
+        <token id="684564" form="Caesar" citation-part="1.28.1" lemma="Caesar" part-of-speech="Ne" morphology="-s---mn--i" head-id="684565" relation="sub" antecedent-id="1190992" information-status="old" presentation-after=" "/>
+        <token id="684565" form="resciit" citation-part="1.28.1" lemma="rescisco" part-of-speech="V-" morphology="3sria----i" head-id="684580" relation="adv" information-status="info_unannotatable" presentation-after=", "/>
+        <token id="684566" form="quorum" citation-part="1.28.1" lemma="qui" part-of-speech="Pr" morphology="-p---mg--i" head-id="684568" relation="atr" presentation-after=" "/>
+        <token id="684567" form="per" citation-part="1.28.1" lemma="per" part-of-speech="R-" morphology="---------n" head-id="684569" relation="adv" presentation-after=" "/>
+        <token id="684568" form="fines" citation-part="1.28.1" lemma="finis" part-of-speech="Nb" morphology="-p---ma--i" head-id="684567" relation="obl" information-status="new" presentation-after=" "/>
+        <token id="684569" form="ierant" citation-part="1.28.1" lemma="eo" part-of-speech="V-" morphology="3plia----i" head-id="684570" relation="apos" presentation-after=" "/>
+        <token id="684570" form="his" citation-part="1.28.1" lemma="hic" part-of-speech="Pd" morphology="-p---md--i" head-id="684580" relation="obl" information-status="new" presentation-after=" "/>
+        <token id="684571" form="uti" citation-part="1.28.1" lemma="ut" part-of-speech="G-" morphology="---------n" head-id="684580" relation="comp" presentation-after=" "/>
+        <token id="684572" form="conquirerent" citation-part="1.28.1" lemma="conquiro" part-of-speech="V-" morphology="3pisa----i" head-id="684573" relation="comp" presentation-after=" "/>
+        <token id="684573" form="et" citation-part="1.28.1" lemma="et" part-of-speech="C-" morphology="---------n" head-id="684571" relation="comp" presentation-after=" "/>
+        <token id="684574" form="reducerent" citation-part="1.28.1" lemma="reduco" part-of-speech="V-" morphology="3pisa----i" head-id="684573" relation="comp" presentation-after=", "/>
+        <token id="684575" form="si" citation-part="1.28.1" lemma="si" part-of-speech="G-" morphology="---------n" head-id="684580" relation="adv" presentation-after=" "/>
+        <token id="684576" form="sibi" citation-part="1.28.1" lemma="se" part-of-speech="Pk" morphology="3s---md--i" head-id="684578" relation="adv" antecedent-id="684564" information-status="old" presentation-after=" "/>
+        <token id="684577" form="purgati" citation-part="1.28.1" lemma="purgo" part-of-speech="V-" morphology="-prppmn--i" head-id="684578" relation="xobj" presentation-after=" ">
+          <slash target-id="684578" relation="xsub"/>
+        </token>
+        <token id="684578" form="esse" citation-part="1.28.1" lemma="sum" part-of-speech="V-" morphology="--pna----i" head-id="684579" relation="xobj" presentation-after=" ">
+          <slash target-id="684579" relation="xsub"/>
+        </token>
+        <token id="684579" form="vellent" citation-part="1.28.1" lemma="vello" part-of-speech="V-" morphology="3pisa----i" head-id="684575" relation="pred" presentation-after=", "/>
+        <token id="684580" form="imperavit" citation-part="1.28.1" lemma="impero" part-of-speech="V-" morphology="3sria----i" relation="pred" presentation-after="; ">
+          <slash target-id="684564" relation="sub"/>
+        </token>
+        <token id="1191135" empty-token-sort="P" citation-part="1.28.1" head-id="684572" relation="sub" antecedent-id="684570" information-status="old"/>
+        <token id="1191136" empty-token-sort="P" citation-part="1.28.1" head-id="684574" relation="sub" antecedent-id="1191135" information-status="old"/>
+        <token id="1191137" empty-token-sort="P" citation-part="1.28.1" head-id="684579" relation="sub" antecedent-id="1191136" information-status="old"/>
+        <token id="1191138" empty-token-sort="P" citation-part="1.28.1" head-id="684580" relation="sub" antecedent-id="684576" information-status="old"/>
+        <token id="1191139" empty-token-sort="P" citation-part="1.28.1" head-id="684569" relation="sub" antecedent-id="1190994" information-status="old"/>
+      </sentence>
+       <sentence id="52747" status="reviewed" presentation-after=" ">
+        <token id="684632" form="Id" citation-part="1.28.3" lemma="is" part-of-speech="Pp" morphology="3s---na--i" head-id="684636" relation="obj" antecedent-id="684631" information-status="old" presentation-after=" "/>
+        <token id="684633" form="ea" citation-part="1.28.3" lemma="is" part-of-speech="Pd" morphology="-s---fb--i" head-id="684635" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684634" form="maxime" citation-part="1.28.3" lemma="magis" part-of-speech="Df" morphology="-------s-i" head-id="684635" relation="atr" presentation-after=" "/>
+        <token id="684635" form="ratione" citation-part="1.28.3" lemma="ratio" part-of-speech="Nb" morphology="-s---fb--i" head-id="684636" relation="adv" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684636" form="fecit" citation-part="1.28.3" lemma="facio" part-of-speech="V-" morphology="3sria----i" relation="pred" presentation-after=", "/>
+        <token id="684637" form="quod" citation-part="1.28.3" lemma="quod" part-of-speech="G-" morphology="---------n" head-id="684635" relation="apos" presentation-after=" "/>
+        <token id="684638" form="noluit" citation-part="1.28.3" lemma="nolo" part-of-speech="V-" morphology="3sria----i" head-id="684637" relation="pred" presentation-after=" "/>
+        <token id="684639" form="eum" citation-part="1.28.3" lemma="is" part-of-speech="Pd" morphology="-s---ma--i" head-id="684640" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684640" form="locum" citation-part="1.28.3" lemma="locus" part-of-speech="Nb" morphology="-s---ma--i" head-id="684644" relation="sub" information-status="new" presentation-after=" "/>
+        <token id="684641" form="unde" citation-part="1.28.3" lemma="unde" part-of-speech="Dq" morphology="---------n" head-id="684643" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684642" form="Helvetii" citation-part="1.28.3" lemma="Helvetii" part-of-speech="Nb" morphology="-p---mn--i" head-id="684643" relation="sub" antecedent-id="684595" information-status="old" presentation-after=" "/>
+        <token id="684643" form="discesserant" citation-part="1.28.3" lemma="discedo" part-of-speech="V-" morphology="3plia----i" head-id="684640" relation="atr" presentation-after=" "/>
+        <token id="684644" form="vacare" citation-part="1.28.3" lemma="vaco" part-of-speech="V-" morphology="--pna----i" head-id="684638" relation="comp" presentation-after=", "/>
+        <token id="684645" form="ne" citation-part="1.28.3" lemma="ne" part-of-speech="G-" morphology="---------n" head-id="684644" relation="adv" presentation-after=" "/>
+        <token id="684646" form="propter" citation-part="1.28.3" lemma="propter" part-of-speech="R-" morphology="---------n" head-id="684660" relation="adv" presentation-after=" "/>
+        <token id="684647" form="bonitatem" citation-part="1.28.3" lemma="bonitas" part-of-speech="Nb" morphology="-s---fa--i" head-id="684646" relation="obl" information-status="new" presentation-after=" "/>
+        <token id="684648" form="agrorum" citation-part="1.28.3" lemma="ager" part-of-speech="Nb" morphology="-p---mg--i" head-id="684647" relation="atr" antecedent-id="684640" information-status="acc_inf" presentation-after=" "/>
+        <token id="684649" form="Germani" citation-part="1.28.3" lemma="Germani" part-of-speech="Nb" morphology="-p---mn--i" head-id="684660" relation="sub" antecedent-id="793224" information-status="old" presentation-after=", "/>
+        <token id="684650" form="qui" citation-part="1.28.3" lemma="qui" part-of-speech="Pr" morphology="-p---mn--i" head-id="684653" relation="sub" presentation-after=" "/>
+        <token id="684651" form="trans" citation-part="1.28.3" lemma="trans" part-of-speech="R-" morphology="---------n" head-id="684653" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684652" form="Rhenum" citation-part="1.28.3" lemma="Rhenus" part-of-speech="Ne" morphology="-s---ma--i" head-id="684651" relation="obl" antecedent-id="793221" information-status="old" presentation-after=" "/>
+        <token id="684653" form="incolunt" citation-part="1.28.3" lemma="incolo" part-of-speech="V-" morphology="3ppia----i" head-id="684649" relation="apos" presentation-after=", "/>
+        <token id="684654" form="ex" citation-part="1.28.3" lemma="ex" part-of-speech="R-" morphology="---------n" head-id="684660" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684655" form="suis" citation-part="1.28.3" lemma="suus" part-of-speech="Pt" morphology="3p---qb--i" head-id="684656" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684656" form="finibus" citation-part="1.28.3" lemma="finis" part-of-speech="Nb" morphology="-p---mb--i" head-id="684654" relation="obl" antecedent-id="684649" information-status="acc_inf" presentation-after=" "/>
+        <token id="684657" form="in" citation-part="1.28.3" lemma="in" part-of-speech="R-" morphology="---------n" head-id="684660" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="684658" form="Helvetiorum" citation-part="1.28.3" lemma="Helvetii" part-of-speech="Nb" morphology="-p---mg--i" head-id="684659" relation="atr" antecedent-id="684642" information-status="old" presentation-after=" "/>
+        <token id="684659" form="fines" citation-part="1.28.3" lemma="finis" part-of-speech="Nb" morphology="-p---ma--i" head-id="684657" relation="obl" information-status="new" presentation-after=" "/>
+        <token id="684660" form="transirent" citation-part="1.28.3" lemma="transeo" part-of-speech="V-" morphology="3pisa----i" head-id="684661" relation="adv" presentation-after=" "/>
+        <token id="684661" form="et" citation-part="1.28.3" lemma="et" part-of-speech="C-" morphology="---------n" head-id="684645" relation="adv" presentation-after=" "/>
+        <token id="684662" form="finitimi" citation-part="1.28.3" lemma="finitimus" part-of-speech="A-" morphology="-p---mnp-i" head-id="684667" relation="xobj" presentation-after=" ">
+          <slash target-id="684667" relation="xsub"/>
+        </token>
+        <token id="684663" form="Galliae" citation-part="1.28.3" lemma="Gallia" part-of-speech="Ne" morphology="-s---fd--i" head-id="684666" relation="obl" information-status="acc_gen" presentation-after=" "/>
+        <token id="684664" form="provinciae" citation-part="1.28.3" lemma="provincia" part-of-speech="Nb" morphology="-s---fd--i" head-id="684663" relation="apos" presentation-after=" "/>
+        <token id="684665" form="Allobrogibus" citation-part="1.28.3" lemma="Allobroges" part-of-speech="Nb" morphology="-p---md--i" head-id="684666" relation="obl" antecedent-id="1191144" information-status="old"/>
+        <token id="684666" form="que" citation-part="1.28.3" lemma="que" part-of-speech="C-" morphology="---------n" head-id="684667" relation="obl" presentation-after=" "/>
+        <token id="684667" form="essent" citation-part="1.28.3" lemma="sum" part-of-speech="V-" morphology="3pisa----i" head-id="684661" relation="adv" presentation-after=". ">
+          <slash target-id="684649" relation="sub"/>
+        </token>
+        <token id="1191149" empty-token-sort="P" citation-part="1.28.3" head-id="684638" relation="sub" antecedent-id="1191187" information-status="old"/>
+        <token id="1191150" empty-token-sort="P" citation-part="1.28.3" head-id="684667" relation="sub" antecedent-id="684649" information-status="old"/>
+        <token id="1191187" empty-token-sort="P" citation-part="1.28.3" head-id="684636" relation="sub" antecedent-id="1191147" information-status="old"/>
+      </sentence>
+      <sentence id="64207" status="reviewed" presentation-after=" ">
+        <token id="761419" form="intellegere" citation-part="1.30.2" lemma="intellego" part-of-speech="V-" morphology="--pna----i" head-id="864922" relation="comp" presentation-before=" " presentation-after=" "/>
+        <token id="761420" form="sese" citation-part="1.30.2" lemma="se" part-of-speech="Pk" morphology="3p---ma--i" head-id="761419" relation="sub" antecedent-id="761412" information-status="old" presentation-after=", "/>
+        <token id="761421" form="tametsi" citation-part="1.30.2" lemma="tametsi" part-of-speech="G-" morphology="---------n" head-id="761419" relation="adv" presentation-after=" "/>
+        <token id="761422" form="pro" citation-part="1.30.2" lemma="pro" part-of-speech="R-" morphology="---------n" head-id="761432" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761423" form="veteribus" citation-part="1.30.2" lemma="vetus" part-of-speech="A-" morphology="-p---qbp-i" head-id="761425" relation="atr" presentation-after=" "/>
+        <token id="761424" form="Helvetiorum" citation-part="1.30.2" lemma="Helvetii" part-of-speech="Nb" morphology="-p---mg--i" head-id="761425" relation="atr" antecedent-id="761407" information-status="old" presentation-after=" "/>
+        <token id="761425" form="iniuriis" citation-part="1.30.2" lemma="iniuria" part-of-speech="Nb" morphology="-p---fb--i" head-id="761422" relation="obl" information-status="old_inact" presentation-after=" "/>
+        <token id="761426" form="populi" citation-part="1.30.2" lemma="populus" part-of-speech="Nb" morphology="-s---mg--i" head-id="761425" relation="narg" information-status="acc_gen" presentation-after=" "/>
+        <token id="761427" form="Romani" citation-part="1.30.2" lemma="Romanus" part-of-speech="A-" morphology="-s---ogp-i" head-id="761426" relation="atr" presentation-after=" "/>
+        <token id="761428" form="ab" citation-part="1.30.2" lemma="ab" part-of-speech="R-" morphology="---------n" head-id="761432" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761429" form="his" citation-part="1.30.2" lemma="hic" part-of-speech="Pd" morphology="-p---mb--i" head-id="761428" relation="obl" antecedent-id="761424" information-status="old" presentation-after=" "/>
+        <token id="761430" form="poenas" citation-part="1.30.2" lemma="poena" part-of-speech="Nb" morphology="-p---fa--i" head-id="761432" relation="obj" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761431" form="bello" citation-part="1.30.2" lemma="bellum" part-of-speech="Nb" morphology="-s---nb--i" head-id="761432" relation="adv" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761432" form="repetisset" citation-part="1.30.2" lemma="repeto" part-of-speech="V-" morphology="3slsa----i" head-id="761421" relation="pred" presentation-after=", "/>
+        <token id="761433" form="tamen" citation-part="1.30.2" lemma="tamen" part-of-speech="Df" morphology="---------n" head-id="761444" relation="aux" presentation-after=" "/>
+        <token id="761434" form="eam" citation-part="1.30.2" lemma="is" part-of-speech="Pd" morphology="-s---fa--i" head-id="761435" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761435" form="rem" citation-part="1.30.2" lemma="res" part-of-speech="Nb" morphology="-s---fa--i" head-id="761444" relation="sub" antecedent-id="761432" information-status="old" presentation-after=" "/>
+        <token id="761436" form="non" citation-part="1.30.2" lemma="non" part-of-speech="Df" morphology="---------n" head-id="761437" relation="aux" presentation-after=" "/>
+        <token id="761437" form="minus" citation-part="1.30.2" lemma="parum" part-of-speech="Df" morphology="-------c-i" head-id="761440" relation="atr" presentation-after=" "/>
+        <token id="761438" form="ex" citation-part="1.30.2" lemma="ex" part-of-speech="R-" morphology="---------n" head-id="761444" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761439" form="usu" citation-part="1.30.2" lemma="usus" part-of-speech="Nb" morphology="-s---mb--i" head-id="761438" relation="obl" information-status="new" presentation-after="  "/>
+        <token id="761440" form="Galliae" citation-part="1.30.2" lemma="Gallia" part-of-speech="Ne" morphology="-s---fg--i" head-id="761439" relation="atr" antecedent-id="761411" information-status="old" presentation-after=" "/>
+        <token id="761441" form="quam" citation-part="1.30.2" lemma="quam#1" part-of-speech="Df" morphology="---------n" head-id="761437" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761442" form="populi" citation-part="1.30.2" lemma="populus" part-of-speech="Nb" morphology="-s---mg--i" head-id="761441" relation="atr" antecedent-id="761426" information-status="old" presentation-after=" "/>
+        <token id="761443" form="Romani" citation-part="1.30.2" lemma="Romanus" part-of-speech="A-" morphology="-s---ogp-i" head-id="761442" relation="atr" presentation-after=" "/>
+        <token id="761444" form="accidisse" citation-part="1.30.2" lemma="accido" part-of-speech="V-" morphology="--rna----i" head-id="761419" relation="comp" presentation-after=", "/>
+        <token id="761445" form="propterea" citation-part="1.30.3" lemma="propterea" part-of-speech="Df" morphology="---------n" head-id="761444" relation="adv" presentation-after=" "/>
+        <token id="761446" form="quod" citation-part="1.30.3" lemma="quod" part-of-speech="G-" morphology="---------n" head-id="761445" relation="comp" presentation-after=" "/>
+        <token id="761447" form="eo" citation-part="1.30.3" lemma="is" part-of-speech="Pd" morphology="-s---ob--i" head-id="761448" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761448" form="consilio" citation-part="1.30.3" lemma="consilium" part-of-speech="Nb" morphology="-s---nb--i" head-id="761454" relation="adv" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761449" form="florentissimis" citation-part="1.30.3" lemma="florens" part-of-speech="A-" morphology="-p---fbs-i" head-id="867021" relation="xobj" presentation-after=" ">
+          <slash target-id="761450" relation="xsub"/>
+        </token>
+        <token id="761450" form="rebus" citation-part="1.30.3" lemma="res" part-of-speech="Nb" morphology="-p---fb--i" head-id="867021" relation="sub" antecedent-id="761429" information-status="acc_inf" presentation-after=" "/>
+        <token id="761451" form="domos" citation-part="1.30.3" lemma="domus" part-of-speech="Nb" morphology="-p---fa--i" head-id="761454" relation="obj" antecedent-id="761429" information-status="acc_inf" presentation-after=" "/>
+        <token id="761452" form="suas" citation-part="1.30.3" lemma="suus" part-of-speech="Pt" morphology="3p---fa--i" head-id="761451" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761453" form="Helvetii" citation-part="1.30.3" lemma="Helvetii" part-of-speech="Nb" morphology="-p---mn--i" head-id="761454" relation="sub" antecedent-id="761429" information-status="old" presentation-after=" "/>
+        <token id="761454" form="reliquissent" citation-part="1.30.3" lemma="relinquo" part-of-speech="V-" morphology="3plsa----i" head-id="761446" relation="pred" presentation-after=" "/>
+        <token id="761455" form="uti" citation-part="1.30.3" lemma="ut" part-of-speech="G-" morphology="---------n" head-id="761448" relation="apos" presentation-after=" "/>
+        <token id="761456" form="toti" citation-part="1.30.3" lemma="totus" part-of-speech="A-" morphology="-s---qdp-i" head-id="761457" relation="atr" presentation-after=" "/>
+        <token id="761457" form="Galliae" citation-part="1.30.3" lemma="Gallia" part-of-speech="Ne" morphology="-s---fd--i" head-id="761459" relation="obl" antecedent-id="761440" information-status="old" presentation-after=" "/>
+        <token id="761458" form="bellum" citation-part="1.30.3" lemma="bellum" part-of-speech="Nb" morphology="-s---na--i" head-id="761459" relation="obj" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761459" form="inferrent" citation-part="1.30.3" lemma="infero" part-of-speech="V-" morphology="3pisa----i" head-id="761461" relation="apos" presentation-after=" ">
+          <slash target-id="761453" relation="sub"/>
+        </token>
+        <token id="761460" form="imperio" citation-part="1.30.3" lemma="imperium" part-of-speech="Nb" morphology="-s---nb--i" head-id="761462" relation="obl" information-status="info_unannotatable"/>
+        <token id="761461" form="que" citation-part="1.30.3" lemma="que" part-of-speech="C-" morphology="---------n" head-id="761455" relation="apos" presentation-after=" "/>
+        <token id="761462" form="potirentur" citation-part="1.30.3" lemma="potior" part-of-speech="V-" morphology="3pisp----i" head-id="761461" relation="apos" presentation-after=", ">
+          <slash target-id="761453" relation="sub"/>
+        </token>
+        <token id="761463" form="locum" citation-part="1.30.3" lemma="locus" part-of-speech="Nb" morphology="-s---ma--i" head-id="761469" relation="obj" information-status="new"/>
+        <token id="761464" form="que" citation-part="1.30.3" lemma="que" part-of-speech="C-" morphology="---------n" head-id="761461" relation="aux" presentation-after=" "/>
+        <token id="761465" form="domicilio" citation-part="1.30.3" lemma="domicilium" part-of-speech="Nb" morphology="-s---nd--i" head-id="761469" relation="obl" antecedent-id="1191159" information-status="acc_inf" presentation-after=" "/>
+        <token id="761466" form="ex" citation-part="1.30.3" lemma="ex" part-of-speech="R-" morphology="---------n" head-id="761469" relation="adv" presentation-after=" "/>
+        <token id="761467" form="magna" citation-part="1.30.3" lemma="magnus" part-of-speech="A-" morphology="-s---fbp-i" head-id="761468" relation="atr" presentation-after=" "/>
+        <token id="761468" form="copia" citation-part="1.30.3" lemma="copia" part-of-speech="Nb" morphology="-s---fb--i" head-id="761466" relation="obl" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761469" form="deligerent" citation-part="1.30.3" lemma="deligo" part-of-speech="V-" morphology="3pisa----i" head-id="761461" relation="apos" presentation-after=" ">
+          <slash target-id="761453" relation="sub"/>
+        </token>
+        <token id="761470" form="quem" citation-part="1.30.3" lemma="qui" part-of-speech="Pr" morphology="-s---ma--i" head-id="761477" relation="obj" presentation-after=" "/>
+        <token id="761471" form="ex" citation-part="1.30.3" lemma="ex" part-of-speech="R-" morphology="---------n" head-id="761475" relation="part" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761472" form="omni" citation-part="1.30.3" lemma="omnis" part-of-speech="Px" morphology="-s---qb--i" head-id="761473" relation="atr" information-status="info_unannotatable" presentation-after=" "/>
+        <token id="761473" form="Gallia" citation-part="1.30.3" lemma="Gallia" part-of-speech="Ne" morphology="-s---fb--i" head-id="761471" relation="obl" antecedent-id="761457" information-status="old" presentation-after=" "/>
+        <token id="761474" form="oportunissimum" citation-part="1.30.3" lemma="opportunus" part-of-speech="A-" morphology="-s---oas-i" head-id="761475" relation="xobj" presentation-after=" "/>
+        <token id="761475" form="ac" citation-part="1.30.3" lemma="atque" part-of-speech="C-" morphology="---------n" head-id="761477" relation="xobj" presentation-after=" ">
+          <slash target-id="761470" relation="xsub"/>
+        </token>
+        <token id="761476" form="fructuosissimum" citation-part="1.30.3" lemma="fructuosus" part-of-speech="A-" morphology="-s---oas-i" head-id="761475" relation="xobj" presentation-after=" "/>
+        <token id="761477" form="iudicassent" citation-part="1.30.3" lemma="iudico" part-of-speech="V-" morphology="3plsa----i" head-id="761463" relation="atr" presentation-after=", "/>
+        <token id="761478" form="reliquas" citation-part="1.30.3" lemma="reliquus" part-of-speech="A-" morphology="-p---fap-i" head-id="761480" relation="atr"/>
+        <token id="761479" form="que" citation-part="1.30.3" lemma="que" part-of-speech="C-" morphology="---------n" head-id="761461" relation="aux" presentation-after=" "/>
+        <token id="761480" form="civitates" citation-part="1.30.3" lemma="civitas" part-of-speech="Nb" morphology="-p---fa--i" head-id="761482" relation="obj" antecedent-id="761473" information-status="quant" presentation-after=" "/>
+        <token id="761481" form="stipendiarias" citation-part="1.30.3" lemma="stipendiarius" part-of-speech="A-" morphology="-p---fap-i" head-id="761482" relation="xadv" presentation-after=" ">
+          <slash target-id="761480" relation="xsub"/>
+        </token>
+        <token id="761482" form="haberent" citation-part="1.30.3" lemma="habeo" part-of-speech="V-" morphology="3pisa----i" head-id="761461" relation="apos" presentation-after=". ">
+          <slash target-id="761453" relation="sub"/>
+        </token>
+        <token id="864922" empty-token-sort="V" citation-part="1.30.3" relation="pred"/>
+        <token id="867021" empty-token-sort="V" citation-part="1.30.3" head-id="761454" relation="adv"/>
+        <token id="1191157" empty-token-sort="P" citation-part="1.30.2" head-id="761432" relation="sub" antecedent-id="761416" information-status="old"/>
+        <token id="1191158" empty-token-sort="P" citation-part="1.30.3" head-id="761459" relation="sub" antecedent-id="761453" information-status="old"/>
+        <token id="1191159" empty-token-sort="P" citation-part="1.30.3" head-id="761462" relation="sub" antecedent-id="1191158" information-status="old"/>
+        <token id="1191160" empty-token-sort="P" citation-part="1.30.3" head-id="761469" relation="sub" antecedent-id="1191159" information-status="old"/>
+        <token id="1191161" empty-token-sort="P" citation-part="1.30.3" head-id="761477" relation="sub" antecedent-id="1191160" information-status="old"/>
+        <token id="1191162" empty-token-sort="P" citation-part="1.30.3" head-id="761482" relation="sub" antecedent-id="1191161" information-status="old"/>
+      </sentence>
+    </div>
+  </source>
+</proiel>
