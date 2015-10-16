@@ -9,6 +9,8 @@ module PROIEL
               div.sentences.each do |sentence|
                 id_to_number = {}
 
+# probably an error here with prodroptokens, see conll-u script
+                
                 sentence.tokens.map(&:id).each_with_index.each do |id, i|
                   id_to_number[id] = i + 1
                 end
