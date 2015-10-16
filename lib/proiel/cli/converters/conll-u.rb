@@ -35,15 +35,17 @@ module PROIEL
 
           id_to_number = Hash.new(0) #will return id 0 (i.e. root) for nil
 
-          sentence.tokens.map(&:id).each_with_index.each do |id, i|
+          tk = sentence.tokens.reject { |t| t.empty_token_sort == 'P' }
+          
+          tk.map(&:id).each_with_index.each do |id, i|
             id_to_number[id] = i + 1
           end
 
-          @tokens = sentence.tokens.map do |t|
+          @tokens = tk.map do |t|
             Token.new(id_to_number[t.id],
                       id_to_number[t.head_id],
-                      t.form,
-                      t.lemma,
+                      t.form.to_s.gsub(/\s/, '.'),
+                      t.lemma.to_s.gsub(/\s/, '.'),
                       t.part_of_speech,
                       t.language,
                       t.morphology,
@@ -307,8 +309,16 @@ module PROIEL
           end
         end
 
+        def format_features(features)
+          if features == ''
+            '_'
+          else
+            features.split("|").sort.join("|")
+          end
+        end
+        
         def to_conll
-          [@id, @form, @lemma, @upos, @part_of_speech, @features, @head_id, @relation, '_', '_'].join("\t")
+          [@id, @form, @lemma, @upos, @part_of_speech, format_features(@features), @head_id, @relation, '_', '_'].join("\t")
         end
 
         def to_s
@@ -359,7 +369,7 @@ module PROIEL
           dependents.each(&:map_part_of_speech!)
           @upos = POS_MAP[@part_of_speech].first
           if feat = POS_MAP[@part_of_speech][1]
-            @features += ('|' + feat)
+            @features += ((@features.empty? ? '' : '|') + feat)
           end
           # ugly, but the ugliness comes from UDEP
           @upos = 'ADJ' if @upos == 'DET' and @relation != 'det'
