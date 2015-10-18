@@ -1,9 +1,36 @@
+# -*- coding: utf-8 -*-
 module PROIEL
   module Converter
     class CoNLLU
-      COPULAR_LEMMATA = ['sum,V-,lat']
+      COPULAR_LEMMATA = ['sum,V-,lat', 'εἰμί#1,V-,grc']
       DETERMINERS = ['S-', 'Pd', 'Px', 'Ps', 'Pt']
-      NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat'] 
+      NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat', 
+                          'μή,Df,grc',
+                          'μήγε,Df,grc',
+                          'μηδαμῶς,Df,grc',
+                          'μηδέποτε,Df,grc',
+                          'μηδέπω,Df,grc',
+                          'μηκέτι,Df,grc',
+                          'μήπω,Df,grc',
+                          'μήτε,Df,grc',
+                          'μήτι,Df,grc',
+                          'μήτιγε,Df,grc',
+                          'οὐ,Df,grc',
+                          'οὐδαμῇ,Df,grc',
+                          'οὐδαμῶς,Df,grc',
+                          'οὐδέ,Df,grc',
+                          'οὐδέποτε,Df,grc',
+                          'οὐδέπω,Df,grc',
+                          'οὐκέτι,Df,grc',
+                          'οὐκοῦν,Df,grc',
+                          'οὔπω,Df,grc',
+                          'οὔτε,Df,grc',
+                          'οὔτι,Df,grc',
+                          'οὐχί,Df,grc',
+                         ]
+
+
+
       PARTICLE_LEMMATA = [ 'at,Df,lat',
                            'atque,Df,lat',
                            'autem,Df,lat',
@@ -24,7 +51,58 @@ module PROIEL
                            'tamen,Df,lat',
                            'tum,Df,lat',
                            'tunc,Df,lat',
-                           'vero,Df,lat' ]
+                           'vero,Df,lat',
+                           'ἅμα,Df,grc',
+                           'ἄν,Df,grc',
+                           'ἀνά,Df,grc',
+                           'ἆρα,Df,grc',
+                           'ἄραγε,Df,grc',
+                           'ἀτάρ,Df,grc',
+                           'ἅτε,Df,grc',
+                           'αὗ,Df,grc',
+                           'αὖθις,Df,grc',
+                           'γάρ,Df,grc',
+                           'γε,Df,grc',
+                           'γοῦν,Df,grc',
+                           'δέ,Df,grc',
+                           'δή,Df,grc',
+                           'δῆθεν,Df,grc',
+                           'δηλαδή,Df,grc',
+                           'δηλονότι,Df,grc',
+                           'δῆτα,Df,grc',
+                           'εἶτα,Df,grc',
+                           'ἔτι,Df,grc',
+                           'ἦ#2,Df,grc',
+                           'ἤγουν,Df,grc',
+                           'ἤδη,Df,grc',
+                           'ἤτοι,Df,grc',
+                           'καίτοι,Df,grc',
+                           'καίτοιγε,Df,grc',
+                           'μέν,Df,grc',
+                           'μενοῦνγε,Df,grc',
+                           'μέντοι,Df,grc',
+                           'μήν,Df,grc',
+                           'νά,Df,grc',
+                           'νῦν#1,Df,grc',
+                           'νυν#2,Df,grc',
+                           'νυνί,Df,grc',
+                           'οὖν,Df,grc',
+                           'πέρ,Df,grc',
+                           'πῃ,Df,grc',
+                           'ποτε,Df,grc',
+                           'πού,Df,grc',
+                           'πω,Df,grc',
+                           'πως,Df,grc',
+                           'τάχα,Df,grc',
+                           'τε,Df,grc',
+                           'τοι,Df,grc',
+                           'τοιγαροῦν,Df,grc',
+                           'τοίνυν,Df,grc',
+                         ]
+
+
+
+
       
       POS_MAP = 
         { 
@@ -65,7 +143,7 @@ module PROIEL
                     'p' => 'Number=Plur'  } ,
         :tense  => {'p' => 'Tense=Pres', 
                     'i' => 'Tense=Past|Aspect=Imp', 
-                    'r' => 'Tense=Perfect', 
+                    'r' => 'Tense=Past|Aspect=Perf', #'Tense=Perfect', 
                     's' => 'Aspect=Resultative',
                     # tags Perf is not universal
                     'a' => 'Tense=Past|Aspect=Perf', 
@@ -73,7 +151,8 @@ module PROIEL
                     'l' => 'Tense=Pqp', 
                     'f' => 'Tense=Fut', 
                     # tag FutPerfect is not universal
-                    't' => 'Tense=FutPerfect' },
+                    't' => 'Tense=Fut|Aspect=Perf', #FutPerfect' 
+                      },
         :mood =>   {'i' => 'VerbForm=Fin|Mood=Ind', 
                     's' => 'VerbForm=Fin|Mood=Sub', 
                     'm' => 'VerbForm=Fin|Mood=Imp', 
@@ -90,9 +169,9 @@ module PROIEL
                     't' => 'VerbForm=Fin' },
         :voice =>  {'a' => 'Voice=Act', 
                     # Med is not universal
-                    'm' => 'Voice=Med', 
+                    'm' => 'Voice=Mid', 
                     'p' => 'Voice=Pass', 
-                    'e' => 'Voice=Med,Pass' },
+                    'e' => 'Voice=Mid,Pass' },
         :gender => {'m' => 'Gender=Masc',
                     'f' => 'Gender=Fem',
                     'n' => 'Gender=Neut',
