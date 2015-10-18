@@ -4,22 +4,29 @@ module PROIEL
       RELATION_MAPPING = {
         "adnom" => "dep",
         "adv" =>  [["advcl", lambda(&:clausal?) ],
-                   ["advmod", lambda(&:adverb?) ],
+                   ["advmod", lambda { |x| x.adverb? or x.preposition? } ],
+                   ["advmod", lambda(&:adjectival?) ], # adjective for adverb
                    ["nmod", lambda(&:nominal?) ],
+                   ["advmod", lambda { |x| true } ],
                   ],
-        "ag" => "nmod:agent", 
+        "ag" => "nmod", # add :agent" once defined
         "apos" => [["name", lambda { |x| x.proper_noun? and x.head and x.head.proper_noun? } ],
-                   ["appos", lambda { |x| x.nominal? and x.head and x.head.nominal? } ],
-                   ["acl:relcl", lambda { |x| x.clausal? and x.head and x.head.nominal? } ],
+                   ["appos", lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.nominal? } ],
+                   ["acl", lambda { |x| x.clausal? and x.head and x.head.nominal? } ],  # add :relcl ?
+                   # what to do about sentential appositions?
+                   ["advcl", lambda(&:clausal?) ],
+                   ["appos", lambda { |x| true } ],
                   ],
         "arg" => "dep",
         "atr" => [["nummod", lambda(&:cardinal?) ],
                   ["nmod", lambda(&:nominal?) ],
-                  ["acl:relcl", lambda { |x| x.clausal? and x.head and x.head.nominal? } ],
-                  ["amod", lambda { |x| x.adjectival? and x.head and x.head.nominal? } ], #if an adjective under a noun
+                  ["acl", lambda { |x| x.clausal? } ],  # add :relcl?
+                  ["advmod", lambda { |x| x.head and x.head.clausal? } ],
                   ["det", lambda(&:determiner?) ],
+                  ["amod", lambda { |x| true } ], #default
                  ],
         "aux" => [["det", lambda(&:determiner?) ],
+                  ["auxpass", lambda { |x| x.clausal? and x.head.passive?  } ],  
                   ["aux", lambda(&:clausal?) ],
                   ["neg", lambda(&:negation?) ],
                   ["discourse", lambda { |x| x.particle? or x.interjection? } ],
@@ -40,11 +47,16 @@ module PROIEL
         "expl" => "expl",
         "narg" => [['acl', lambda(&:clausal?) ],
                    ['nmod', lambda(&:nominal?) ],
+                   ['nmod', lambda(&:adjectival?) ], # nominaliezed in this function
+                   ['nmod', lambda { |x| true } ],
                   ],
         "nonsub" => "dep",
         "obj" => "dobj",
         "obl" => [["advmod", lambda { |x| x.adverb? or x.preposition? } ], # though normally a preposition will be subordinate to its noun
                   ["iobj", lambda(&:nominal?) ],# if nominal (NB check for presence of article!)
+                  ["iobj", lambda(&:adjectival?) ], # OBL adjectives are nominalized 
+                  ["advcl", lambda(&:clausal?) ], # this seems to happen with ad libros legendos etc. but check closer!
+                  ["iobj", lambda { |x| true } ],
                  ],
         "parpred" => "parataxis",
         "part" => "nmod",
@@ -53,13 +65,13 @@ module PROIEL
         "pred" => [["root", lambda(&:root?) ],
                    ["ERROR", lambda { |x| raise "#{x.to_n} (head_id #{x.head_id}) is not a root!" }],
                   ],
-        "rel" => "acl:relcl",
+        "rel" => "acl", # add :relcl?
         "sub" => [["nsubjpass", lambda { |x| x.head and x.head.passive? } ],
                   ["nsubj", lambda { |x| true }],
                  ],
         "voc" => "vocative",
-        "xadv" => [["advcl:contr", lambda(&:clausal?)],
-                   ["advmod:contr", lambda { |x| true } ],
+        "xadv" => [["advcl", lambda(&:clausal?)], #add :contr ?
+                   ["advmod", lambda { |x| true } ], # add :contr ?
                   ],
         "xobj" => "xcomp", # copula cases have already been taken care of
         "xsub" => "xsub",

@@ -6,9 +6,13 @@ module PROIEL
     class CoNLLU
       class << self
         def process(tb, options = [])
+          log = File.open('conll-u.log', 'w')
+          error_count = 0 
+          sentence_count = 0
           tb.sources.each do |source|
             source.divs.each do |div|
               div.sentences.each do |sentence|
+                sentence_count += 1
                 n = Sentence.new sentence
                 # Unlike other conversions, this one has to rely on
                 # certain assumptions about correct linguistic
@@ -18,11 +22,15 @@ module PROIEL
                   puts n.convert.to_conll
                   puts
                 rescue => e
-                  STDERR.puts "Cannot convert #{sentence.id} (#{sentence.citation}): #{e}"
+                  error_count += 1
+                  log.puts "Cannot convert #{sentence.id} (#{sentence.citation}): #{e}"
                 end
               end
             end
           end
+          log.puts "#{error_count} sentences out of #{sentence_count} could not be converted"
+          STDERR.puts "#{error_count} sentences out of #{sentence_count} could not be converted"
+          log.close
         end
       end
 
@@ -44,8 +52,8 @@ module PROIEL
           @tokens = tk.map do |t|
             Token.new(id_to_number[t.id],
                       id_to_number[t.head_id],
-                      t.form.to_s.gsub(/\s/, '.'),
-                      t.lemma.to_s.gsub(/\s/, '.'),
+                      t.form.to_s.gsub(/[[:space:]]/, '.'),
+                      t.lemma.to_s.gsub(/[[:space:]]/, '.'),
                       t.part_of_speech,
                       t.language,
                       t.morphology,
@@ -92,10 +100,15 @@ module PROIEL
           @tokens.map(&:to_conll).join("\n")
         end
 
+        # TODO: this will leave several root nodes in many cases. For now, raise an error
         def prune_empty_rootnodes!
           unless (empty_roots = roots.select { |r| r.empty_token_sort == 'V' }).empty?
             empty_roots.each do |r|
-              r.dependents.each { |d| d.head_id = 0 }
+              # promote the first dependent to root
+              new_root = r.dependents.first
+              new_root.head_id = 0
+              new_root.relation = r.relation
+              r.dependents.each { |d| d.head_id = new_root.id }
               remove_token! r
             end
             prune_empty_rootnodes!
@@ -109,7 +122,7 @@ module PROIEL
         def demote_parentheticals_and_vocatives!
           r, p = roots.partition { |n| !['voc', 'parpred'].include? n.relation }
           raise "No unique root in this tree:\n#{to_graph}" if p.any? and !r.one?
-          p.each { |x| x.head_id == r.first }
+          p.each { |x| x.head_id = r.first.id }
         end
 
         def relabel_graph!
@@ -148,6 +161,7 @@ module PROIEL
         attr_reader :lemma
         attr_reader :language
         attr_reader :empty_token_sort
+        attr_reader :form
 
         def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, sentence)
           @id = id
@@ -191,9 +205,12 @@ module PROIEL
           @part_of_speech == 'Ma'
         end
 
-        # A node is clausal if it is a verb and not nominalized
+        # A node is clausal if it is a verb and not nominalized; or it has a copula dependent; or it has a subject (e.g. in an absolute constructino without a verb; or if it is the root (e.g. in a nominal clause)
         def clausal?
-          @part_of_speech == 'V-' and !nominalized?
+          (@part_of_speech == 'V-' and !nominalized?) or
+            dependents.any?(&:copula?) or
+            dependents.any? { |d| ['sub', 'nsubj', 'nsubjpass', 'csubj', 'csubjpass'].include? d.relation  } or
+            root?
         end
 
         def conjunction?
@@ -208,6 +225,7 @@ module PROIEL
         # the lemma is copular or 2) the node is empty and has no pid
         # slash or a pid slash to a node with a copular lemma
         def copula?
+          @relation == 'cop' or 
           (COPULAR_LEMMATA.include?([lemma, part_of_speech, language].join(',')) or
            (@empty_token_sort == 'V' and (pid.nil? or pid.is_empty? or COPULAR_LEMMATA.include?([pid.lemma, pid.part_of_speech, pid.language].join(',')))) and
            dependents.any? { |d| d.relation == 'xobj' } )
@@ -237,6 +255,10 @@ module PROIEL
           !has_content?
         end
 
+        def mediopassive?
+          @morphology[4] =~/[mpe]/
+        end
+
         def negation?
           NEGATION_LEMMATA.include?([lemma, part_of_speech, language].join(','))
         end
@@ -256,7 +278,7 @@ module PROIEL
         end
 
         def passive?
-          @morphology =~ /\A----p/
+          @morphology[4] == 'p'
         end
 
         def preposition?
@@ -318,7 +340,16 @@ module PROIEL
         end
         
         def to_conll
-          [@id, @form, @lemma, @upos, @part_of_speech, format_features(@features), @head_id, @relation, '_', '_'].join("\t")
+          [@id, 
+           @form, 
+           @lemma, 
+           @upos, 
+           @part_of_speech, 
+           format_features(@features), 
+           @head_id, 
+           (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
+           '_', # slashes here
+           '_'].join("\t")
         end
 
         def to_s
@@ -368,6 +399,7 @@ module PROIEL
         def map_part_of_speech!
           dependents.each(&:map_part_of_speech!)
           @upos = POS_MAP[@part_of_speech].first
+          raise "No match found for pos #{part_of_speech.inspect}" unless @upos
           if feat = POS_MAP[@part_of_speech][1]
             @features += ((@features.empty? ? '' : '|') + feat)
           end
@@ -430,7 +462,7 @@ module PROIEL
           dependents.each do |d|
             # check if there's a partner with the same relation under the overt node.
             # TODO: this isn't really very convincing when it comes to ADVs
-            if partner = overt.dependents.select { |p| p.relation == d.relation }.first
+            if partner = overt.dependents.select { |p| p != self and p.relation == d.relation }.first #inserted p != self
               partner = partner.find_remnant
               d.head_id = partner.id
               d.relation = 'remnant'
