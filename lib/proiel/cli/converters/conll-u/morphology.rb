@@ -27,8 +27,10 @@ module PROIEL
                           'οὔτε,Df,grc',
                           'οὔτι,Df,grc',
                           'οὐχί,Df,grc',
+                          'не,Df,chu',
+                          'ни,Df,chu',
+                          'нѣ,Df,chu',
                          ]
-
 
 
       PARTICLE_LEMMATA = [ 'at,Df,lat',
@@ -98,10 +100,19 @@ module PROIEL
                            'τοι,Df,grc',
                            'τοιγαροῦν,Df,grc',
                            'τοίνυν,Df,grc',
+                           'бо,Df,chu',
+                           'же,Df,chu',
+                           'занѥ,Df,chu',
+                           'ибо,Df,chu',
+                           'иде,Df,chu',
+                           'ижде,Df,chu',
+                           'ли,Df,chu',
+                           'обаче,Df,chu',
+                           'оубо,Df,chu',
+                           'ти,Df,chu',
+                           'тѣ,Df,chu',
+                           'ꙗко#2,Df,chu',
                          ]
-
-
-
 
       
       POS_MAP = 
@@ -144,7 +155,7 @@ module PROIEL
         :tense  => {'p' => 'Tense=Pres', 
                     'i' => 'Tense=Past|Aspect=Imp', 
                     'r' => 'Tense=Past|Aspect=Perf', #'Tense=Perfect', 
-                    's' => 'Aspect=Resultative',
+                    's' => 'Aspect=Res',
                     # tags Perf is not universal
                     'a' => 'Tense=Past|Aspect=Perf', 
                     'u' => 'Tense=Past', 
