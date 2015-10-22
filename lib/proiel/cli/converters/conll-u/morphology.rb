@@ -30,6 +30,10 @@ module PROIEL
                           'не,Df,chu',
                           'ни,Df,chu',
                           'нѣ,Df,chu',
+                          'nei,Df,got',
+                          'ni,Df,got',
+                          'nibai#2,Df,got',
+                          'nih,Df,got',
                          ]
 
 
@@ -112,6 +116,22 @@ module PROIEL
                            'ти,Df,chu',
                            'тѣ,Df,chu',
                            'ꙗко#2,Df,chu',
+                           'an,Df,got',
+                           'auk,Df,got',
+                           'aufto,Df,got',
+                           'nu,Df,got',
+                           'ussindo,Df,got',
+                           'waitei,Df,got',
+                           'þan,Df,got',
+                           'nuh,Df,got',
+                           'nunu,Df,got',
+                           'raihtis,Df,got',
+                           'sunsaiw,Df,got',
+                           'unte,Df,got',
+                           'þande,Df,got',
+                           'þannu,Df,got',
+                           'þanuh,Df,got',
+                           'þaruh,Df,got',
                          ]
 
       
