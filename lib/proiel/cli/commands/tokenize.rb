@@ -6,6 +6,7 @@ module PROIEL
           prog.command(:tokenize) do |c|
             c.syntax 'tokenize'
             c.description 'Tokenize raw text'
+            c.syntax '[options] filename'
 
             c.action { |args, options| process(args, options) }
           end
@@ -13,25 +14,31 @@ module PROIEL
 
         def process(args, options)
           if args.empty?
-            STDERR.puts 'Missing filename(s). Use --help for more information.'
+            STDERR.puts 'Missing filename. Use --help for more information.'
+            exit 1
+          end
+
+          if args.length > 1
+            STDERR.puts 'Too many filenames. Use --help for more information.'
             exit 1
           end
 
           builder = Builder::XmlMarkup.new(target: STDOUT, indent: 2)
           builder.instruct! :xml, version: '1.0', encoding: 'UTF-8'
-          builder.proiel('export-time' => Time.now, 'schema-version' => '2.0') do
-            args.each do |filename|
-              File.open(filename, 'r') do |file|
-                header = read_header(file)
-                body = read_body(file)
 
-                builder.source(id: header.id, language: header.language) do
-                  builder.title header.title
-                  builder.author header.author
-                  builder.tag!('citation-part', header.citation_part)
-                
-                  tokenize(builder, body)
-                end
+          filename = args.first
+
+          File.open(filename, 'r') do |file|
+            header = read_header(file)
+            body = read_body(file)
+
+            builder.proiel('export-time' => header.export_time, 'schema-version' => '2.0') do
+              builder.source(id: header.id, language: header.language) do
+                builder.title header.title
+                builder.author header.author
+                builder.tag!('citation-part', header.citation_part)
+
+                tokenize(builder, body)
               end
             end
           end
@@ -120,10 +127,7 @@ module PROIEL
                 field, value = l.sub(/^%\s*/, '').split(/\s*=\s*/, 2)
 
                 case field
-                when 'export_time'
-                  # This is generated when exporting text but useless when
-                  # importing text
-                when *VALID_METADATA_FIELDS
+                when 'id', 'export_time', *VALID_METADATA_FIELDS
                   hdr[field] = value.strip
                 else
                   STDERR.puts "Invalid header field #{field}. Ignoring.".yellow
