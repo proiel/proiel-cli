@@ -65,12 +65,6 @@ module PROIEL
               f.action { |args, options| process(args, options, PROIEL::Converter::Lexc) }
             end
 
-            c.command(:csv) do |f|
-              f.syntax '[options] filename(s)'
-              f.description 'Convert to comma-separated file'
-              f.action { |args, options| process(args, options, PROIEL::Converter::CSV) }
-            end
-
             c.action do |_, _|
               STDERR.puts 'Missing or invalid format. Use --help for more information.'
               exit 1
