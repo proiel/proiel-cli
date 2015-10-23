@@ -5,28 +5,30 @@ module PROIEL
         def process(tb, options)
           builder = Builder::XmlMarkup.new(target: STDOUT, indent: 2)
           builder.instruct! :xml, version: '1.0', encoding: 'UTF-8'
-          builder.proiel('export-time' => tb.export_time, 'schema-version' => '2.0') do
+          builder.proiel('export-time' => DateTime.now.xmlschema, 'schema-version' => '2.0') do
             builder.annotation do
               builder.relations do
-                tb.annotation.relations.values.each do |value|
-                  attrs = grab_features(value, %i(tag summary primary secondary))
+                tb.annotation_schema.relation_tags.each do |tag, value|
+                  attrs = { tag: tag }
+                  attrs.merge!(grab_features(value, %i(summary primary secondary)))
                   builder.value(attrs)
                 end
               end
 
               builder.tag! 'parts-of-speech' do
-                tb.annotation.parts_of_speech.values.each do |value|
-                  attrs = grab_features(value, %i(tag summary))
+                tb.annotation_schema.part_of_speech_tags.each do |tag, value|
+                  attrs = { tag: tag }
+                  attrs.merge!(grab_features(value, %i(summary)))
                   builder.value(attrs)
                 end
               end
 
               builder.morphology do
-                tb.annotation.morphology.fields.each do |field|
-                  attrs = grab_features(field, %i(tag))
-                  builder.field(attrs) do
-                    field.values.each do |value|
-                      attrs = grab_features(value, %i(tag summary))
+                tb.annotation_schema.morphology_tags.each do |cat_tag, cat_values|
+                  builder.field(tag: cat_tag) do
+                    cat_values.each do |tag, value|
+                      attrs = { tag: tag }
+                      attrs.merge!(grab_features(value, %i(summary)))
                       builder.value(attrs)
                     end
                   end
@@ -34,8 +36,9 @@ module PROIEL
               end
 
               builder.tag! 'information-statuses' do
-                tb.annotation.information_statuses.values.each do |value|
-                  attrs = grab_features(value, %i(tag summary))
+                tb.annotation_schema.information_status_tags.each do |tag, value|
+                  attrs = { tag: tag }
+                  attrs.merge!(grab_features(value, %i(summary)))
                   builder.value(attrs)
                 end
               end
@@ -43,27 +46,7 @@ module PROIEL
 
             tb.sources.each do |source|
               builder.source(id: source.id, language: source.language) do
-                builder.title source.title if source.title
-                builder.author source.author if source.author
-                builder.tag!('citation-part', source.citation_part)
-
-                %w(
-                  principal funder distributor distributor_address date
-                  license license_url
-                  reference_system
-                  editor editorial_note
-                  annotator reviewer
-
-                  electronic_text_editor electronic_text_title
-                  electronic_text_version
-                  electronic_text_publisher electronic_text_place electronic_text_date
-                  electronic_text_original_url
-                  electronic_text_license electronic_text_license_url
-
-                  printed_text_editor printed_text_title
-                  printed_text_edition
-                  printed_text_publisher printed_text_place printed_text_date
-                ).each do |field|
+                PROIEL::Treebank::METADATA_ELEMENTS.each do |field|
                   builder.tag!(field.gsub('_', '-'), source.send(field)) if source.send(field)
                 end
 
@@ -104,9 +87,8 @@ module PROIEL
 
                               unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
                                 builder.token(attrs) do
-                                  token.slashes.each do |slash|
-                                    attrs = grab_features(slash, %i(target_id relation))
-                                    builder.slash(attrs)
+                                  token.slashes.each do |relation, target_id|
+                                    builder.slash(target_id: target_id, relation: relation)
                                   end
                                 end
                               else

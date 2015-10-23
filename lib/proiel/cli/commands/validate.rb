@@ -19,16 +19,16 @@ module PROIEL
           @schemas = {}
 
           args.each do |filename|
-            errors = PROIEL::Validation.validate_xml_file(filename)
+            v = PROIEL::PROIELXML::Validator.new(filename)
 
-            if errors.empty?
+            if v.valid?
               puts "#{filename} is valid".green
 
               exit 0
             else
               puts "#{filename} is invalid".red
 
-              errors.each do |error|
+              v.errors.each do |error|
                 puts "* #{error}"
               end
 

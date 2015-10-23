@@ -35,15 +35,52 @@ module PROIEL
             r = source.statistics.reviewed_sentence_count * 100.0 / n
             a = source.statistics.annotated_sentence_count * 100.0 / n
 
-            puts "#{i + 1}. #{source.pretty_title}".yellow
+            puts "#{i + 1}. #{pretty_title(source)}".yellow
             puts "   Version:      #{source.date}"
-            puts "   License:      #{source.pretty_license}"
-            puts "   Language:     #{source.pretty_language}"
-            puts "   Printed text: #{source.pretty_printed_text_info}"
-            puts "   Electr. text: #{source.pretty_electronic_text_info}"
+            puts "   License:      #{pretty_license(source)}"
+            puts "   Language:     #{pretty_language(source)}"
+            puts "   Printed text: #{pretty_printed_text_info(source)}"
+            puts "   Electr. text: #{pretty_electronic_text_info(source)}"
             puts "   Size:         #{n} sentence(s), #{source.statistics.token_count} token(s)"
             puts "   Annotation:   %.2f%% reviewed, %.2f%% annotated" % [r, a]
           end
+        end
+
+        def pretty_language(source)
+          case source.language
+          when 'lat'
+            'Latin'
+          else
+            "Unknown (language code #{source.language})"
+          end
+        end
+
+        def pretty_printed_text_info(source)
+          [source.printed_text_title,
+           source.printed_text_editor ? "ed. #{source.printed_text_editor}" : nil,
+           source.printed_text_publisher,
+           source.printed_text_place,
+           source.printed_text_date].compact.join(', ')
+        end
+
+        def pretty_electronic_text_info(source)
+          [source.electronic_text_title,
+           source.electronic_text_editor ? "ed. #{source.electronic_text_editor}" : nil,
+           source.electronic_text_publisher,
+           source.electronic_text_place,
+           source.electronic_text_date].compact.join(', ')
+        end
+
+        def pretty_license(source)
+          if source.license_url
+            "#{source.license} (#{source.license_url})"
+          else
+            source.license
+          end
+        end
+
+        def pretty_title(source)
+          [source.author, source.title].compact.join(', ')
         end
       end
     end

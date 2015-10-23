@@ -56,7 +56,7 @@ module PROIEL
                       t.morphology,
                       t.relation,
                       t.empty_token_sort,
-                      t.slashes.map { |sl| [id_to_number[sl.target_id], sl.relation] },
+                      t.slashes.map { |relation, target_id| [id_to_number[target_id], relation] },
                       self
                      )
           end
