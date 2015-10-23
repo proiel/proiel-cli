@@ -1,4 +1,4 @@
-# PROIEL CLI
+# PROIEL command-line interface
 
 This is a command-line interface for manpulating PROIEL treebanks.
 
@@ -9,39 +9,6 @@ Install as
 ```shell
 gem install proiel-cli
 ```
-
-## Getting started
-
-The recommended way to getting started is to use the `proiel` command-line
-utility to create a new application:
-
-```sh
-proiel init myprojectname
-```
-
-This will take care of everything you need to get started, including
-downloading the treebank data files.
-
-Alternatively you can set things up manually. Minimally, you will need to
-require the `proiel` gem in your application and load one or more treebank
-files:
-
-```ruby
-require 'proiel'
-
-tb = PROIEL::Treebank.new
-tb.load_from_xml('caes-gal.xml')
-```
-
-One way of acquiring and managing the treebank files is to add
-`proiel-treebank` as a git submodule:
-
-```sh
-mkdir vendor
-git submodule add https://github.com/proiel/proiel-treebank.git vendor/proiel-treebank
-```
-
-See the [wiki](https://github.com/proiel/proiel-cli/wiki) for more information.
 
 ## Using the command-line interface
 
