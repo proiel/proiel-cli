@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proiel export-time="2015-07-19T00:32:45+02:00" schema-version="2.0">
+  <source id="caes-gal" language="lat">
+    <title>Commentarii belli Gallici</title>
+    <author>Caesar</author>
+    <citation-part>Caes. Gal.</citation-part>
+    <div title="Caes., Gall. 1.1">
+      <sentence status_tag="unannotated">
+        <token citation_part="1.1.1" form="Gallia" presentation_before=" " presentation_after=" "/>
+        <token citation_part="1.1.1" form="est" presentation_after=" "/>
+        <token citation_part="1.1.1" form="omnis" presentation_after=" "/>
+        <token citation_part="1.1.1" form="divisa" presentation_after=" "/>
+        <token citation_part="1.1.1" form="in" presentation_after=" "/>
+        <token citation_part="1.1.1" form="partes" presentation_after=" "/>
+        <token citation_part="1.1.1" form="tres" presentation_after=", "/>
+        <token citation_part="1.1.1" form="quarum" presentation_after=" "/>
+        <token citation_part="1.1.1" form="unam" presentation_after=" "/>
+        <token citation_part="1.1.1" form="incolunt" presentation_after=" "/>
+        <token citation_part="1.1.1" form="Belgae" presentation_after=", "/>
+        <token citation_part="1.1.1" form="aliam" presentation_after=" "/>
+        <token citation_part="1.1.1" form="Aquitani" presentation_after=", "/>
+        <token citation_part="1.1.1" form="tertiam" presentation_after=" "/>
+        <token citation_part="1.1.1" form="qui" presentation_after=" "/>
+        <token citation_part="1.1.1" form="ipsorum" presentation_after=" "/>
+        <token citation_part="1.1.1" form="lingua" presentation_after=" "/>
+        <token citation_part="1.1.1" form="Celtae" presentation_after=", "/>
+        <token citation_part="1.1.1" form="nostra" presentation_after=" "/>
+        <token citation_part="1.1.1" form="Galli" presentation_after=" "/>
+        <token citation_part="1.1.1" form="appellantur" presentation_after=". "/>
+      </sentence>
+      <sentence status_tag="unannotated">
+        <token citation_part="1.1.2" form="Hi" presentation_before=" " presentation_after=" "/>
+        <token citation_part="1.1.2" form="omnes" presentation_after=" "/>
+        <token citation_part="1.1.2" form="lingua" presentation_after=", "/>
+        <token citation_part="1.1.2" form="institutis" presentation_after=", "/>
+        <token citation_part="1.1.2" form="legibus" presentation_after=" "/>
+        <token citation_part="1.1.2" form="inter" presentation_after=" "/>
+        <token citation_part="1.1.2" form="se" presentation_after=" "/>
+        <token citation_part="1.1.2" form="differunt" presentation_after=". "/>
+      </sentence>
+      <sentence status_tag="unannotated">
+        <token citation_part="1.1.2" form="Gallos" presentation_after=" "/>
+        <token citation_part="1.1.2" form="ab" presentation_after=" "/>
+        <token citation_part="1.1.2" form="Aquitanis" presentation_after=" "/>
+        <token citation_part="1.1.2" form="Garumna" presentation_after=" "/>
+        <token citation_part="1.1.2" form="flumen" presentation_after=", "/>
+        <token citation_part="1.1.2" form="a" presentation_after=" "/>
+        <token citation_part="1.1.2" form="Belgis" presentation_after=" "/>
+        <token citation_part="1.1.2" form="Matrona" presentation_after=" "/>
+        <token citation_part="1.1.2" form="et" presentation_after=" "/>
+        <token citation_part="1.1.2" form="Sequana" presentation_after=" "/>
+        <token citation_part="1.1.2" form="dividit" presentation_after=". "/>
+      </sentence>
+      <sentence status_tag="unannotated">
+        <token citation_part="1.1.3" form="Horum" presentation_before=" " presentation_after=" "/>
+        <token citation_part="1.1.3" form="omnium" presentation_after=" "/>
+        <token citation_part="1.1.3" form="fortissimi" presentation_after=" "/>
+        <token citation_part="1.1.3" form="sunt" presentation_after=" "/>
+        <token citation_part="1.1.3" form="Belgae" presentation_after=", "/>
+        <token citation_part="1.1.3" form="propterea" presentation_after=" "/>
+        <token citation_part="1.1.3" form="quod" presentation_after=" "/>
+        <token citation_part="1.1.3" form="a" presentation_after=" "/>
+        <token citation_part="1.1.3" form="cultu" presentation_after=" "/>
+        <token citation_part="1.1.3" form="atque" presentation_after=" "/>
+        <token citation_part="1.1.3" form="humanitate" presentation_after=" "/>
+        <token citation_part="1.1.3" form="provinciae" presentation_after=" "/>
+        <token citation_part="1.1.3" form="longissime" presentation_after=" "/>
+        <token citation_part="1.1.3" form="absunt" presentation_after=", "/>
+        <token citation_part="1.1.3" form="minimeque" presentation_after=" "/>
+        <token citation_part="1.1.3" form="ad" presentation_after=" "/>
+        <token citation_part="1.1.3" form="eos" presentation_after=" "/>
+        <token citation_part="1.1.3" form="mercatores" presentation_after=" "/>
+        <token citation_part="1.1.3" form="saepe" presentation_after=" "/>
+        <token citation_part="1.1.3" form="commeant" presentation_after=" "/>
+        <token citation_part="1.1.3" form="atque" presentation_after=" "/>
+        <token citation_part="1.1.3" form="ea" presentation_after=" "/>
+        <token citation_part="1.1.3" form="quae" presentation_after=" "/>
+        <token citation_part="1.1.3" form="ad" presentation_after=" "/>
+        <token citation_part="1.1.3" form="effeminandos" presentation_after=" "/>
+        <token citation_part="1.1.3" form="animos" presentation_after=" "/>
+        <token citation_part="1.1.3" form="pertinent" presentation_after=" "/>
+        <token citation_part="1.1.3" form="important" presentation_after=", "/>
+        <token citation_part="1.1.4" form="proximique" presentation_before=" " presentation_after=" "/>
+        <token citation_part="1.1.4" form="sunt" presentation_after=" "/>
+        <token citation_part="1.1.4" form="Germanis" presentation_after=", "/>
+        <token citation_part="1.1.4" form="qui" presentation_after=" "/>
+        <token citation_part="1.1.4" form="trans" presentation_after=" "/>
+        <token citation_part="1.1.4" form="Rhenum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="incolunt" presentation_after=", "/>
+        <token citation_part="1.1.4" form="quibuscum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="continenter" presentation_after=" "/>
+        <token citation_part="1.1.4" form="bellum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="gerunt" presentation_after=". "/>
+      </sentence>
+      <sentence status_tag="unannotated">
+        <token citation_part="1.1.4" form="Qua" presentation_after=" "/>
+        <token citation_part="1.1.4" form="de" presentation_after=" "/>
+        <token citation_part="1.1.4" form="causa" presentation_after=" "/>
+        <token citation_part="1.1.4" form="Helvetii" presentation_after=" "/>
+        <token citation_part="1.1.4" form="quoque" presentation_after=" "/>
+        <token citation_part="1.1.4" form="reliquos" presentation_after=" "/>
+        <token citation_part="1.1.4" form="Gallos" presentation_after=" "/>
+        <token citation_part="1.1.4" form="virtute" presentation_after=" "/>
+        <token citation_part="1.1.4" form="praecedunt" presentation_after=", "/>
+        <token citation_part="1.1.4" form="quod" presentation_after=" "/>
+        <token citation_part="1.1.4" form="fere" presentation_after=" "/>
+        <token citation_part="1.1.4" form="cotidianis" presentation_after=" "/>
+        <token citation_part="1.1.4" form="proeliis" presentation_after=" "/>
+        <token citation_part="1.1.4" form="cum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="Germanis" presentation_after=" "/>
+        <token citation_part="1.1.4" form="contendunt" presentation_after=", "/>
+        <token citation_part="1.1.4" form="cum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="aut" presentation_after=" "/>
+        <token citation_part="1.1.4" form="suis" presentation_after=" "/>
+        <token citation_part="1.1.4" form="finibus" presentation_after=" "/>
+        <token citation_part="1.1.4" form="eos" presentation_after=" "/>
+        <token citation_part="1.1.4" form="prohibent" presentation_after=" "/>
+        <token citation_part="1.1.4" form="aut" presentation_after=" "/>
+        <token citation_part="1.1.4" form="ipsi" presentation_after=" "/>
+        <token citation_part="1.1.4" form="in" presentation_after=" "/>
+        <token citation_part="1.1.4" form="eorum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="finibus" presentation_after=" "/>
+        <token citation_part="1.1.4" form="bellum" presentation_after=" "/>
+        <token citation_part="1.1.4" form="gerunt" presentation_after=". "/>
+      </sentence>
+    </div>
+  </source>
+</proiel>
