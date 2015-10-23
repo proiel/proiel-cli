@@ -6,7 +6,6 @@ module PROIEL
     class CoNLLU
       class << self
         def process(tb, options = [])
-          log = File.open('conll-u.log', 'w')
           error_count = 0 
           sentence_count = 0
           tb.sources.each do |source|
@@ -23,14 +22,12 @@ module PROIEL
                   puts
                 rescue => e
                   error_count += 1
-                  log.puts "Cannot convert #{sentence.id} (#{sentence.citation}): #{e}"
+                  STDERR.puts "Cannot convert #{sentence.id} (#{sentence.citation}): #{e}"
                 end
               end
             end
           end
-          log.puts "#{error_count} sentences out of #{sentence_count} could not be converted"
           STDERR.puts "#{error_count} sentences out of #{sentence_count} could not be converted"
-          log.close
         end
       end
 
