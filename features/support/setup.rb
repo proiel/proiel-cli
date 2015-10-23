@@ -6,7 +6,6 @@ Then(/^the output should be equal to file "([^"]*)"$/) do |reference_file|
 end
 
 Then(/^the output should have (\d+) lines$/) do |n|
-  File.open("tmp.fil", "w").write(all_stdout)
   assert_exact_output(n, all_stdout.split("\n").length.to_s)
 end
 
