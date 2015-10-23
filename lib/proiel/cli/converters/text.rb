@@ -4,16 +4,12 @@ module PROIEL
       class << self
         def process(tb, options)
           tb.sources.each do |source|
-            puts "% export_time = #{Time.now}"
+            puts "% id = #{source.id}"
+            puts "% export_time = #{source.export_time}"
             puts "% title = #{source.title}"
             puts "% author = #{source.author}"
             puts "% citation_part = #{source.citation_part}"
             puts "% language = #{source.language}"
-
-            # TODO
-            #Proiel::Metadata.fields.each do |f|
-            #  file.puts "% #{f} = #{s.send(f)}" unless s.send(f).nil?
-            #end
 
             source.divs.each do |div|
               puts
