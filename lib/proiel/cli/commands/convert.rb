@@ -58,12 +58,6 @@ module PROIEL
               f.action { |args, options| process(args, options, PROIEL::Converter::Text) }
             end
 
-            c.command(:ccmh) do |f|
-              f.syntax '[options] filename(s)'
-              f.description 'Convert to format used by Corpus Cyrillo-Methodianum Helsingiense'
-              f.action { |args, options| process(args, options, PROIEL::Converter::CCMH) }
-            end
-
             c.command(:lexc) do |f|
               f.syntax '[options] filename(s)'
               f.description 'Convert to lexc format'
