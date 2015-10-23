@@ -5,12 +5,8 @@ module PROIEL
 
       class << self
         def process(tb, options)
-#          super(source, options)
-
-selected_features = [] # TODO
+          selected_features = [] # TODO
           @features = selected_features.map { |f| [f, 'FREC'] }
-#          @features.delete_if { |o| o.first == 'antecedent_id' }
-#          @ident = 'xml:id'
 
           builder = Builder::XmlMarkup.new(target: STDOUT, indent: 2)
           builder.instruct! :xml, version: "1.0", encoding: "UTF-8"
@@ -43,11 +39,35 @@ selected_features = [] # TODO
                 builder.history
               end
 
-              PROIEL::Converter::Tiger.declare_annotation(builder, @features, tb)
+              declare_annotation(builder, @features,
+                tb.annotation_schema)
             end
 
             builder.body do
               yield builder
+            end
+          end
+        end
+
+        def declare_annotation(builder, features, annotation_schema)
+          builder.annotation do
+            features.each do |name, domain|
+              # FIXME: we may want to list possible values for some of these
+              builder.feature(name: name, domain: domain)
+            end
+
+            builder.edgelabel do
+              builder.value(name: '--')
+
+              annotation_schema.primary_relations.each do |tag, features|
+                builder.value({ name: tag }, features.summary)
+              end
+            end
+
+            builder.secedgelabel do
+              annotation_schema.secondary_relations.each do |tag, features|
+                builder.value({name: tag }, features.summary)
+              end
             end
           end
         end
@@ -70,8 +90,80 @@ selected_features = [] # TODO
         def write_sentence(builder, s)
           builder.s('xml:id' => "s#{s.id}") do
             builder.graph(root: "s#{s.id}_root") do
-              PROIEL::Converter::Tiger.write_terminals(builder, s)
-              PROIEL::Converter::Tiger.write_nonterminals(builder, s) if s.has_dependency_annotation?
+              write_terminals(builder, s)
+              write_nonterminals(builder, s)
+            end
+          end
+        end
+
+        def write_terminals(builder, s)
+          builder.terminals do
+            s.tokens.each do |t|
+              builder.t(token_attrs(s, t, 'T').merge({ 'xml:id' => "w#{t.id}"}))
+            end
+          end
+        end
+
+        def token_attrs(s, t, type)
+          attrs = {}
+
+          @features.each do |name, domain|
+            if domain == 'FREC' or domain == type
+              case name
+              when :word, :cat
+                attrs[name] = t.pro? ? "PRO-#{t.relation.upcase}" : t.form
+              when *@semantic_features
+                attrs[name] = t.sem_tags_to_hash[attr]
+              when :lemma
+                attrs[name] = t.lemma
+              when :pos
+                if t.empty_token_sort
+                  attrs[name] = t.empty_token_sort + "-"
+                else
+                  attrs[name] = t.pos
+                end
+              when *MORPHOLOGICAL_FEATURES
+                attrs[name] = name.to_s.split("_").map { |a| t.morphology_hash[a.to_sym] || '-' }.join
+              else
+                if t.respond_to?(name)
+                  attrs[name] = t.send(name)
+                else
+                  raise "Do not know how to get required attribute #{name}"
+                end
+              end
+              attrs[name] ||= "--"
+            end
+          end
+
+          attrs
+        end
+
+        def write_nonterminals(builder, s)
+          builder.nonterminals do
+            # Add an empty root node
+            h = @features.select { |_, domain| ['FREC', 'NT'].include?(domain) }.map { |name, _| [name, '--'] }.to_h
+            h['xml:id'] = "s#{s.id}_root"
+
+            builder.nt(h) do
+              s.tokens.reject { |t| t.head or t.pro? }.each do |t|
+                builder.edge(idref: "p#{t.id}", label: t.relation)
+              end
+            end
+
+            # Add other NTs
+            s.tokens.each do |t|
+              builder.nt(token_attrs(s, t, 'NT').merge('xml:id' => "p#{t.id}")) do
+                # Add an edge to the correspoding terminal node
+                builder.edge(idref: "w#{t.id}", label: '--')
+
+                # Add primary dependency edges
+                t.children.each { |d| builder.edge(idref: "p#{d.id}", label: d.relation) }
+
+                # Add secondary dependency edges
+                t.slashes.each do |relation, target_id|
+                  builder.secedge(idref: "p#{target_id}", label: relation)
+                end
+              end
             end
           end
         end

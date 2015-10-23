@@ -14,19 +14,11 @@ module PROIEL
 
       class << self
         def process(tb, options)
-          @ident = 'id'
-
-          ## FIXME: what if there is a conflict between features
           selected_features = MORPHOLOGICAL_FEATURES + OTHER_FEATURES
-
-          # FIXME: we don't yet support semantic features in PROIEL XML 2
-          #@semantic_features = SemanticAttribute.all.map(&:tag).map(&:downcase).map(&:to_sym)
-          #selected_features += @semantic_features if @options[:sem_tags]
-
           @features = selected_features.map { |f| [f, 'FREC'] }.to_h
 
           builder = Builder::XmlMarkup.new(target: STDOUT, indent: 2)
-          builder.instruct! :xml, version: "1.0", encoding: "UTF-8"
+          builder.instruct! :xml, version: '1.0', encoding: 'UTF-8'
 
           tb.sources.each do |source|
             @hack = tb.annotation_schema
@@ -98,7 +90,7 @@ module PROIEL
                   attrs[name] = t.pos
                 end
               when *MORPHOLOGICAL_FEATURES
-                attrs[name] = name.to_s.split("_").map { |a| t.send(a.to_sym).nil? ? "-" : t.send(a.to_sym) }.join
+                attrs[name] = name.to_s.split("_").map { |a| t.morphology_hash[a.to_sym] || '-' }.join
               else
                 if t.respond_to?(name)
                   attrs[name] = t.send(name)
@@ -116,7 +108,7 @@ module PROIEL
         def write_terminals(builder, s)
           builder.terminals do
             s.tokens.each do |t|
-              builder.t(token_attrs(s, t, 'T').merge({ @ident => "w#{t.id}"}))
+              builder.t(token_attrs(s, t, 'T').merge({ id: "w#{t.id}"}))
             end
           end
         end
@@ -125,7 +117,7 @@ module PROIEL
           builder.nonterminals do
             # Add an empty root node
             h = @features.select { |_, domain| ['FREC', 'NT'].include?(domain) }.map { |name, _| [name, '--'] }.to_h
-            h[@ident] = "s#{s.id}_root"
+            h[:id] = "s#{s.id}_root"
 
             builder.nt(h) do
               s.tokens.reject { |t| t.head or t.pro? }.each do |t|
@@ -135,7 +127,7 @@ module PROIEL
 
             # Add other NTs
             s.tokens.each do |t|
-              builder.nt(token_attrs(s, t, 'NT').merge(@ident => "p#{t.id}")) do
+              builder.nt(token_attrs(s, t, 'NT').merge(id: "p#{t.id}")) do
                 # Add an edge to the correspoding terminal node
                 builder.edge(idref: "w#{t.id}", label: '--')
 
@@ -143,8 +135,8 @@ module PROIEL
                 t.children.each { |d| builder.edge(idref: "p#{d.id}", label: d.relation) }
 
                 # Add secondary dependency edges
-                t.slashes.each do |se|
-                  builder.secedge(idref: "p#{se.target_id}", label: se.relation)
+                t.slashes.each do |relation, target_id|
+                  builder.secedge(idref: "p#{target_id}", label: relation)
                 end
               end
             end
