@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<corpus xml:id="caes-gal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://korpling.german.hu-berlin.de/tiger2/V2.0.5/ http://korpling.german.hu-berlin.de/tiger2/V2.0.5/Tiger2.xsd" xmlns:tiger2="http://korpling.german.hu-berlin.de/tiger2/V2.0.5/" xmlns="http://korpling.german.hu-berlin.de/tiger2/V2.0.5/">
+  <head>
+    <meta>
+      <name>Commentarii belli Gallici</name>
+      <author>The PROIEL project</author>
+      <date>2015-07-19 00:32:45 +0200</date>
+      <description/>
+      <format/>
+      <history/>
+    </meta>
+    <annotation>
+      <edgelabel>
+        <value name="--"/>
+        <value name="adnom">adnominal</value>
+        <value name="adv">adverbial</value>
+        <value name="ag">agens</value>
+        <value name="apos">apposition</value>
+        <value name="arg">argument (object or oblique)</value>
+        <value name="atr">attribute</value>
+        <value name="aux">auxiliary</value>
+        <value name="comp">complement</value>
+        <value name="expl">expletive</value>
+        <value name="narg">adnominal argument</value>
+        <value name="nonsub">non-subject (object, oblique or adverbial)</value>
+        <value name="obj">object</value>
+        <value name="obl">oblique</value>
+        <value name="parpred">parenthetical predication</value>
+        <value name="part">partitive</value>
+        <value name="per">peripheral (oblique or adverbial)</value>
+        <value name="pred">predicate</value>
+        <value name="rel">apposition or attribute</value>
+        <value name="sub">subject</value>
+        <value name="voc">vocative</value>
+        <value name="xadv">open adverbial complement</value>
+        <value name="xobj">open objective complement</value>
+      </edgelabel>
+      <secedgelabel>
+        <value name="adnom">adnominal</value>
+        <value name="adv">adverbial</value>
+        <value name="ag">agens</value>
+        <value name="apos">apposition</value>
+        <value name="arg">argument (object or oblique)</value>
+        <value name="atr">attribute</value>
+        <value name="aux">auxiliary</value>
+        <value name="comp">complement</value>
+        <value name="expl">expletive</value>
+        <value name="narg">adnominal argument</value>
+        <value name="nonsub">non-subject (object, oblique or adverbial)</value>
+        <value name="obj">object</value>
+        <value name="obl">oblique</value>
+        <value name="parpred">parenthetical predication</value>
+        <value name="part">partitive</value>
+        <value name="per">peripheral (oblique or adverbial)</value>
+        <value name="pid">Predicate identity</value>
+        <value name="pred">predicate</value>
+        <value name="rel">apposition or attribute</value>
+        <value name="sub">subject</value>
+        <value name="voc">vocative</value>
+        <value name="xadv">open adverbial complement</value>
+        <value name="xobj">open objective complement</value>
+        <value name="xsub">external subject</value>
+      </secedgelabel>
+    </annotation>
+  </head>
+  <body>
+    <s xml:id="s52548">
+      <graph root="s52548_root">
+        <terminals>
+          <t xml:id="w680720"/>
+          <t xml:id="w680721"/>
+          <t xml:id="w680722"/>
+          <t xml:id="w680723"/>
+          <t xml:id="w680724"/>
+          <t xml:id="w680725"/>
+          <t xml:id="w680726"/>
+          <t xml:id="w680727"/>
+          <t xml:id="w680728"/>
+          <t xml:id="w680729"/>
+          <t xml:id="w680730"/>
+          <t xml:id="w680731"/>
+          <t xml:id="w680732"/>
+          <t xml:id="w680733"/>
+          <t xml:id="w680734"/>
+          <t xml:id="w680735"/>
+          <t xml:id="w680736"/>
+          <t xml:id="w680737"/>
+          <t xml:id="w680738"/>
+          <t xml:id="w680739"/>
+          <t xml:id="w680740"/>
+          <t xml:id="w733299"/>
+          <t xml:id="w733300"/>
+          <t xml:id="w733301"/>
+          <t xml:id="w733302"/>
+          <t xml:id="w733303"/>
+        </terminals>
+        <nonterminals>
+          <nt xml:id="s52548_root">
+            <edge idref="p680721" label="pred"/>
+          </nt>
+          <nt xml:id="p680720">
+            <edge idref="w680720" label="--"/>
+            <edge idref="p680722" label="atr"/>
+          </nt>
+          <nt xml:id="p680721">
+            <edge idref="w680721" label="--"/>
+            <edge idref="p680720" label="sub"/>
+            <edge idref="p680723" label="xobj"/>
+          </nt>
+          <nt xml:id="p680722">
+            <edge idref="w680722" label="--"/>
+          </nt>
+          <nt xml:id="p680723">
+            <edge idref="w680723" label="--"/>
+            <edge idref="p680724" label="obl"/>
+            <secedge idref="p680720" label="xsub"/>
+          </nt>
+          <nt xml:id="p680724">
+            <edge idref="w680724" label="--"/>
+            <edge idref="p680725" label="obl"/>
+          </nt>
+          <nt xml:id="p680725">
+            <edge idref="w680725" label="--"/>
+            <edge idref="p680726" label="atr"/>
+            <edge idref="p733299" label="apos"/>
+          </nt>
+          <nt xml:id="p680726">
+            <edge idref="w680726" label="--"/>
+          </nt>
+          <nt xml:id="p680727">
+            <edge idref="w680727" label="--"/>
+          </nt>
+          <nt xml:id="p680728">
+            <edge idref="w680728" label="--"/>
+            <edge idref="p680727" label="part"/>
+          </nt>
+          <nt xml:id="p680729">
+            <edge idref="w680729" label="--"/>
+            <edge idref="p680728" label="obj"/>
+            <edge idref="p680730" label="sub"/>
+          </nt>
+          <nt xml:id="p680730">
+            <edge idref="w680730" label="--"/>
+          </nt>
+          <nt xml:id="p680731">
+            <edge idref="w680731" label="--"/>
+          </nt>
+          <nt xml:id="p680732">
+            <edge idref="w680732" label="--"/>
+          </nt>
+          <nt xml:id="p680733">
+            <edge idref="w680733" label="--"/>
+          </nt>
+          <nt xml:id="p680734">
+            <edge idref="w680734" label="--"/>
+          </nt>
+          <nt xml:id="p680735">
+            <edge idref="w680735" label="--"/>
+          </nt>
+          <nt xml:id="p680736">
+            <edge idref="w680736" label="--"/>
+            <edge idref="p680735" label="atr"/>
+          </nt>
+          <nt xml:id="p680737">
+            <edge idref="w680737" label="--"/>
+            <secedge idref="p680734" label="xsub"/>
+          </nt>
+          <nt xml:id="p680738">
+            <edge idref="w680738" label="--"/>
+          </nt>
+          <nt xml:id="p680739">
+            <edge idref="w680739" label="--"/>
+            <secedge idref="p733303" label="xsub"/>
+          </nt>
+          <nt xml:id="p680740">
+            <edge idref="w680740" label="--"/>
+            <edge idref="p680734" label="sub"/>
+            <edge idref="p680736" label="adv"/>
+            <edge idref="p680737" label="xobj"/>
+          </nt>
+          <nt xml:id="p733299">
+            <edge idref="w733299" label="--"/>
+            <edge idref="p680729" label="apos"/>
+            <edge idref="p733300" label="apos"/>
+            <edge idref="p733301" label="apos"/>
+          </nt>
+          <nt xml:id="p733300">
+            <edge idref="w733300" label="--"/>
+            <edge idref="p680731" label="obj"/>
+            <edge idref="p680732" label="sub"/>
+            <secedge idref="p680729" label="pid"/>
+          </nt>
+          <nt xml:id="p733301">
+            <edge idref="w733301" label="--"/>
+            <edge idref="p680733" label="obj"/>
+            <edge idref="p733302" label="sub"/>
+            <secedge idref="p680729" label="pid"/>
+          </nt>
+          <nt xml:id="p733302">
+            <edge idref="w733302" label="--"/>
+            <edge idref="p680740" label="sub"/>
+            <edge idref="p733303" label="sub"/>
+          </nt>
+          <nt xml:id="p733303">
+            <edge idref="w733303" label="--"/>
+            <edge idref="p680738" label="adv"/>
+            <edge idref="p680739" label="xobj"/>
+            <secedge idref="p680734" label="sub"/>
+            <secedge idref="p680740" label="pid"/>
+          </nt>
+        </nonterminals>
+      </graph>
+    </s>
+    <s xml:id="s52549">
+      <graph root="s52549_root">
+        <terminals>
+          <t xml:id="w680741"/>
+          <t xml:id="w680742"/>
+          <t xml:id="w680743"/>
+          <t xml:id="w680744"/>
+          <t xml:id="w680745"/>
+          <t xml:id="w680746"/>
+          <t xml:id="w680747"/>
+          <t xml:id="w680748"/>
+          <t xml:id="w733304"/>
+        </terminals>
+        <nonterminals>
+          <nt xml:id="s52549_root">
+            <edge idref="p680748" label="pred"/>
+          </nt>
+          <nt xml:id="p680741">
+            <edge idref="w680741" label="--"/>
+            <edge idref="p680742" label="atr"/>
+          </nt>
+          <nt xml:id="p680742">
+            <edge idref="w680742" label="--"/>
+          </nt>
+          <nt xml:id="p680743">
+            <edge idref="w680743" label="--"/>
+          </nt>
+          <nt xml:id="p680744">
+            <edge idref="w680744" label="--"/>
+          </nt>
+          <nt xml:id="p680745">
+            <edge idref="w680745" label="--"/>
+          </nt>
+          <nt xml:id="p680746">
+            <edge idref="w680746" label="--"/>
+            <edge idref="p680747" label="obl"/>
+          </nt>
+          <nt xml:id="p680747">
+            <edge idref="w680747" label="--"/>
+          </nt>
+          <nt xml:id="p680748">
+            <edge idref="w680748" label="--"/>
+            <edge idref="p680741" label="sub"/>
+            <edge idref="p680746" label="obl"/>
+            <edge idref="p733304" label="obl"/>
+          </nt>
+          <nt xml:id="p733304">
+            <edge idref="w733304" label="--"/>
+            <edge idref="p680743" label="obl"/>
+            <edge idref="p680744" label="obl"/>
+            <edge idref="p680745" label="obl"/>
+          </nt>
+        </nonterminals>
+      </graph>
+    </s>
+    <s xml:id="s52550">
+      <graph root="s52550_root">
+        <terminals>
+          <t xml:id="w680749"/>
+          <t xml:id="w680750"/>
+          <t xml:id="w680751"/>
+          <t xml:id="w680752"/>
+          <t xml:id="w680753"/>
+          <t xml:id="w680754"/>
+          <t xml:id="w680755"/>
+          <t xml:id="w680756"/>
+          <t xml:id="w680757"/>
+          <t xml:id="w680758"/>
+          <t xml:id="w680759"/>
+          <t xml:id="w733305"/>
+          <t xml:id="w733306"/>
+        </terminals>
+        <nonterminals>
+          <nt xml:id="s52550_root">
+            <edge idref="p733305" label="pred"/>
+          </nt>
+          <nt xml:id="p680749">
+            <edge idref="w680749" label="--"/>
+          </nt>
+          <nt xml:id="p680750">
+            <edge idref="w680750" label="--"/>
+            <edge idref="p680751" label="obl"/>
+          </nt>
+          <nt xml:id="p680751">
+            <edge idref="w680751" label="--"/>
+          </nt>
+          <nt xml:id="p680752">
+            <edge idref="w680752" label="--"/>
+            <edge idref="p680753" label="apos"/>
+          </nt>
+          <nt xml:id="p680753">
+            <edge idref="w680753" label="--"/>
+          </nt>
+          <nt xml:id="p680754">
+            <edge idref="w680754" label="--"/>
+            <edge idref="p680755" label="obl"/>
+          </nt>
+          <nt xml:id="p680755">
+            <edge idref="w680755" label="--"/>
+          </nt>
+          <nt xml:id="p680756">
+            <edge idref="w680756" label="--"/>
+          </nt>
+          <nt xml:id="p680757">
+            <edge idref="w680757" label="--"/>
+            <edge idref="p680756" label="sub"/>
+            <edge idref="p680758" label="sub"/>
+          </nt>
+          <nt xml:id="p680758">
+            <edge idref="w680758" label="--"/>
+          </nt>
+          <nt xml:id="p680759">
+            <edge idref="w680759" label="--"/>
+            <edge idref="p680754" label="obl"/>
+            <edge idref="p680757" label="sub"/>
+            <secedge idref="p680749" label="obj"/>
+          </nt>
+          <nt xml:id="p733305">
+            <edge idref="w733305" label="--"/>
+            <edge idref="p680759" label="pred"/>
+            <edge idref="p733306" label="pred"/>
+          </nt>
+          <nt xml:id="p733306">
+            <edge idref="w733306" label="--"/>
+            <edge idref="p680749" label="obj"/>
+            <edge idref="p680750" label="obl"/>
+            <edge idref="p680752" label="sub"/>
+            <secedge idref="p680759" label="pid"/>
+          </nt>
+        </nonterminals>
+      </graph>
+    </s>
+    <s xml:id="s52551">
+      <graph root="s52551_root">
+        <terminals>
+          <t xml:id="w733687"/>
+          <t xml:id="w733688"/>
+          <t xml:id="w733689"/>
+          <t xml:id="w733690"/>
+          <t xml:id="w733691"/>
+          <t xml:id="w733692"/>
+          <t xml:id="w733693"/>
+          <t xml:id="w733694"/>
+          <t xml:id="w733695"/>
+          <t xml:id="w733696"/>
+          <t xml:id="w733697"/>
+          <t xml:id="w733698"/>
+          <t xml:id="w733699"/>
+          <t xml:id="w733700"/>
+          <t xml:id="w733701"/>
+          <t xml:id="w733702"/>
+          <t xml:id="w733703"/>
+          <t xml:id="w733704"/>
+          <t xml:id="w733705"/>
+          <t xml:id="w733706"/>
+          <t xml:id="w733707"/>
+          <t xml:id="w733708"/>
+          <t xml:id="w733709"/>
+          <t xml:id="w733710"/>
+          <t xml:id="w733711"/>
+          <t xml:id="w733712"/>
+          <t xml:id="w733713"/>
+          <t xml:id="w733714"/>
+          <t xml:id="w733715"/>
+          <t xml:id="w733716"/>
+          <t xml:id="w733717"/>
+          <t xml:id="w733718"/>
+          <t xml:id="w733719"/>
+          <t xml:id="w733720"/>
+          <t xml:id="w733721"/>
+          <t xml:id="w733722"/>
+          <t xml:id="w733723"/>
+          <t xml:id="w733724"/>
+          <t xml:id="w733725"/>
+          <t xml:id="w733726"/>
+          <t xml:id="w733727"/>
+          <t xml:id="w733728"/>
+        </terminals>
+        <nonterminals>
+          <nt xml:id="s52551_root">
+            <edge idref="p733690" label="pred"/>
+          </nt>
+          <nt xml:id="p733687">
+            <edge idref="w733687" label="--"/>
+            <edge idref="p733688" label="atr"/>
+          </nt>
+          <nt xml:id="p733688">
+            <edge idref="w733688" label="--"/>
+          </nt>
+          <nt xml:id="p733689">
+            <edge idref="w733689" label="--"/>
+            <edge idref="p733687" label="part"/>
+            <secedge idref="p733691" label="xsub"/>
+          </nt>
+          <nt xml:id="p733690">
+            <edge idref="w733690" label="--"/>
+            <edge idref="p733689" label="xobj"/>
+            <edge idref="p733691" label="sub"/>
+            <edge idref="p733692" label="adv"/>
+          </nt>
+          <nt xml:id="p733691">
+            <edge idref="w733691" label="--"/>
+          </nt>
+          <nt xml:id="p733692">
+            <edge idref="w733692" label="--"/>
+            <edge idref="p733693" label="apos"/>
+          </nt>
+          <nt xml:id="p733693">
+            <edge idref="w733693" label="--"/>
+            <edge idref="p733702" label="pred"/>
+          </nt>
+          <nt xml:id="p733694">
+            <edge idref="w733694" label="--"/>
+            <edge idref="p733696" label="obl"/>
+          </nt>
+          <nt xml:id="p733695">
+            <edge idref="w733695" label="--"/>
+          </nt>
+          <nt xml:id="p733696">
+            <edge idref="w733696" label="--"/>
+            <edge idref="p733695" label="obl"/>
+            <edge idref="p733697" label="obl"/>
+            <edge idref="p733698" label="atr"/>
+          </nt>
+          <nt xml:id="p733697">
+            <edge idref="w733697" label="--"/>
+          </nt>
+          <nt xml:id="p733698">
+            <edge idref="w733698" label="--"/>
+          </nt>
+          <nt xml:id="p733699">
+            <edge idref="w733699" label="--"/>
+          </nt>
+          <nt xml:id="p733700">
+            <edge idref="w733700" label="--"/>
+            <edge idref="p733694" label="obl"/>
+            <edge idref="p733699" label="adv"/>
+            <secedge idref="p733691" label="sub"/>
+          </nt>
+          <nt xml:id="p733701">
+            <edge idref="w733701" label="--"/>
+          </nt>
+          <nt xml:id="p733702">
+            <edge idref="w733702" label="--"/>
+            <edge idref="p733700" label="pred"/>
+            <edge idref="p733708" label="pred"/>
+            <edge idref="p733717" label="aux"/>
+            <edge idref="p733718" label="pred"/>
+          </nt>
+          <nt xml:id="p733703">
+            <edge idref="w733703" label="--"/>
+            <edge idref="p733704" label="obl"/>
+          </nt>
+          <nt xml:id="p733704">
+            <edge idref="w733704" label="--"/>
+          </nt>
+          <nt xml:id="p733705">
+            <edge idref="w733705" label="--"/>
+          </nt>
+          <nt xml:id="p733706">
+            <edge idref="w733706" label="--"/>
+            <edge idref="p733701" label="adv"/>
+          </nt>
+          <nt xml:id="p733707">
+            <edge idref="w733707" label="--"/>
+            <edge idref="p733703" label="obl"/>
+            <edge idref="p733705" label="sub"/>
+            <edge idref="p733706" label="adv"/>
+          </nt>
+          <nt xml:id="p733708">
+            <edge idref="w733708" label="--"/>
+            <edge idref="p733707" label="pred"/>
+            <edge idref="p733715" label="pred"/>
+          </nt>
+          <nt xml:id="p733709">
+            <edge idref="w733709" label="--"/>
+            <edge idref="p733714" label="atr"/>
+          </nt>
+          <nt xml:id="p733710">
+            <edge idref="w733710" label="--"/>
+          </nt>
+          <nt xml:id="p733711">
+            <edge idref="w733711" label="--"/>
+            <edge idref="p733712" label="obl"/>
+          </nt>
+          <nt xml:id="p733712">
+            <edge idref="w733712" label="--"/>
+            <edge idref="p733713" label="sub"/>
+          </nt>
+          <nt xml:id="p733713">
+            <edge idref="w733713" label="--"/>
+          </nt>
+          <nt xml:id="p733714">
+            <edge idref="w733714" label="--"/>
+            <edge idref="p733710" label="sub"/>
+            <edge idref="p733711" label="obl"/>
+          </nt>
+          <nt xml:id="p733715">
+            <edge idref="w733715" label="--"/>
+            <edge idref="p733709" label="obj"/>
+            <secedge idref="p733705" label="sub"/>
+          </nt>
+          <nt xml:id="p733716">
+            <edge idref="w733716" label="--"/>
+            <edge idref="p733719" label="obl"/>
+            <secedge idref="p733718" label="xsub"/>
+          </nt>
+          <nt xml:id="p733717">
+            <edge idref="w733717" label="--"/>
+          </nt>
+          <nt xml:id="p733718">
+            <edge idref="w733718" label="--"/>
+            <edge idref="p733716" label="xobj"/>
+            <secedge idref="p733691" label="sub"/>
+          </nt>
+          <nt xml:id="p733719">
+            <edge idref="w733719" label="--"/>
+            <edge idref="p733723" label="apos"/>
+            <edge idref="p733728" label="apos"/>
+          </nt>
+          <nt xml:id="p733720">
+            <edge idref="w733720" label="--"/>
+          </nt>
+          <nt xml:id="p733721">
+            <edge idref="w733721" label="--"/>
+            <edge idref="p733722" label="obl"/>
+          </nt>
+          <nt xml:id="p733722">
+            <edge idref="w733722" label="--"/>
+          </nt>
+          <nt xml:id="p733723">
+            <edge idref="w733723" label="--"/>
+            <edge idref="p733720" label="sub"/>
+            <edge idref="p733721" label="obl"/>
+          </nt>
+          <nt xml:id="p733724">
+            <edge idref="w733724" label="--"/>
+          </nt>
+          <nt xml:id="p733725">
+            <edge idref="w733725" label="--"/>
+            <edge idref="p733724" label="obl"/>
+          </nt>
+          <nt xml:id="p733726">
+            <edge idref="w733726" label="--"/>
+          </nt>
+          <nt xml:id="p733727">
+            <edge idref="w733727" label="--"/>
+          </nt>
+          <nt xml:id="p733728">
+            <edge idref="w733728" label="--"/>
+            <edge idref="p733725" label="obl"/>
+            <edge idref="p733726" label="adv"/>
+            <edge idref="p733727" label="obj"/>
+          </nt>
+        </nonterminals>
+      </graph>
+    </s>
+    <s xml:id="s52552">
+      <graph root="s52552_root">
+        <terminals>
+          <t xml:id="w680801"/>
+          <t xml:id="w680802"/>
+          <t xml:id="w680803"/>
+          <t xml:id="w680804"/>
+          <t xml:id="w680805"/>
+          <t xml:id="w680806"/>
+          <t xml:id="w680807"/>
+          <t xml:id="w680808"/>
+          <t xml:id="w680809"/>
+          <t xml:id="w680810"/>
+          <t xml:id="w680811"/>
+          <t xml:id="w680812"/>
+          <t xml:id="w680813"/>
+          <t xml:id="w680814"/>
+          <t xml:id="w680815"/>
+          <t xml:id="w680816"/>
+          <t xml:id="w680817"/>
+          <t xml:id="w680818"/>
+          <t xml:id="w680819"/>
+          <t xml:id="w680820"/>
+          <t xml:id="w680821"/>
+          <t xml:id="w680822"/>
+          <t xml:id="w680823"/>
+          <t xml:id="w680824"/>
+          <t xml:id="w680825"/>
+          <t xml:id="w680826"/>
+          <t xml:id="w680827"/>
+          <t xml:id="w680828"/>
+          <t xml:id="w680829"/>
+        </terminals>
+        <nonterminals>
+          <nt xml:id="s52552_root">
+            <edge idref="p680809" label="pred"/>
+          </nt>
+          <nt xml:id="p680801">
+            <edge idref="w680801" label="--"/>
+          </nt>
+          <nt xml:id="p680802">
+            <edge idref="w680802" label="--"/>
+            <edge idref="p680803" label="obl"/>
+          </nt>
+          <nt xml:id="p680803">
+            <edge idref="w680803" label="--"/>
+            <edge idref="p680801" label="atr"/>
+          </nt>
+          <nt xml:id="p680804">
+            <edge idref="w680804" label="--"/>
+          </nt>
+          <nt xml:id="p680805">
+            <edge idref="w680805" label="--"/>
+          </nt>
+          <nt xml:id="p680806">
+            <edge idref="w680806" label="--"/>
+          </nt>
+          <nt xml:id="p680807">
+            <edge idref="w680807" label="--"/>
+            <edge idref="p680806" label="atr"/>
+          </nt>
+          <nt xml:id="p680808">
+            <edge idref="w680808" label="--"/>
+          </nt>
+          <nt xml:id="p680809">
+            <edge idref="w680809" label="--"/>
+            <edge idref="p680802" label="adv"/>
+            <edge idref="p680804" label="sub"/>
+            <edge idref="p680805" label="aux"/>
+            <edge idref="p680807" label="obj"/>
+            <edge idref="p680808" label="obl"/>
+            <edge idref="p680810" label="adv"/>
+          </nt>
+          <nt xml:id="p680810">
+            <edge idref="w680810" label="--"/>
+            <edge idref="p680816" label="pred"/>
+          </nt>
+          <nt xml:id="p680811">
+            <edge idref="w680811" label="--"/>
+          </nt>
+          <nt xml:id="p680812">
+            <edge idref="w680812" label="--"/>
+            <edge idref="p680811" label="aux"/>
+          </nt>
+          <nt xml:id="p680813">
+            <edge idref="w680813" label="--"/>
+            <edge idref="p680812" label="atr"/>
+          </nt>
+          <nt xml:id="p680814">
+            <edge idref="w680814" label="--"/>
+            <edge idref="p680815" label="obl"/>
+          </nt>
+          <nt xml:id="p680815">
+            <edge idref="w680815" label="--"/>
+          </nt>
+          <nt xml:id="p680816">
+            <edge idref="w680816" label="--"/>
+            <edge idref="p680813" label="obl"/>
+            <edge idref="p680814" label="obl"/>
+            <edge idref="p680817" label="adv"/>
+            <secedge idref="p680804" label="sub"/>
+          </nt>
+          <nt xml:id="p680817">
+            <edge idref="w680817" label="--"/>
+            <edge idref="p680818" label="pred"/>
+          </nt>
+          <nt xml:id="p680818">
+            <edge idref="w680818" label="--"/>
+            <edge idref="p680822" label="pred"/>
+            <edge idref="p680823" label="aux"/>
+            <edge idref="p680829" label="pred"/>
+          </nt>
+          <nt xml:id="p680819">
+            <edge idref="w680819" label="--"/>
+          </nt>
+          <nt xml:id="p680820">
+            <edge idref="w680820" label="--"/>
+            <edge idref="p680819" label="atr"/>
+          </nt>
+          <nt xml:id="p680821">
+            <edge idref="w680821" label="--"/>
+          </nt>
+          <nt xml:id="p680822">
+            <edge idref="w680822" label="--"/>
+            <edge idref="p680820" label="obl"/>
+            <edge idref="p680821" label="obj"/>
+            <secedge idref="p680804" label="sub"/>
+          </nt>
+          <nt xml:id="p680823">
+            <edge idref="w680823" label="--"/>
+          </nt>
+          <nt xml:id="p680824">
+            <edge idref="w680824" label="--"/>
+          </nt>
+          <nt xml:id="p680825">
+            <edge idref="w680825" label="--"/>
+            <edge idref="p680827" label="obl"/>
+          </nt>
+          <nt xml:id="p680826">
+            <edge idref="w680826" label="--"/>
+          </nt>
+          <nt xml:id="p680827">
+            <edge idref="w680827" label="--"/>
+            <edge idref="p680826" label="atr"/>
+          </nt>
+          <nt xml:id="p680828">
+            <edge idref="w680828" label="--"/>
+          </nt>
+          <nt xml:id="p680829">
+            <edge idref="w680829" label="--"/>
+            <edge idref="p680824" label="sub"/>
+            <edge idref="p680825" label="adv"/>
+            <edge idref="p680828" label="obj"/>
+            <secedge idref="p680804" label="sub"/>
+          </nt>
+        </nonterminals>
+      </graph>
+    </s>
+  </body>
+</corpus>

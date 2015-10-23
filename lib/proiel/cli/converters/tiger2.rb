@@ -33,7 +33,7 @@ module PROIEL
               builder.meta do
                 builder.name(s.title)
                 builder.author('The PROIEL project')
-                builder.date(Time.now)
+                builder.date(s.export_time.strftime("%F %T %z"))
                 builder.description
                 builder.format
                 builder.history
