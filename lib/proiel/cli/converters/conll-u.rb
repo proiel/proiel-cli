@@ -118,6 +118,11 @@ module PROIEL
 
         def demote_parentheticals_and_vocatives!
           r, p = roots.partition { |n| !['voc', 'parpred'].include? n.relation }
+          if p.any? and r.none?
+            # promote the first vocative/parenthetical to head in case there's nothing else
+            p.first.relation = 'pred'
+            r, p = roots.partition { |n| !['voc', 'parpred'].include? n.relation }
+          end
           raise "No unique root in this tree:\n#{to_graph}" if p.any? and !r.one?
           p.each { |x| x.head_id = r.first.id }
         end
@@ -509,16 +514,17 @@ module PROIEL
 
         def process_coordination!
           raise "Only coordinations can be processed this way!" unless conjunction?
-          return if dependents.empty?
+          return if dependents.reject { |d| d.relation == 'aux' }.empty?
           distribute_shared_modifiers!
-          dependents.first.promote!("conj", "cc")
+          dependents.reject { |d| d.relation == 'aux' }.first.promote!("conj", "cc")
         end
 
         def distribute_shared_modifiers!
           raise "Can only distribute over a conjunction!" unless conjunction?
-          conjuncts, modifiers  = dependents.partition { |d| d.relation == @relation  or (d.relation == 'adv' and @relation == 'xadv') }
+          conjuncts, modifiers  = dependents.reject { |d| d.relation == 'aux' }.partition { |d|  d.relation == @relation or (d.relation == 'adv' and @relation == 'xadv') }
           first_conjunct = conjuncts.shift
           raise "No first conjunct under #{to_n}\n#{to_graph}" unless first_conjunct
+          raise "The first conjunct is a misannotated conjunction in #{to_n}\n#{to_graph}" if first_conjunct.conjunction? and first_conjunct.dependents.empty?
           modifiers.each do |m|
             m.head_id = first_conjunct.id
             conjuncts.each { |c| c.add_slash! [m.id, m.relation] }
@@ -559,7 +565,8 @@ module PROIEL
           # move all dependents of the former head to the new one
           siblings.each do |t|
             t.head_id = @id
-            t.relation = new_sibling_relation if new_sibling_relation
+            # ugly hack to avoid overwriting the aux relation here (aux siblings aren't really siblings)
+            t.relation = new_sibling_relation if (new_sibling_relation and t.relation != 'aux')
           end
 
           # remove the former head if it was empty
