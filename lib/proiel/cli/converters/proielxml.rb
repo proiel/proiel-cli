@@ -47,7 +47,7 @@ module PROIEL
             tb.sources.each do |source|
               builder.source(id: source.id, language: source.language) do
                 PROIEL::Treebank::METADATA_ELEMENTS.each do |field|
-                  builder.tag!(field.gsub('_', '-'), source.send(field)) if source.send(field)
+                  builder.tag!(field.to_s.gsub('_', '-'), source.send(field)) if source.send(field)
                 end
 
                 source.divs.each do |div|
