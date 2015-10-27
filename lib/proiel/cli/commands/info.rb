@@ -26,14 +26,17 @@ module PROIEL
             tb.load_from_xml(filename)
           end
 
+          t = treebank_statistics(tb)
+
           puts "Loaded treebank files contain #{tb.sources.count} source(s)".yellow
-          puts "   Overall size: #{tb.statistics.sentence_count} sentence(s), #{tb.statistics.token_count} token(s)"
+          puts "   Overall size: #{t.sentence_count} sentence(s), #{t.token_count} token(s)"
           puts
 
           tb.sources.each_with_index do |source, i|
-            n = source.statistics.sentence_count
-            r = source.statistics.reviewed_sentence_count * 100.0 / n
-            a = source.statistics.annotated_sentence_count * 100.0 / n
+            s = source_statistics(source)
+            n = s.sentence_count
+            r = s.reviewed_sentence_count * 100.0 / n
+            a = s.annotated_sentence_count * 100.0 / n
 
             puts "#{i + 1}. #{pretty_title(source)}".yellow
             puts "   Version:      #{source.date}"
@@ -41,8 +44,43 @@ module PROIEL
             puts "   Language:     #{pretty_language(source)}"
             puts "   Printed text: #{pretty_printed_text_info(source)}"
             puts "   Electr. text: #{pretty_electronic_text_info(source)}"
-            puts "   Size:         #{n} sentence(s), #{source.statistics.token_count} token(s)"
+            puts "   Size:         #{n} sentence(s), #{s.token_count} token(s)"
             puts "   Annotation:   %.2f%% reviewed, %.2f%% annotated" % [r, a]
+          end
+        end
+
+        def treebank_statistics(tb)
+          OpenStruct.new.tap do |s|
+            s.sentence_count = 0
+            s.token_count = 0
+            s.annotated_sentence_count = 0
+            s.reviewed_sentence_count = 0
+
+            tb.sources.each do |source|
+              s.token_count += source_statistics(source).token_count
+              s.sentence_count += source_statistics(source).sentence_count
+              s.annotated_sentence_count += source_statistics(source).annotated_sentence_count
+              s.reviewed_sentence_count += source_statistics(source).reviewed_sentence_count
+            end
+          end
+        end
+
+        def source_statistics(source)
+          OpenStruct.new.tap do |s|
+            s.sentence_count = 0
+            s.token_count = 0
+            s.annotated_sentence_count = 0
+            s.reviewed_sentence_count = 0
+
+            source.divs.each do |div|
+              div.sentences.each do |sentence|
+                s.token_count += sentence.tokens.count
+              end
+
+              s.sentence_count += div.sentences.count
+              s.annotated_sentence_count += div.annotated_sentences.count
+              s.reviewed_sentence_count += div.reviewed_sentences.count
+            end
           end
         end
 
