@@ -88,7 +88,7 @@ module PROIEL
                               unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
                                 builder.token(attrs) do
                                   token.slashes.each do |relation, target_id|
-                                    builder.slash(target_id: target_id, relation: relation)
+                                    builder.slash("target-id": target_id, relation: relation)
                                   end
                                 end
                               else
@@ -118,9 +118,9 @@ module PROIEL
 
         def include_sentence?(sentence, options)
           case sentence.status
-          when 'reviewed'
+          when :reviewed
             true
-          when 'annotated'
+          when :annotated
             not options['remove-not-reviewed']
           else
             not options['remove-not-reviewed'] and not options['remove-not-annotated']

@@ -78,8 +78,8 @@ module PROIEL
               end
 
               s.sentence_count += div.sentences.count
-              s.annotated_sentence_count += div.annotated_sentences.count
-              s.reviewed_sentence_count += div.reviewed_sentences.count
+              s.annotated_sentence_count += div.sentences.select(&:annotated?).count
+              s.reviewed_sentence_count += div.sentences.select(&:reviewed?).count
             end
           end
         end

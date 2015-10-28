@@ -27,7 +27,7 @@ module PROIEL
                     head_number, relation = find_lexical_head_and_relation(id_to_number, id_to_token, token)
                     form = token.form.gsub(' ', '')
                     lemma = token.lemma.gsub(' ', '')
-                    pos_major = token.part_of_speech_hash.major
+                    pos_major = token.part_of_speech_hash[:major]
                     pos_full = token.part_of_speech
                     morphology = format_morphology(token)
 
@@ -43,7 +43,7 @@ module PROIEL
         end
 
         def format_morphology(token)
-          token.morphology_hash.to_h.map do |k, v|
+          token.morphology_hash.map do |k, v|
             # Remove inflection tag unless when set to inflecting
             if k == :inflection and v =='i'
               nil
