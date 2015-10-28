@@ -16,9 +16,5 @@ Feature: Validation
     When I run `proiel validate ../../features/invalid-antecedent-id.xml`
     Then the output should contain "is invalid"
     Then the output should contain "Token 680725: antecedent_id references an unknown token"
-    Then the output should contain "Token 680741: antecedent_id references a token in a different div"
     Then the output should contain "Token 680749: head_id references a token in a different sentence"
-    Then the output should contain "Token 680749: antecedent_id references a token in a different div"
-    Then the output should contain "Token 680751: antecedent_id references a token in a different div"
-    Then the output should contain "Token 680755: antecedent_id references a token in a different div"
     Then the output should contain "Token 680759: slash_id references a token in a different sentence"
