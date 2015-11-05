@@ -9,24 +9,22 @@ module PROIEL
               div.sentences.each do |sentence|
                 id_to_number = {}
 
-# probably an error here with prodroptokens, see conll-u script
+                # Do not care about prodrop tokens
+                tk = sentence.tokens.reject { |t| t.empty_token_sort == 'P' }
                 
-                sentence.tokens.map(&:id).each_with_index.each do |id, i|
+                # Renumber to make the sequence continguous after prodrop tokens where left out
+                tk.map(&:id).each_with_index.each do |id, i|
                   id_to_number[id] = i + 1
                 end
 
-                id_to_token = {}
+                id_to_token = tk.inject({}) { |h, t| h.merge({t.id => t}) }
 
-                sentence.tokens.each do |token|
-                  id_to_token[token.id] = token
-                end
-
-                sentence.tokens.each do |token|
+                tk.each do |token|
                   unless token.is_empty?
                     this_number = id_to_number[token.id]
                     head_number, relation = find_lexical_head_and_relation(id_to_number, id_to_token, token)
-                    form = token.form.gsub(' ', '')
-                    lemma = token.lemma.gsub(' ', '')
+                    form = token.form.gsub(/[[:space:]]/, '.')
+                    lemma = token.lemma.gsub(/[[:space:]]/, '.')
                     pos_major = token.part_of_speech_hash[:major]
                     pos_full = token.part_of_speech
                     morphology = format_morphology(token)
