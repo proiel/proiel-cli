@@ -1,48 +1,63 @@
 module PROIEL
   module Converter
-    # This converts to the CoNLL-X format as described on http://ilk.uvt.nl/conll/#dataformat.
+    # This converts to the CoNLL-X format as described on
+    # http://ilk.uvt.nl/conll/#dataformat.
+    #
+    # The conversion removes empty tokens. PRO tokens are completely ignored,
+    # while null C and null V tokens are eliminated by attaching their
+    # dependents to the first non-null ancestor and labelling them with a
+    # concatenation of dependency relations.
+    #
+    # Sequences of whitespace in forms and lemmas are represented by '.'.
     class CoNLLX
       class << self
         def process(tb, options)
           tb.sources.each do |source|
-            source.divs.each do |div|
-              div.sentences.each do |sentence|
-                id_to_number = {}
-
-                # Do not care about prodrop tokens
-                tk = sentence.tokens.reject { |t| t.empty_token_sort == 'P' }
-                
-                # Renumber to make the sequence continguous after prodrop tokens where left out
-                tk.map(&:id).each_with_index.each do |id, i|
-                  id_to_number[id] = i + 1
-                end
-
-                id_to_token = tk.inject({}) { |h, t| h.merge({t.id => t}) }
-
-                tk.each do |token|
-                  unless token.is_empty?
-                    this_number = id_to_number[token.id]
-                    head_number, relation = find_lexical_head_and_relation(id_to_number, id_to_token, token)
-                    form = token.form.gsub(/[[:space:]]/, '.')
-                    lemma = token.lemma.gsub(/[[:space:]]/, '.')
-                    pos_major = token.part_of_speech_hash[:major]
-                    pos_full = token.part_of_speech
-                    morphology = format_morphology(token)
-
-                    puts [this_number, form, lemma, pos_major, pos_full,
-                          morphology, head_number, relation, "_", "_"].join("\t")
-                  end
-                end
-
-                puts
-              end
+            source.sentences.each do |sentence|
+              process_sentence(tb, sentence)
             end
           end
         end
 
+        def process_sentence(tb, sentence)
+          tokens = sentence.tokens
+
+          # Generate 1-based continguous numbering of overt tokens with
+          # null V and null C tokens appended at the end. We do this
+          # manually to ensure that the numbering is correct whatever the
+          # sequence is in the treebank.
+          id_map = Hash.new { |h, k| h[k] = h.keys.length + 1 }
+          tokens.select(&:has_content?).each { |t| id_map[t] } # these blocks have side-effects
+          tokens.reject(&:has_content?).reject(&:pro?).each { |t| id_map[t] }
+
+          # Iterate overt tokens and print one formatted line per token.
+          tokens.select(&:has_content?).each do |token|
+            this_number = id_map[token]
+            head_number, relation = find_lexical_head_and_relation(id_map, tb, token)
+            form = format_text(token.form)
+            lemma = format_text(token.lemma)
+            pos_major, pos_full = format_pos(token)
+            morphology = format_morphology(token)
+
+            puts [this_number, form, lemma, pos_major, pos_full,
+                  morphology, head_number, relation, '_', '_'].join("\t")
+          end
+
+          # Separate sentences by an empty line.
+          puts
+        end
+
+        def format_text(s)
+          s.gsub(/[[:space:]]+/, '.')
+        end
+
+        def format_pos(token)
+          [token.part_of_speech_hash[:major], token.part_of_speech]
+        end
+
         def format_morphology(token)
           token.morphology_hash.map do |k, v|
-            # Remove inflection tag unless when set to inflecting
+            # Remove inflection tag except when set to inflecting
             if k == :inflection and v =='i'
               nil
             else
@@ -51,13 +66,15 @@ module PROIEL
           end.compact.join('|')
         end
 
-        def find_lexical_head_and_relation(id_to_number, id_to_token, t, rel = '')
+        def find_lexical_head_and_relation(id_map, tb, t, rel = '')
+          new_relation = rel + t.relation
+
           if t.is_root?
-            [0, rel + t.relation] # FIXME: may be empty token anyway
-          elsif id_to_token[t.head_id].has_content?
-            [id_to_number[t.head_id], rel + t.relation]
+            [0, new_relation]
+          elsif t.head.has_content?
+            [id_map[t.head], new_relation]
           else
-            find_lexical_head_and_relation(id_to_number, id_to_token, id_to_token[t.head_id], rel + "#{t.relation}(#{id_to_number[t.head_id]})")
+            find_lexical_head_and_relation(id_map, tb, t.head, "#{new_relation}(#{id_map[t.head]})")
           end
         end
       end
