@@ -1,6 +1,6 @@
 # PROIEL command-line interface
 
-This is a command-line interface for manpulating PROIEL treebanks.
+This is a command-line interface for manipulating PROIEL treebanks.
 
 ## Installation
 
