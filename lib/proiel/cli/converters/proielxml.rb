@@ -88,7 +88,7 @@ module PROIEL
                               unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
                                 builder.token(attrs) do
                                   token.slashes.each do |relation, target_id|
-                                    builder.slash("target-id": target_id, relation: relation)
+                                    builder.slash(:"target-id" => target_id, relation: relation)
                                   end
                                 end
                               else
