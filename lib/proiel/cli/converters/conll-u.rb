@@ -57,6 +57,7 @@ module PROIEL
                       t.relation,
                       t.empty_token_sort,
                       t.slashes.map { |relation, target_id| [id_to_number[target_id], relation] },
+                      t.citation_part,
                       self
                      )
           end
@@ -164,8 +165,9 @@ module PROIEL
         attr_reader :language
         attr_reader :empty_token_sort
         attr_reader :form
+        attr_reader :citation_part
 
-        def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, sentence)
+        def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, citation_part, sentence)
           @id = id
           @head_id = head_id
           @form = form
@@ -178,6 +180,7 @@ module PROIEL
           @slashes = slashes
           @sentence = sentence
           @features = (morphology ? map_morphology(morphology) : '' )
+          @citation_part = "ref=" + (citation_part ? citation_part : "").gsub(/\s/, '_')
           @upos = nil
         end
 
@@ -351,7 +354,7 @@ module PROIEL
            @head_id, 
            (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
            '_', # slashes here
-           '_'].join("\t")
+           @citation_part].join("\t")
         end
 
         def to_s
