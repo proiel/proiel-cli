@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://proiel.github.com"
   spec.license       = "MIT"
 
-  spec.files         = Dir["{bin,examples,contrib,lib}/**/*"] + %w(README.md LICENSE)
+  spec.files         = Dir["{bin,contrib,lib}/**/*"] + %w(README.md LICENSE)
   spec.executables   = %w(proiel)
   spec.require_paths = ["lib"]
 
