@@ -180,7 +180,7 @@ module PROIEL
           @slashes = slashes
           @sentence = sentence
           @features = (morphology ? map_morphology(morphology) : '' )
-          @citation_part = citation_part.tr(" ", "_")
+          @citation_part = "ref=" + citation_part.tr(" ", "_")
           @upos = nil
         end
 
