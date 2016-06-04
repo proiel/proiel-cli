@@ -48,8 +48,9 @@ module PROIEL
           citation_part = nil
 
           body.each_with_index do |sd_body, i|
-            builder.div(title: sd_body[:title]) do
-              sd_body[:contents].split(/(@[^ ]+|§[^ ]+)/).map do |s|
+            builder.div do
+              builder.title sd_body[:title]
+              sd_body[:contents].split(/(@[^ ]+|§[^ ]+ )/).map do |s|
                 if s[0] == '§' or s[0] == '@'
                   s
                 else
@@ -57,16 +58,16 @@ module PROIEL
                   # sentence-breaking punctuation like periods and question marks, but
                   # after the punctuation mark and characters typically used in pairs,
                   # like brackets and apostrophes.
-                  s.gsub(/([\.:;\?!]+[\s†\]\)"']*)/, '\1|')
+                  s.gsub(/([\.:;\?!]+[\s†\]\)"']*|\s*[\n\r]+)/, '\1|')
                 end
               end.join.split('|').each_with_index do |s_body, j|
-                builder.sentence(status_tag: 'unannotated') do
+                builder.sentence(status: 'unannotated') do
                   leftover_before = ''
 
                   # Preserve linebreaks in the text.
-                  s_body.gsub!(/\s*[\n\r]/, "\u2028")
+                  s_body.gsub!(/\s*[\n\r]+/, "\u2028")
 
-                  s_body.scan(/([^@§\p{Word}]*)([\p{Word}]+|@[^ ]+|§[^ ]+)([^@§\p{Word}]*)/).each do |(before, form, after)|
+                  s_body.scan(/([^@§\p{Word}]*)([\p{Word}]+|@[^ ]+|§[^ ]+ )([^@§\p{Word}]*)/).each do |(before, form, after)|
                     case form
                     when /^@(.*)$/
                       leftover_before += before unless before.nil?
@@ -74,15 +75,15 @@ module PROIEL
                       leftover_before += after unless after.nil?
                     when /^§(.*)$/
                       leftover_before += before unless before.nil?
-                      citation_part = $1
+                      citation_part = $1.strip
                       leftover_before += after unless after.nil?
                     else
                       before = leftover_before + before
                       leftover_before = ''
 
-                      attrs = { citation_part: citation_part, form: form }
-                      attrs[:presentation_before] = before unless before == ''
-                      attrs[:presentation_after] = after unless after == ''
+                      attrs = { :"citation-part" => citation_part, form: form }
+                      attrs[:"presentation-before"] = before unless before == ''
+                      attrs[:"presentation-after"] = after unless after == ''
 
                       builder.token(attrs)
                     end
