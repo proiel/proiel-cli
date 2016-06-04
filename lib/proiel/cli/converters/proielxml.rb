@@ -5,7 +5,7 @@ module PROIEL
         def process(tb, options)
           builder = Builder::XmlMarkup.new(target: STDOUT, indent: 2)
           builder.instruct! :xml, version: '1.0', encoding: 'UTF-8'
-          builder.proiel('export-time' => DateTime.now.xmlschema, 'schema-version' => '2.0') do
+          builder.proiel('export-time' => DateTime.now.xmlschema, 'schema-version' => '2.1') do
             builder.annotation do
               builder.relations do
                 tb.annotation_schema.relation_tags.each do |tag, value|
@@ -45,14 +45,24 @@ module PROIEL
             end
 
             tb.sources.each do |source|
-              builder.source(id: source.id, language: source.language) do
+              mandatory_features = %i(id language)
+              optional_features = []
+              optional_features += %i(alignment_id) unless options['remove-alignments']
+
+              builder.source(grab_features(source, mandatory_features, optional_features)) do
                 PROIEL::Treebank::METADATA_ELEMENTS.each do |field|
                   builder.tag!(field.to_s.gsub('_', '-'), source.send(field)) if source.send(field)
                 end
 
                 source.divs.each do |div|
                   if include_div?(div, options)
-                    builder.div(grab_features(div, %i(), %i(presentation_before presentation_after))) do
+                    mandatory_features = %i()
+
+                    optional_features = []
+                    optional_features += %i(presentation_before presentation_after)
+                    optional_features += %i(alignment_id) unless options['remove-alignments']
+
+                    builder.div(grab_features(div, mandatory_features, optional_features)) do
                       builder.title div.title if div.title
 
                       div.sentences.each do |sentence|
@@ -62,6 +72,11 @@ module PROIEL
                           optional_features = [] # we do it this way to preserve the order of status and presentation_* so that diffing files is easier
                           optional_features += %i(status) unless options['remove-status']
                           optional_features += %i(presentation_before presentation_after)
+                          optional_features += %i(alignment_id) unless options['remove-alignments']
+                          optional_features += %i(annotated_at) unless options['remove-annotator']
+                          optional_features += %i(reviewed_at) unless options['remove-reviewer']
+                          optional_features += %i(annotated_by) unless options['remove-annotator']
+                          optional_features += %i(reviewed_by) unless options['remove-reviewer']
 
                           builder.sentence(grab_features(sentence, mandatory_features, optional_features)) do
                             sentence.tokens.each do |token|
@@ -82,6 +97,8 @@ module PROIEL
                               else
                                 mandatory_features << :empty_token_sort
                               end
+
+                              optional_features += %i(alignment_id) unless options['remove-alignments']
 
                               attrs = grab_features(token, mandatory_features, optional_features)
 

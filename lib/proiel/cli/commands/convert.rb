@@ -16,6 +16,9 @@ module PROIEL
               f.option 'remove-syntax', '--remove-syntax', 'Remove syntactic annotation (relation, head ID and slashes)'
               f.option 'remove-information-structure', '--remove-information-structure', 'Remove informtion structure annotation (antecedent ID, information status and contrast group)'
               f.option 'remove-status', '--remove-status', 'Remove sentence status (i.e. revert all sentences to unannotated status)'
+              f.option 'remove-alignments', '--remove-alignments', 'Remove alignments'
+              f.option 'remove-annotator', '--remove-annotator', 'Remove annotator information'
+              f.option 'remove-reviewer', '--remove-reviewer', 'Remove reviewer information'
               f.option 'remove-empty-divs', '--remove-empty-divs', 'Remove div elements that do not contain any sentences'
               f.action { |args, options| process(args, options, PROIEL::Converter::PROIELXML) }
             end
