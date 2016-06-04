@@ -6,7 +6,7 @@ $:.unshift File.join(File.dirname(__FILE__), *%w{ .. lib })
 require 'proiel/cli'
 
 Mercenary.program(:proiel) do |p|
-  p.version PROIEL::VERSION
+  p.version PROIEL::CLI::VERSION
   p.description 'proiel is a command-line interface for PROIEL treebanks'
   p.syntax 'proiel <subcommand> [options]'
 
