@@ -4,4 +4,4 @@ IFS=$'\n\t'
 
 bundle install
 
-# Do any other automated setup that you need to do here
+command -v dot >/dev/null 2>&1 || { echo >&2; echo >&2 "Error: dot binary not found. Please install graphviz."; exit 1; }
