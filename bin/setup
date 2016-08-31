@@ -4,4 +4,5 @@ IFS=$'\n\t'
 
 bundle install
 
-command -v dot >/dev/null 2>&1 || { echo >&2; echo >&2 "Error: dot binary not found. Please install graphviz."; exit 1; }
+# Issue a warning if dot cannot be found
+command -v dot >/dev/null 2>&1 || { echo >&2; echo >&2 "Warning: dot binary not found. Please install graphviz."; exit 0; }

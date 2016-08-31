@@ -17,6 +17,8 @@ The gem includes a command-line utility `proiel` for a number of routine tasks.
 `proiel convert conll` converts the treebank to CoNLL format. Use `proiel
 --help` for further examples and usage instructions.
 
+To use the `visualize` command you will need a local installation of [graphviz](http://graphviz.org). More specifically, the `dot` command must be available in the path.
+
 ## Development
 
 Check out the git repository from github and run `bin/setup` to install
