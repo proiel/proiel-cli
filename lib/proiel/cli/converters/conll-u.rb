@@ -1,6 +1,12 @@
 require 'proiel/cli/converters/conll-u/morphology'
 require 'proiel/cli/converters/conll-u/syntax'
 
+# Unlike other conversions, this one has to rely on
+# certain assumptions about correct linguistic
+# annotation in order to produce a meaningful
+# representation in CoNLL-U
+
+
 module PROIEL
   module Converter
     class CoNLLU
@@ -13,16 +19,19 @@ module PROIEL
               div.sentences.each do |sentence|
                 sentence_count += 1
                 n = Sentence.new sentence
-                # Unlike other conversions, this one has to rely on
-                # certain assumptions about correct linguistic
-                # annotation in order to producea meaningful
-                # representation in CoNLL-U
                 begin
-                  puts n.convert.to_conll
+                  # Do the conversion first to avoid spurious headers if the conversion fails
+                  a = n.convert.to_conll
+                  puts "# source = #{source.title}, #{div.title}"
+                  # using printable_form would give us punctuation, which must then be added to the tree
+                  puts "# text = #{sentence.tokens.map(&:form).compact.join(' ')}"
+                  puts "# sent_id = #{sentence.id}"
+                  puts a
                   puts
                 rescue => e
                   error_count += 1
                   STDERR.puts "Cannot convert #{sentence.id} (#{sentence.citation}): #{e}"
+                  STDERR.puts e.backtrace.join("\n") unless e.is_a? RuntimeError
                 end
               end
             end
@@ -40,16 +49,55 @@ module PROIEL
 
           id_to_number = Hash.new(0) #will return id 0 (i.e. root) for nil
 
-          tk = sentence.tokens.reject { |t| t.empty_token_sort == 'P' }
+          # initialize array to hold the sentence tokens
+          tks = []
+          # keep track of how many new tokens have been created
+          offset = 0
           
-          tk.map(&:id).each_with_index.each do |id, i|
+          sentence.tokens.reject { |t| t.empty_token_sort == 'P' }.each do |tk|
+
+            if tk.form =~ /[[:space:]]/
+              subtoks = tk.form.split(/[[:space:]]/)
+              
+              subtoks.each_with_index do |subtok, i|
+                tks << PROIEL::Token.new(sentence,
+                                 (i == 0 ? tk.id : 1000 + offset), # id
+                                 (i == 0 ? tk.head_id : tk.id), # head_id
+                                 subtok,
+                                 # hope the lemmas split the same way as the tokens. Grab the form is you don't find a lemma
+                                 (tk.lemma.split(/[[:space:]]/)[i] || subtok), 
+                                 tk.part_of_speech, # copy the postag
+                                 tk.morphology,
+                                 (i == 0 ? tk.relation : "flat"),
+                                 nil, #empty_token_sort
+                                 tk.citation_part,
+                                 (i == 0 ? tk.presentation_before : nil),
+                                 (i == (subtoks.size - 1)  ? tk.presentation_after : nil), 
+                                 (i == 0 ? tk.antecedent_id : nil),
+                                 (i == 0 ? tk.information_status : nil),
+                                 (i == 0 ? tk.contrast_group : nil),
+                                 (i == 0 ? tk.foreign_ids : nil),
+                                 (i == 0 ? tk.slashes.map { |rel, target| PROIEL::PROIELXML::Reader::Slash.new({:'target_id' => target, :relation => rel} ) } : []), #  This needs to be given a real slash object for the initialization, although it throws away the info
+                                 (subtok == subtoks.first ? tk.alignment_id : nil)
+                                )
+                offset += 1
+              end
+            else
+              tks << tk
+            end
+          end
+
+          
+          tks.map(&:id).each_with_index.each do |id, i|
             id_to_number[id] = i + 1
           end
 
-          @tokens = tk.map do |t|
+          @tokens = tks.map do |t|
+
             Token.new(id_to_number[t.id],
                       id_to_number[t.head_id],
-                      t.form.to_s.gsub(/[[:space:]]/, '.'),
+                      #insert dots in any whitespace inside words and lemmata
+                      t.form.to_s.gsub(/[[:space:]]/, '.'), 
                       t.lemma.to_s.gsub(/[[:space:]]/, '.'),
                       t.part_of_speech,
                       t.language,
@@ -197,9 +245,17 @@ module PROIEL
         res.compact.join('|')
         end
 
+        def genitive?
+          @morphology =~ /......g.*/
+        end
+
         # returns +true+ if the node is an adjective or an ordinal
         def adjectival?
           @part_of_speech == 'A-' or @part_of_speech == 'Mo'
+        end
+
+        def subjunction?
+          @part_of_speech == 'G-'
         end
 
         def adverb?
@@ -236,6 +292,10 @@ module PROIEL
            dependents.any? { |d| d.relation == 'xobj' } )
         end
 
+        def auxiliary?
+          AUXILIARIES.include?([lemma, part_of_speech, language].join(','))
+        end
+          
         def determiner?
           DETERMINERS.include? @part_of_speech
         end
@@ -260,8 +320,16 @@ module PROIEL
           !has_content?
         end
 
+        def deponent?
+          DEPONENTS[@language] and DEPONENTS[@language].match(@lemma)
+        end
+
         def mediopassive?
-          @morphology[4] =~/[mpe]/
+          (!deponent? and @morphology) ? @morphology[4] =~/[mpe]/ : false
+        end
+
+        def passive?
+          (!deponent? and @morphology) ? @morphology[4] == 'p' : false
         end
 
         def negation?
@@ -277,15 +345,19 @@ module PROIEL
             d.determiner? and ['atr', 'aux', 'det'].include? d.relation
           end
         end
-
+        
+        def TAM_particle?
+          @relation == 'aux' and TAM_PARTICLE_LEMMATA.include?([lemma, part_of_speech, language].join(','))
+        end
+        
         def particle?
           @relation == 'aux' and PARTICLE_LEMMATA.include?([lemma, part_of_speech, language].join(','))
         end
 
-        def passive?
-          @morphology[4] == 'p'
+        def pronominal?
+          @part_of_speech =~ /\AP[^st]/ # no evidence that possessives are pronoun/determiner-like
         end
-
+        
         def preposition?
           @part_of_speech == 'R-'
         end
@@ -343,7 +415,7 @@ module PROIEL
             features.split("|").sort.join("|")
           end
         end
-        
+
         def to_conll
           [@id, 
            @form, 
@@ -390,12 +462,24 @@ module PROIEL
           end
         end
 
+        def find_postag possible_postags
+          tag, crit, feats = possible_postags.shift
+          if tag.nil?
+            # raise "Found no postag"
+          elsif crit.call self
+            @upos = tag
+            @features += ((@features.empty? ? '' : '|') + feats) if feats
+          else
+            find_postag possible_postags
+          end
+        end
+        
         def find_relation possible_relations
           rel, crit = possible_relations.shift
           if rel.nil?
           # raise "Found no relation"
           elsif crit.call self
-            @relation = rel
+            rel
           else
             find_relation possible_relations
           end
@@ -403,25 +487,29 @@ module PROIEL
 
         def map_part_of_speech!
           dependents.each(&:map_part_of_speech!)
-          @upos = POS_MAP[@part_of_speech].first
-          raise "No match found for pos #{part_of_speech.inspect}" unless @upos
-          if feat = POS_MAP[@part_of_speech][1]
-            @features += ((@features.empty? ? '' : '|') + feat)
-          end
+          possible_postags = POS_MAP[@part_of_speech]
+          find_postag possible_postags.dup
           # ugly, but the ugliness comes from UDEP
           @upos = 'ADJ' if @upos == 'DET' and @relation != 'det'
         end
 
         def relabel_graph!
           dependents.each(&:relabel_graph!)
+          # TODO: if there are iobjs without an obj among the dependents, one of them should be promoted to obj
+          @relation = map_relation
+          raise "No relation for #{form}" unless @relation
+        end
+
+        def map_relation
           possible_relations = RELATION_MAPPING[@relation]
           case possible_relations
           when String
-            @relation = possible_relations
+            possible_relations
           when Array
-            find_relation possible_relations.dup
+            x = find_relation possible_relations.dup
           when nil
-          # do nothing: the token has already changed its relation
+            # do nothing: the token has already changed its relation
+            @relation
           else
             raise "Unknown value #{possible_relations.inspect} for #{@relation}"
           end
@@ -447,35 +535,28 @@ module PROIEL
           end
         end
 
-
-
-        # TODO: process "implicit pid" through APOS chain too
         def process_ellipsis!
-          # First we find the corresponding overt token.
-          # If there's an explicit pid slash, we'll grab that one.
-          if pid and !subgraph_set.include?(pid)
-            overt = pid
-          # otherwise, try a conjunct
-          elsif @relation == 'conj'
-            overt = conj_head
-          elsif @relation == 'apos'
-            overt = find_appositive_head
-          else
+          aux = dependents.select(&:auxiliary?).first
+          if aux
+            aux.promote! 
             return
           end
 
-          dependents.each do |d|
+          new_head = find_highest_daughter
+          new_head.promote!('orphan')
+          
+#          dependents.each do |d|
             # check if there's a partner with the same relation under the overt node.
             # TODO: this isn't really very convincing when it comes to ADVs
-            if partner = overt.dependents.select { |p| p != self and p.relation == d.relation }.first #inserted p != self
-              partner = partner.find_remnant
-              d.head_id = partner.id
-              d.relation = 'remnant'
+#            if partner = overt.dependents.select { |p| p != self and p.relation == d.relation }.first #inserted p != self
+#              partner = partner.find_remnant
+#              d.head_id = partner.id
+#              d.relation = 'remnant'
             # if there's no partner, just attach under the overt node, preserving the relation
-            else
-              d.head_id = overt.id
-            end
-          end
+#            else
+#              d.head_id = overt.id
+#            end
+#          end
           @sentence.remove_token!(self)
         end
 
@@ -487,10 +568,18 @@ module PROIEL
           end
         end
 
+        def find_highest_daughter
+          dependents.min_by { |d| OBLIQUENESS_HIERARCHY.find_index(d.map_relation[/[^:]*/]) || 1000 }
+        end
+
         def process_copula!
           predicates = dependents.select { |d| d.relation == 'xobj' }
           raise "#{predicates.size} predicates under #{to_n}\n#{to_graph}" if predicates.size != 1
           predicates.first.promote!(nil, 'cop')
+        end
+
+        def has_preposition?
+          dependents.any? { |d| d.preposition? and d.relation == "case" }
         end
 
         def process_preposition!
@@ -519,9 +608,9 @@ module PROIEL
           raise "Only coordinations can be processed this way!" unless conjunction?
           return if dependents.reject { |d| d.relation == 'aux' }.empty?
           distribute_shared_modifiers!
-          dependents.reject { |d| d.relation == 'aux' }.first.promote!("conj", "cc")
+          dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id }.first.promote!("conj", "cc")
         end
-
+        
         def distribute_shared_modifiers!
           raise "Can only distribute over a conjunction!" unless conjunction?
           conjuncts, modifiers  = dependents.reject { |d| d.relation == 'aux' }.partition { |d|  d.relation == @relation or (d.relation == 'adv' and @relation == 'xadv') }

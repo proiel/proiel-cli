@@ -2,8 +2,13 @@
 module PROIEL
   module Converter
     class CoNLLU
+
+      # try to guess deponency based on the lemma
+      DEPONENTS = { 'lat' => /r\Z/,
+                    'grc' => /ομαι\Z/ }
       COPULAR_LEMMATA = ['sum,V-,lat', 'εἰμί#1,V-,grc']
-      DETERMINERS = ['S-', 'Pd', 'Px', 'Ps', 'Pt']
+      AUXILIARIES = COPULAR_LEMMATA + []
+      DETERMINERS = ['S-', 'Pd', 'Px'] 
       NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat', 
                           'μή,Df,grc',
                           'μήγε,Df,grc',
@@ -35,8 +40,10 @@ module PROIEL
                           'nibai#2,Df,got',
                           'nih,Df,got',
                          ]
-
-
+      
+      TAM_PARTICLE_LEMMATA = ['ἄν,Df,grc',
+                             ]
+                              
       PARTICLE_LEMMATA = [ 'at,Df,lat',
                            'atque,Df,lat',
                            'autem,Df,lat',
@@ -59,7 +66,6 @@ module PROIEL
                            'tunc,Df,lat',
                            'vero,Df,lat',
                            'ἅμα,Df,grc',
-                           'ἄν,Df,grc',
                            'ἀνά,Df,grc',
                            'ἆρα,Df,grc',
                            'ἄραγε,Df,grc',
@@ -137,33 +143,39 @@ module PROIEL
       
       POS_MAP = 
         { 
-          'A-' => ['ADJ'],
-          'Df' => ['ADV'],
-          'S-' => ['DET', "Definite=Def|PronType=Dem"], # (we only have definite articles)
-          'Ma' => ['NUM'], 
-          'Nb' => ['NOUN'],
-          'C-' => ['CONJ'],
-          'Pd' => ['DET'], 
-          'F-' => ['X'],
-          'Px' => ['PRON'], 
-          'N-' => ['SCONJ'], #irrelevant for our purposes
-          'I-' => ['INTJ'],
-          'Du' => ['ADV', "PronType=Int"],
-          'Pi' => ['PRON', "PronType=Int"],
-          'Mo' => ['ADJ'], 
-          'Pp' => ['PRON', "PronType=Prs"],
-          'Pk' => ['PRON', "PronType=Prs|Reflex=Yes"],
-          'Ps' => ['PRON', "PronType=Prs|Poss=Yes"],   ###  layered gender?
-          'Pt' => ['PRON', "PronType=Prs|Poss=Yes|Reflex=Yes" ],   ###  layered gender? 
-          'R-' => ['ADP'],
-          'Ne' => ['PROPN'],
-          'Py' => ['DET'], 
-          'Pc' => ['PRON', "PronType=Rcp"],
-          'Dq' => ['ADV', "PronType=Rel"],
-          'Pr' => ['PRON', "PronType=Rel"],
-          'G-' => ['SCONJ'],
-          'V-' => ['VERB'],
-          'X-' => ['X'] }
+          'A-' => [['ADJ', lambda { |x| true } ]],
+          'C-' => [['CCONJ', lambda { |x| true } ]],
+          'Df' => [['AUX', lambda(&:TAM_particle?)],
+                   ['ADV', lambda(&:negation?), "Polarity=Neg"],
+                   ['ADV', lambda { |x| true } ]
+                  ],
+          'Dq' => [['ADV', lambda { |x| true }, "PronType=Rel"]],
+          'Du' => [['ADV', lambda { |x| true }, "PronType=Int"]],
+          'F-' => [['X', lambda { |x| true } ]],
+          'G-' => [['SCONJ', lambda { |x| true } ]],
+          'I-' => [['INTJ', lambda { |x| true } ]],
+          'Ma' => [['NUM', lambda { |x| true } ]], 
+          'Mo' => [['ADJ', lambda { |x| true } ]], 
+          'N-' => [['SCONJ', lambda { |x| true } ]], #irrelevant for our purposes
+          'Nb' => [['NOUN', lambda { |x| true } ]],
+          'Ne' => [['PROPN', lambda { |x| true } ]],
+          'Pc' => [['PRON', lambda { |x| true }, "PronType=Rcp"]],
+          'Pd' => [['DET', lambda { |x| true } ]], 
+          'Pi' => [['PRON', lambda { |x| true }, "PronType=Int"]],
+          'Pk' => [['AUX', lambda { |x| x.relation == 'aux' }],
+                   ['PRON', lambda { |x| true }, "PronType=Prs|Reflex=Yes"]],
+          'Pp' => [['PRON', lambda { |x| true }, "PronType=Prs"]],
+          'Pr' => [['PRON', lambda { |x| true }, "PronType=Rel"]],
+          'Ps' => [['ADJ', lambda { |x| true }, "Poss=Yes"]],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Pt' => [['ADJ', lambda { |x| true }, "Poss=Yes|Reflex=Yes" ]],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Px' => [['DET', lambda { |x| true } ]], 
+          'Py' => [['PRON', lambda { |x| true } ]], 
+          'R-' => [['ADP', lambda { |x| true } ]],
+          'V-' => [['AUX', lambda(&:auxiliary?)],
+                   ['VERB', lambda { |x| true } ]],
+          'S-' => [['DET', lambda { |x| true }, "Definite=Def|PronType=Dem"]], # (we only have definite articles)
+          'X-' => [['X', lambda { |x| true } ]]
+                  }
       
       MORPHOLOGY_MAP = {
         :person => {'1' => 'Person=1', 
