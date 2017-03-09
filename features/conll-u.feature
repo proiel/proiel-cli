@@ -2,7 +2,7 @@ Feature: Converting to CoNLL-U
 
 Scenario: Linguistically valid Proiel XML is converted to CoNLL-U
   When I run `proiel convert conll-u ../../features/caes-gal-convertible.xml`
-  Then the output should have 27996 lines
+  Then the output should have 32329 lines
 
 Scenario: Linguistically invalid Proiel XML is converted to CoNLL-U
   When I run `proiel convert conll-u ../../features/caes-gal-nonconvertible.xml`
