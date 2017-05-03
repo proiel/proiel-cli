@@ -1,3 +1,4 @@
+require 'pry'
 require 'ruby-progressbar'
 
 require 'proiel/cli/version'
