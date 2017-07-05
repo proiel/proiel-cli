@@ -2,17 +2,17 @@ require 'aruba/cucumber'
 
 Then(/^the output should be equal to file "([^"]*)"$/) do |reference_file|
   expected = File.open(reference_file).read
-  assert_exact_output(expected, all_stdout)
+  expect(all_commands.map(&:stdout).join("\n")).to eq(expected)
 end
 
 Then(/^the output should have (\d+) lines$/) do |n|
-  assert_exact_output(n, all_stdout.split("\n").length.to_s)
+  expect(all_commands.map(&:stdout).join("\n").split("\n").length).to eq(n.to_i)
 end
 
 Then(/^the output should be empty$/) do
-  assert_exact_output('', all_stdout)
+  expect(all_commands.map(&:stdout).join("\n")).to eq('')
 end
 
 Then(/^the errors should contain "([^"]*)"$/) do | pattern|
-  assert_matching_output(pattern, all_stderr)
+  expect(all_commands.map(&:stderr).join("\n")).to match(pattern)
 end
