@@ -1,5 +1,12 @@
 # PROIEL command-line interface
 
+## Status
+
+[![Gem Version](https://badge.fury.io/rb/proiel-cli.svg)](http://badge.fury.io/rb/proiel-cli)
+[![Build Status](https://secure.travis-ci.org/proiel/proiel-cli.svg?branch=master)](http://travis-ci.org/proiel/proiel-cli?branch=master)
+
+## Description
+
 This is a command-line interface for manipulating PROIEL treebanks.
 
 ## Installation
