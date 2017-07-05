@@ -11,6 +11,8 @@ module PROIEL
         end
 
         def process(args, options)
+          exit_code = 0
+
           if args.empty?
             STDERR.puts 'Missing filename(s). Use --help for more information.'
             exit 1
@@ -23,8 +25,6 @@ module PROIEL
 
             if v.valid?
               puts "#{filename} is valid".green
-
-              exit 0
             else
               puts "#{filename} is invalid".red
 
@@ -32,9 +32,11 @@ module PROIEL
                 puts "* #{error}"
               end
 
-              exit 1
+              exit_code = 1
             end
           end
+
+          exit exit_code
         end
       end
     end
