@@ -60,7 +60,7 @@ module PROIEL
 
                     optional_features = []
                     optional_features += %i(presentation_before presentation_after)
-                    optional_features += %i(alignment_id) unless options['remove-alignments']
+                    optional_features += %i(id alignment_id) unless options['remove-alignments']
 
                     builder.div(grab_features(div, mandatory_features, optional_features)) do
                       builder.title div.title if div.title
