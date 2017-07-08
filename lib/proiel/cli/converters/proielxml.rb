@@ -45,6 +45,8 @@ module PROIEL
             end
 
             tb.sources.each do |source|
+              next if options['remove-unaligned-sources'] and source.alignment_id.nil?
+
               mandatory_features = %i(id language)
               optional_features = []
               optional_features += %i(alignment_id) unless options['remove-alignments']
@@ -62,7 +64,14 @@ module PROIEL
                     optional_features += %i(presentation_before presentation_after)
                     optional_features += %i(id alignment_id) unless options['remove-alignments']
 
-                    builder.div(grab_features(div, mandatory_features, optional_features)) do
+                    overrides = {}
+                    if options['infer-alignments'] and source.alignment_id
+                      aligned_source = tb.find_source(source.alignment_id)
+                      # FIXME: how to behave here? overwrite existing? what if nil? how to deal with multiple aligned divs?
+                      overrides[:alignment_id] = div.alignment_id || div.inferred_alignment(aligned_source).map(&:id).join(',')
+                    end
+
+                    builder.div(grab_features(div, mandatory_features, optional_features, overrides)) do
                       builder.title div.title if div.title
 
                       div.sentences.each do |sentence|
@@ -144,17 +153,17 @@ module PROIEL
           end
         end
 
-        def grab_features(obj, mandatory_features, optional_features = [])
+        def grab_features(obj, mandatory_features, optional_features = [], overrides = {})
           attrs = {}
 
           mandatory_features.each do |f|
-            v = obj.send(f)
+            v = overrides.key?(f) ? overrides[f] : obj.send(f)
 
             attrs[f.to_s.gsub('_', '-')] = v
           end
 
           optional_features.each do |f|
-            v = obj.send(f)
+            v = overrides.key?(f) ? overrides[f] : obj.send(f)
 
             if v and v.to_s != ''
               attrs[f.to_s.gsub('_', '-')] = v

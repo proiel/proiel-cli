@@ -20,6 +20,8 @@ module PROIEL
               f.option 'remove-annotator', '--remove-annotator', 'Remove annotator information'
               f.option 'remove-reviewer', '--remove-reviewer', 'Remove reviewer information'
               f.option 'remove-empty-divs', '--remove-empty-divs', 'Remove div elements that do not contain any sentences'
+              f.option 'infer-alignments', '--infer-alignments', 'Add inferred alignments when possible'
+              f.option 'remove-unaligned-sources', '--remove-unaligned-sources', 'Remove sources that are not aligned'
               f.action { |args, options| process(args, options, PROIEL::Converter::PROIELXML) }
             end
 
