@@ -107,9 +107,14 @@ module PROIEL
                                 mandatory_features << :empty_token_sort
                               end
 
+                              if options['remove-not-reviewed'] or options['remove-not-annotated']
+                                overrides[:antecedent_id] =
+                                  (token.antecedent_id and include_sentence?(tb.find_token(token.antecedent_id.to_i).sentence, options)) ? token.antecedent_id : nil
+                              end
+
                               optional_features += %i(alignment_id) unless options['remove-alignments']
 
-                              attrs = grab_features(token, mandatory_features, optional_features)
+                              attrs = grab_features(token, mandatory_features, optional_features, overrides)
 
                               unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
                                 builder.token(attrs) do
