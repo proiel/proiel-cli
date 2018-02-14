@@ -4,22 +4,24 @@ module PROIEL
       class << self
         def init_with_program(prog)
           prog.command(:visualize) do |c|
-            c.syntax 'visualize sentences|divs|sources FILENAME(S)'
+            c.syntax 'visualize [OPTION(S)] FILENAME(S)'
             c.description 'Visualize treebank graphs'
             c.option 'objects', '--objects sentences|divs|sources', 'Objects to visualize (default: sentences)'
             c.option 'format', '--format png|svg|dot', 'Output format (default: svg)'
-            c.option 'layout', '--layout classic|linearized|packed', 'Graph layout (default: classic)'
+            c.option 'layout', '--layout classic|linearized|packed|modern', 'Graph layout (default: classic)'
 
             c.action { |args, options| process(args, options) }
           end
         end
+
+        LAYOUTS = %w(classic linearized packed modern)
 
         def process(args, options)
           objects = options['objects'] || 'sentences'
           format = options['format'] || 'svg'
           layout = options['layout'] || 'classic'
 
-          if layout != 'classic' and layout != 'linearized' and layout != 'packed'
+          unless LAYOUTS.include?(layout)
             STDERR.puts "Invalid layout"
             exit 1
           end
