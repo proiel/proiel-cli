@@ -6,7 +6,7 @@ module PROIEL
           prog.command(:visualize) do |c|
             c.syntax 'visualize [OPTION(S)] FILENAME(S)'
             c.description 'Visualize treebank graphs'
-            c.option 'objects', '--objects sentences|divs|sources', 'Objects to visualize (default: sentences)'
+            c.option 'objects', '--objects sentences|divs|sources|SENTENCE-ID', 'Objects to visualize (default: sentences)'
             c.option 'format', '--format png|svg|dot', 'Output format (default: svg)'
             c.option 'layout', '--layout classic|linearized|packed|modern', 'Graph layout (default: classic)'
 
@@ -26,7 +26,7 @@ module PROIEL
             exit 1
           end
 
-          if objects != 'sentences' and objects != 'divs' and objects != 'sources'
+          if objects != 'sentences' and objects != 'divs' and objects != 'sources' and objects.to_i.to_s != objects
             STDERR.puts "Invalid object type"
             exit 1
           end
@@ -59,7 +59,8 @@ module PROIEL
             when 'sentences'
               save_graphs source.sentences, layout, format, source.id, source.sentences.count
             else
-              raise
+              object = tb.find_sentence(objects.to_i)
+              save_graph(layout, format, object) if object
             end
           end
         end
