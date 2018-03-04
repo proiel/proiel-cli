@@ -16,7 +16,7 @@ module PROIEL
 
         def process(args, options)
           tb = PROIEL::Treebank.new
-          dict = PROIEL::Dictionary::Builder.new
+          dict = PROIEL::DictionaryBuilder.new
 
           args.each do |filename|
             STDERR.puts "Reading #{filename}...".green if options['verbose']
