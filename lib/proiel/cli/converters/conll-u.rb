@@ -111,8 +111,15 @@ module PROIEL::Converter
       def convert
         restructure_graph!
         relabel_graph!
+        check_directionality!
         map_part_of_speech!
         self
+      end
+
+      def check_directionality!
+        @tokens.select { |t| t.relation == 'fixed' }.each do |f|
+          f.promote!(nil, 'fixed') if f.id < f.head.id
+        end
       end
 
       def find_token(identifier)
