@@ -64,14 +64,19 @@ module PROIEL
                     optional_features += %i(presentation_before presentation_after)
                     optional_features += %i(id alignment_id) unless options['remove-alignments']
 
-                    overrides = {}
+                    overrides = {
+                      div: {},
+                      sentence: {},
+                      token: {}
+                    }
+
                     if options['infer-alignments'] and source.alignment_id
                       aligned_source = tb.find_source(source.alignment_id)
                       # FIXME: how to behave here? overwrite existing? what if nil? how to deal with multiple aligned divs?
-                      overrides[:alignment_id] = div.alignment_id || div.inferred_alignment(aligned_source).map(&:id).join(',')
+                      overrides[:div][:alignment_id] = div.alignment_id || div.inferred_alignment(aligned_source).map(&:id).join(',')
                     end
 
-                    builder.div(grab_features(div, mandatory_features, optional_features, overrides)) do
+                    builder.div(grab_features(div, mandatory_features, optional_features, overrides[:div])) do
                       builder.title div.title if div.title
 
                       div.sentences.each do |sentence|
@@ -108,13 +113,13 @@ module PROIEL
                               end
 
                               if options['remove-not-reviewed'] or options['remove-not-annotated']
-                                overrides[:antecedent_id] =
+                                overrides[:token][:antecedent_id] =
                                   (token.antecedent_id and include_sentence?(tb.find_token(token.antecedent_id.to_i).sentence, options)) ? token.antecedent_id : nil
                               end
 
                               optional_features += %i(alignment_id) unless options['remove-alignments']
 
-                              attrs = grab_features(token, mandatory_features, optional_features, overrides)
+                              attrs = grab_features(token, mandatory_features, optional_features, overrides[:token])
 
                               unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
                                 builder.token(attrs) do
