@@ -120,8 +120,11 @@ module PROIEL
         end
 
         def check_directionality!
-          @tokens.select { |t| t.relation == 'fixed' }.each do |f|
-            f.promote!(nil, 'fixed') if f.id < f.head.id
+          @tokens.select { |t| ['fixed', 'flat:foreign', 'flat:name'].include? t.relation }.each do |f|
+            f.promote!(nil, f.relation) if f.id < f.head.id
+          end
+          @tokens.select { |t| t.relation == 'conj' }.each do |f|
+            raise "conj must go left-to-right" if f.id < f.head.id
           end
         end
 
