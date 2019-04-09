@@ -7,12 +7,12 @@ module PROIEL
       RELATION_MAPPING = {
         'adnom' => 'dep',
         'adv' =>  [['advcl', lambda(&:clausal?) ],
-                   ['advmod', lambda { |x| x.adverb? or x.preposition? } ],
+                   ['advmod', lambda { |x| x.adverb? } ],
                    ['advmod', lambda(&:adjectival?) ], # adjective for adverb
-                   ['obl', lambda(&:nominal?) ], 
+                   ['obl', lambda { |x| x.nominal? or x.preposition? } ], 
                    ['advmod', lambda { |x| true } ],
                   ],
-        'ag' => 'obl:agent', # add :agent" once defined
+        'ag' => 'obl:agent', # add :agent' once defined
         'apos' => [['flat:name', lambda { |x| x.proper_noun? and x.head and x.head.proper_noun? } ],
                    ['appos', lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.nominal? } ],
                    ['acl', lambda { |x| x.clausal? and x.head and x.head.nominal? } ],  # add :relcl ?
@@ -58,8 +58,8 @@ module PROIEL
         'nonsub' => 'dep',
         'obj' => 'obj',
         'obl' => [# normally a preposition will be subordinate to its noun, this captures adverbial use of prepositions
-                  ['advmod', lambda { |x| x.adverb? or x.preposition? } ], 
-                  ['obl', lambda { |x| x.has_preposition? } ],
+                  ['advmod', lambda { |x| x.adverb? } ],
+                  ['obl', lambda { |x| x.has_preposition? or x.preposition? } ],
                   ['iobj', lambda(&:nominal?) ],# if nominal (NB check for presence of article!) TODO: should be "obj" if the verb is monovalent (even by elision)
                   ['iobj', lambda(&:adjectival?) ], # OBL adjectives are nominalized 
                   ['advcl', lambda(&:clausal?) ], # this seems to happen with ad libros legendos etc. but check closer!
