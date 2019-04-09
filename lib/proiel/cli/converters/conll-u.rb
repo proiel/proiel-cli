@@ -585,11 +585,13 @@ module PROIEL
         def process_preposition!
           raise "Only prepositions can be processed this way!" unless part_of_speech == 'R-'
           obliques = dependents.select { |d| d.relation == 'obl' }
-          aposes = dependents.select { |d| d.relation == 'apos' }
+          doublepreps = dependents.select { |d| d.relation == 'aux' and d.preposition? }
+          mods = dependents.select { |d| d.relation != 'obl' and !(d.relation == 'aux' and d.preposition?) }
           raise "#{obliques.size} oblique dependents under #{to_n}\n#{to_graph}" if obliques.size > 1
           return if obliques.empty? #shouldn't really happen, but in practice
           obliques.first.invert!("case") # , "adv")
-          aposes.each { |d| d.head_id = obliques.first.id }
+          doublepreps.each { |p| p.head_id = obliques.first.id and p.relation = 'case' }
+          mods.each { |m| m.head_id = obliques.first.id }
         end
 
         def remove_empties!
