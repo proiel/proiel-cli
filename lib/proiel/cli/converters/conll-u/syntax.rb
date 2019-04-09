@@ -7,9 +7,9 @@ module PROIEL
       RELATION_MAPPING = {
         "adnom" => "dep",
         "adv" =>  [["advcl", lambda(&:clausal?) ],
-                   ["advmod", lambda { |x| x.adverb? or x.preposition? } ],
+                   ["advmod", lambda { |x| x.adverb? } ],
                    ["advmod", lambda(&:adjectival?) ], # adjective for adverb
-                   ["obl", lambda(&:nominal?) ], 
+                   ["obl", lambda { |x| x.nominal? or x.preposition?) ], 
                    ["advmod", lambda { |x| true } ],
                   ],
         "ag" => "obl:agent", # add :agent" once defined
