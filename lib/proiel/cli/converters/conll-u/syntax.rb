@@ -58,8 +58,8 @@ module PROIEL
         "nonsub" => "dep",
         "obj" => "obj:dir",
         "obl" => [# normally a preposition will be subordinate to its noun, this captures adverbial use of prepositions
-                  ["advmod", lambda { |x| x.adverb? or x.preposition? } ], 
-                  ["obl", lambda { |x| x.has_preposition? } ],
+                  ["advmod", lambda { |x| x.adverb? } ], 
+                  ["obl", lambda { |x| x.has_preposition? or x.preposition? } ],
                   ["iobj", lambda(&:nominal?) ],# if nominal (NB check for presence of article!) TODO: should be "obj" if the verb is monovalent (even by elision)
                   ["iobj", lambda(&:adjectival?) ], # OBL adjectives are nominalized 
                   ["advcl", lambda(&:clausal?) ], # this seems to happen with ad libros legendos etc. but check closer!
