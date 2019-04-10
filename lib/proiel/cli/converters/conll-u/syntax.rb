@@ -78,6 +78,7 @@ module PROIEL
                  ],
         'voc' => 'vocative',
         'xadv' => [['advcl', lambda(&:clausal?)], #add :contr ?
+                   ['xcomp', lambda { |x| x.nominal? or x.pronominal? or x.cardinal?} ],
                    ['advmod', lambda { |x| true } ], # add :contr ?
                   ],
         'xobj' => 'xcomp', # copula cases have already been taken care of
