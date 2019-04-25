@@ -200,6 +200,7 @@ module PROIEL::Converter
         # do ellipses from left to right for proper remnant treatment
         @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id }.each(&:process_ellipsis!)
         demote_subjunctions!
+        @tokens.select { |t| t.relation == 'apos' and t.id < t.head_id }.each(&:process_dislocation!)
         # DIRTY: remove the rest of the empty nodes by attaching them
         # to their grandmother with remnant. This is the best way to
         # do it given the current state of the UDEP scheme, but
@@ -540,6 +541,11 @@ module PROIEL::Converter
         else
           pred.invert!('mark')
         end
+      end
+
+      def process_dislocation!
+        self.head_id = head.head_id unless head.root?
+        self.relation = "dislocated"
       end
 
       def process_ellipsis!
