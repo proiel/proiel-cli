@@ -56,7 +56,7 @@ module PROIEL
                    ['nmod', lambda { |x| true } ],
                   ],
         "nonsub" => "dep",
-        "obj" => "obj:dir",
+        "obj" => "obj",
         "obl" => [# normally a preposition will be subordinate to its noun, this captures adverbial use of prepositions
                   ["advmod", lambda { |x| x.adverb? } ], 
                   ["obl", lambda { |x| x.has_preposition? or x.preposition? } ],

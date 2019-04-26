@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'builder', '~> 3.2.2'
   spec.add_dependency 'mercenary', '~> 0.3.5'
   spec.add_dependency 'colorize', '~> 0.7'
-  spec.add_dependency 'proiel', '~> 1.2'
+  spec.add_dependency 'proiel', '~> 1.3'
   spec.add_dependency 'ruby-progressbar', '~> 1.8'
   spec.add_dependency 'pry', '~> 0.10'
 
