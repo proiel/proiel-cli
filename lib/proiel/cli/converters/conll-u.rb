@@ -64,7 +64,7 @@ module PROIEL
                                  (i == 0 ? tk.id : 1000 + offset), # id
                                  (i == 0 ? tk.head_id : tk.id), # head_id
                                  subtok,
-                                 # hope the lemmas split the same way as the tokens. Grab the form is you don't find a lemma
+                                 # hope the lemmas split the same way as the tokens. Grab the form if you don't find a lemma
                                  (tk.lemma.split(/[[:space:]]/)[i] || subtok), 
                                  tk.part_of_speech, # copy the postag
                                  tk.morphology,
@@ -230,7 +230,7 @@ module PROIEL
           @id = id
           @head_id = head_id
           @form = form
-          @lemma = lemma
+          @lemma, @variant = lemma.split("#")
           @part_of_speech = part_of_speech
           @language = language
           @morphology = morphology
@@ -427,6 +427,12 @@ module PROIEL
           end
         end
 
+        def miscellaneous
+          m = @citation_part
+          m += "|LId=#{@variant}" if @variant
+          m
+        end
+
         def to_conll
           [@id, 
            @form, 
@@ -437,7 +443,7 @@ module PROIEL
            @head_id, 
            (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
            '_', # slashes here
-           @citation_part].join("\t")
+           miscellaneous].join("\t")
         end
 
         def to_s
@@ -543,6 +549,8 @@ module PROIEL
           # else demote the subjunction
           else
             pred.invert!('mark')
+            # move any remaining discourse children to the new head (note that we need to keep other aux'es to get them as "fixed" dependents
+            dependents.each { |d| d.head_id = pred.id if d.particle? or d.interjection? }
           end
         end
 
