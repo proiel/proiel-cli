@@ -302,7 +302,7 @@ module PROIEL::Converter
       end
 
       def auxiliary?
-        AUXILIARIES.include?([lemma, part_of_speech, language].join(','))
+        AUXILIARIES.include?([lemma, part_of_speech, language].join(',')) or (part_of_speech == "V-" and relation == 'aux')
       end
 
       def determiner?
