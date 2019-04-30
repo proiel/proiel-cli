@@ -33,8 +33,9 @@ module PROIEL
                   ['aux', lambda(&:clausal?) ], #v2 probably want the modal particle an to go here too in 
                   ['advmod', lambda(&:negation?) ],
                   ['discourse', lambda { |x| x.particle? or x.interjection? } ],
-                  # include subjunctions that are aux here; (root sentences with subjunction)
-                  ['advmod', lambda { |x| x.adjectival? or x.adverb? or x.subjunction? } ],
+                  ['advmod', lambda { |x| x.adjectival? or x.adverb? } ],
+                  # make subjunctions in root sentences "mark"
+                  ['mark', lambda { |x| x.subjunction? } ],
                   ['cc', lambda(&:conjunction?) ],
                   ['flat:foreign', lambda(&:foreign?) ],
                   # We need some more distinctions to get Gothic and Armenian. Introduce language in the treebank? (Read from xml)
