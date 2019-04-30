@@ -550,8 +550,8 @@ module PROIEL
           # else demote the subjunction
           else
             pred.invert!('mark')
-            # move any remaining discourse children to the new head (note that we need to keep other aux'es to get them as "fixed" dependents
-            dependents.each { |d| d.head_id = pred.id if d.particle? or d.interjection? }
+            # move any remaining discourse children to the new head (note that we need to keep some aux'es to get them as "fixed" dependents
+            dependents.each { |d| d.head_id = pred.id unless d.relation == 'aux' and ['Px', 'Pr'].include? d.part_of_speech }
           end
         end
 
