@@ -227,7 +227,8 @@ module PROIEL::Converter
         @id = id
         @head_id = head_id
         @form = form
-        @lemma, @variant = lemma.split("#")
+        @lemma = lemma
+        @baselemma, @variant = @lemma.split("#")
         @part_of_speech = part_of_speech
         @language = language
         @morphology = morphology
@@ -433,7 +434,7 @@ module PROIEL::Converter
       def to_conll
         [@id,
          @form,
-         @lemma,
+         @baselemma,
          @upos,
          @part_of_speech,
          format_features(@features),
