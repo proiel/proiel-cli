@@ -58,11 +58,6 @@ module PROIEL
 
                 source.divs.each do |div|
                   if include_div?(div, options)
-                    mandatory_features = %i()
-
-                    optional_features = []
-                    optional_features += %i(presentation_before presentation_after)
-                    optional_features += %i(id alignment_id) unless options['remove-alignments']
 
                     overrides = {
                       div: {},
@@ -70,73 +65,7 @@ module PROIEL
                       token: {}
                     }
 
-                    if options['infer-alignments'] and source.alignment_id
-                      aligned_source = tb.find_source(source.alignment_id)
-                      # FIXME: how to behave here? overwrite existing? what if nil? how to deal with multiple aligned divs?
-                      overrides[:div][:alignment_id] = div.alignment_id || div.inferred_alignment(aligned_source).map(&:id).join(',')
-                    end
-
-                    builder.div(grab_features(div, mandatory_features, optional_features, overrides[:div])) do
-                      builder.title div.title if div.title
-
-                      div.sentences.each do |sentence|
-                        if include_sentence?(sentence, options)
-                          mandatory_features = %i(id)
-
-                          optional_features = [] # we do it this way to preserve the order of status and presentation_* so that diffing files is easier
-                          optional_features += %i(status) unless options['remove-status']
-                          optional_features += %i(presentation_before presentation_after)
-                          optional_features += %i(alignment_id) unless options['remove-alignments']
-                          optional_features += %i(annotated_at) unless options['remove-annotator']
-                          optional_features += %i(reviewed_at) unless options['remove-reviewer']
-                          optional_features += %i(annotated_by) unless options['remove-annotator']
-                          optional_features += %i(reviewed_by) unless options['remove-reviewer']
-
-                          builder.sentence(grab_features(sentence, mandatory_features, optional_features)) do
-                            sentence.tokens.each do |token|
-                              next if token.empty_token_sort == 'P' and options['remove-information-structure']
-                              next if token.empty_token_sort == 'C' and options['remove-syntax']
-                              next if token.empty_token_sort == 'V' and options['remove-syntax']
-
-                              mandatory_features = %i(id)
-
-                              optional_features = %i(citation_part)
-                              optional_features += %i(lemma part_of_speech morphology) unless options['remove-morphology']
-                              optional_features += %i(head_id relation) unless options['remove-syntax']
-                              optional_features += %i(antecedent_id information_status contrast_group) unless options['remove-information-structure']
-
-                              unless token.is_empty?
-                                mandatory_features << :form
-                                optional_features += %i(presentation_before presentation_after foreign_ids)
-                              else
-                                mandatory_features << :empty_token_sort
-                              end
-
-                              if options['remove-not-reviewed'] or options['remove-not-annotated']
-                                overrides[:token][:antecedent_id] =
-                                  (token.antecedent_id and include_sentence?(tb.find_token(token.antecedent_id.to_i).sentence, options)) ? token.antecedent_id : nil
-                              end
-
-                              optional_features += %i(alignment_id) unless options['remove-alignments']
-
-                              attrs = grab_features(token, mandatory_features, optional_features, overrides[:token])
-
-                              unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
-                                builder.token(attrs) do
-                                  token.slashes.each do |relation, target_id|
-                                    builder.slash(:"target-id" => target_id, relation: relation)
-                                  end
-                                end
-                              else
-                                unless options['remove-syntax'] and token.is_empty?
-                                  builder.token(attrs)
-                                end
-                              end
-                            end
-                          end
-                        end
-                      end
-                    end
+                    process_div(builder, tb, div, options, overrides)
                   end
                 end
               end
@@ -160,6 +89,98 @@ module PROIEL
             not options['remove-not-reviewed']
           else
             not options['remove-not-reviewed'] and not options['remove-not-annotated']
+          end
+        end
+
+        def include_token?(token, options)
+          if options['remove-syntax'] and (token.empty_token_sort == 'C' or token.empty_token_sort == 'V')
+            false
+          elsif token.empty_token_sort == 'P' and options['remove-information-structure']
+            false
+          else
+            true
+          end
+        end
+
+        def process_div(builder, tb, div, options, overrides)
+          mandatory_features = %i()
+
+          optional_features = []
+          optional_features += %i(presentation_before presentation_after)
+          optional_features += %i(id alignment_id) unless options['remove-alignments']
+
+          if options['infer-alignments'] and source.alignment_id
+            aligned_source = tb.find_source(source.alignment_id)
+            # FIXME: how to behave here? overwrite existing? what if nil? how to deal with multiple aligned divs?
+            overrides[:div][:alignment_id] = div.alignment_id || div.inferred_alignment(aligned_source).map(&:id).join(',')
+          end
+
+          builder.div(grab_features(div, mandatory_features, optional_features, overrides[:div])) do
+            builder.title div.title if div.title
+
+            div.sentences.select do |sentence|
+              include_sentence?(sentence, options)
+            end.each do |sentence|
+              process_sentence(builder, tb, sentence, options, overrides)
+            end
+          end
+        end
+
+        def process_sentence(builder, tb, sentence, options, overrides)
+          mandatory_features = %i(id)
+
+          optional_features = [] # we do it this way to preserve the order of status and presentation_* so that diffing files is easier
+          optional_features += %i(status) unless options['remove-status']
+          optional_features += %i(presentation_before presentation_after)
+          optional_features += %i(alignment_id) unless options['remove-alignments']
+          optional_features += %i(annotated_at) unless options['remove-annotator']
+          optional_features += %i(reviewed_at) unless options['remove-reviewer']
+          optional_features += %i(annotated_by) unless options['remove-annotator']
+          optional_features += %i(reviewed_by) unless options['remove-reviewer']
+
+          builder.sentence(grab_features(sentence, mandatory_features, optional_features)) do
+            sentence.tokens.select do |token|
+              include_token?(token, options)
+            end.each do |token|
+              process_token(builder, tb, token, options, overrides)
+            end
+          end
+        end
+
+        def process_token(builder, tb, token, options, overrides)
+          mandatory_features = %i(id)
+
+          optional_features = %i(citation_part)
+          optional_features += %i(lemma part_of_speech morphology) unless options['remove-morphology']
+          optional_features += %i(head_id relation) unless options['remove-syntax']
+          optional_features += %i(antecedent_id information_status contrast_group) unless options['remove-information-structure']
+
+          unless token.is_empty?
+            mandatory_features << :form
+            optional_features += %i(presentation_before presentation_after foreign_ids)
+          else
+            mandatory_features << :empty_token_sort
+          end
+
+          if options['remove-not-reviewed'] or options['remove-not-annotated']
+            overrides[:token][:antecedent_id] =
+              (token.antecedent_id and include_sentence?(tb.find_token(token.antecedent_id.to_i).sentence, options)) ? token.antecedent_id : nil
+          end
+
+          optional_features += %i(alignment_id) unless options['remove-alignments']
+
+          attrs = grab_features(token, mandatory_features, optional_features, overrides[:token])
+
+          unless token.slashes.empty? or options['remove-syntax'] # this extra test avoids <token></token> style XML
+            builder.token(attrs) do
+              token.slashes.each do |relation, target_id|
+                builder.slash(:"target-id" => target_id, relation: relation)
+              end
+            end
+          else
+            unless options['remove-syntax'] and token.is_empty?
+              builder.token(attrs)
+            end
           end
         end
 
