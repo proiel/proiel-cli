@@ -12,6 +12,8 @@ module PROIEL
               f.description 'Convert to PROIEL XML format'
               f.option 'remove-not-annotated', '--remove-not-annotated', 'Remove sentences that have not been annotated'
               f.option 'remove-not-reviewed', '--remove-not-reviewed', 'Remove sentences that have not been reviewed'
+              f.option 'remove-annotated', '--remove-annotated', 'Remove sentences that have been annotated'
+              f.option 'remove-reviewed', '--remove-reviewed', 'Remove sentences that have been reviewed'
               f.option 'remove-morphology', '--remove-morphology', 'Remove morphological annotation (part of speech, morphology and lemma)'
               f.option 'remove-syntax', '--remove-syntax', 'Remove syntactic annotation (relation, head ID and slashes)'
               f.option 'remove-information-structure', '--remove-information-structure', 'Remove informtion structure annotation (antecedent ID, information status and contrast group)'

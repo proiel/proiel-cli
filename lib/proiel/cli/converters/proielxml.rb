@@ -84,9 +84,9 @@ module PROIEL
         def include_sentence?(sentence, options)
           case sentence.status
           when :reviewed
-            true
+            not options['remove-reviewed'] and not options['remove-annotated']
           when :annotated
-            not options['remove-not-reviewed']
+            not options['remove-not-reviewed'] and not options['remove-annotated']
           else
             not options['remove-not-reviewed'] and not options['remove-not-annotated']
           end
@@ -162,7 +162,7 @@ module PROIEL
             mandatory_features << :empty_token_sort
           end
 
-          if options['remove-not-reviewed'] or options['remove-not-annotated']
+          if options['remove-not-reviewed'] or options['remove-not-annotated'] or options['remove-annotated'] or options['remove-annotated']
             overrides[:token][:antecedent_id] =
               (token.antecedent_id and include_sentence?(tb.find_token(token.antecedent_id.to_i).sentence, options)) ? token.antecedent_id : nil
           end
