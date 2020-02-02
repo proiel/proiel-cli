@@ -11,9 +11,11 @@ module PROIEL
               div.sentences.each do |sentence|
                 puts "%% Sentence #{sentence.id}"
                 sentence.tokens.each do |token|
-                  unless token.form.nil?
+                  unless token.form.nil? or token.pos.nil?
                     if options['morphology']
-                      puts [token.form, token.pos + token.morphology].join("\t")
+                      unless token.morphology.nil?
+                        puts [token.form, token.pos + token.morphology].join("\t")
+                      end
                     else
                       puts [token.form, token.pos].join("\t")
                     end
