@@ -11,7 +11,7 @@ This is a command-line interface for manipulating PROIEL treebanks.
 
 ## Installation
 
-This library requires Ruby >= 2.1. Install as
+This library requires Ruby >= 2.4. Install as
 
 ```shell
 gem install proiel-cli
