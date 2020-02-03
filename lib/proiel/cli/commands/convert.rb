@@ -30,7 +30,8 @@ module PROIEL
             c.command(:tnt) do |f|
               f.syntax '[options] filename(s)'
               f.description 'Convert to TNT/hunpos format'
-              f.option 'morphology', '-m', '--morphology', 'Include morphological tags'
+              f.option 'morphology', '-m', '--morphology', 'Include POS and morphological tags'
+              f.option 'pos', '-p', '--pos', 'Include POS tags'
               f.action { |args, options| process(args, options, PROIEL::Converter::TNT) }
             end
 
