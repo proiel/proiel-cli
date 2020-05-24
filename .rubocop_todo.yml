@@ -747,25 +747,6 @@ Style/StderrPuts:
     - 'lib/proiel/cli/commands/visualize.rb'
     - 'lib/proiel/cli/converters/conll-u.rb'
 
-# Offense count: 161
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'lib/proiel/cli/commands/build.rb'
-    - 'lib/proiel/cli/commands/convert.rb'
-    - 'lib/proiel/cli/commands/info.rb'
-    - 'lib/proiel/cli/commands/visualize.rb'
-    - 'lib/proiel/cli/converters/conll-u.rb'
-    - 'lib/proiel/cli/converters/conll-u/morphology.rb'
-    - 'lib/proiel/cli/converters/conll-u/syntax.rb'
-    - 'lib/proiel/cli/converters/lexc.rb'
-    - 'lib/proiel/cli/converters/tiger.rb'
-    - 'lib/proiel/cli/converters/tiger2.rb'
-    - 'lib/proiel/cli/converters/tsv.rb'
-    - 'proiel-cli.gemspec'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, MinSize.

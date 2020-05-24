@@ -22,10 +22,10 @@ module PROIEL::Converter
           end
         end
 
-        puts "LEXICON Root"
+        puts 'LEXICON Root'
         lexicon.sort.each do |form, tags|
           tags.sort.uniq.each do |tag|
-            puts "  %s:%s #;" % [tag, form]
+            puts '  %s:%s #;' % [tag, form]
           end
         end
       end

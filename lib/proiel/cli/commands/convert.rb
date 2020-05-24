@@ -84,7 +84,7 @@ module PROIEL
           tb = PROIEL::Treebank.new
 
           if args.empty?
-            STDERR.puts "Reading from standard input...".green if options['verbose']
+            STDERR.puts 'Reading from standard input...'.green if options['verbose']
             tb.load_from_xml(STDIN)
           else
             args.each do |filename|

@@ -39,7 +39,7 @@ module PROIEL
           dict = PROIEL::Dictionary::Builder.new
 
           if input_filenames.empty?
-            STDERR.puts "Reading from standard input...".green if options['verbose']
+            STDERR.puts 'Reading from standard input...'.green if options['verbose']
 
             tb.load_from_xml(STDIN)
             tb.sources.each { |source| dict.add_source!(source) }
@@ -62,7 +62,7 @@ module PROIEL
           dicts = {}
 
           if args.empty?
-            STDERR.puts "Reading from standard input...".green if options['verbose']
+            STDERR.puts 'Reading from standard input...'.green if options['verbose']
 
             tb = PROIEL::Treebank.new
             tb.load_from_xml(STDIN)

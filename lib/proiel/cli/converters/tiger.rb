@@ -82,12 +82,12 @@ module PROIEL::Converter
               attrs[name] = t.lemma
             when :pos
               if t.empty_token_sort
-                attrs[name] = t.empty_token_sort + "-"
+                attrs[name] = t.empty_token_sort + '-'
               else
                 attrs[name] = t.pos
               end
             when *MORPHOLOGICAL_FEATURES
-              attrs[name] = name.to_s.split("_").map { |a| t.morphology_hash[a.to_sym] || '-' }.join
+              attrs[name] = name.to_s.split('_').map { |a| t.morphology_hash[a.to_sym] || '-' }.join
             else
               if t.respond_to?(name)
                 attrs[name] = t.send(name)
@@ -95,7 +95,7 @@ module PROIEL::Converter
                 raise "Do not know how to get required attribute #{name}"
               end
             end
-            attrs[name] ||= "--"
+            attrs[name] ||= '--'
           end
         end
 

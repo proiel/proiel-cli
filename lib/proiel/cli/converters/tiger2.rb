@@ -3,12 +3,12 @@ module PROIEL::Converter
     SCHEMA_FILE = File.join('tiger2', 'Tiger2.xsd')
 
     class << self
-      def process(tb, options)
+      def process(tb, _)
         selected_features = [] # TODO
         @features = selected_features.map { |f| [f, 'FREC'] }
 
         builder = Builder::XmlMarkup.new(target: STDOUT, indent: 2)
-        builder.instruct! :xml, version: "1.0", encoding: "UTF-8"
+        builder.instruct! :xml, version: '1.0', encoding: 'UTF-8'
 
         tb.sources.each do |source|
           @hack = tb.annotation_schema
@@ -32,7 +32,7 @@ module PROIEL::Converter
             builder.meta do
               builder.name(s.title)
               builder.author('The PROIEL project')
-              builder.date(s.export_time.strftime("%F %T %z"))
+              builder.date(s.export_time.strftime('%F %T %z'))
               builder.description
               builder.format
               builder.history
@@ -72,17 +72,17 @@ module PROIEL::Converter
       end
 
       def declare_edgelabels(builder)
-        builder.feature(name: "label", type: "prim", domain: "edge") do
+        builder.feature(name: 'label', type: 'prim', domain: 'edge') do
           declare_primary_edges(builder)
         end
 
-        builder.feature(name: "label", type: "sec", domain: "edge") do
+        builder.feature(name: 'label', type: 'sec', domain: 'edge') do
           declare_secedges(builder)
         end
 
-        builder.feature(name: "label", type: "coref", domain: "edge") do
-          builder.value(name: "antecedent")
-          builder.value(name: "inference")
+        builder.feature(name: 'label', type: 'coref', domain: 'edge') do
+          builder.value(name: 'antecedent')
+          builder.value(name: 'inference')
         end
       end
 
@@ -98,12 +98,12 @@ module PROIEL::Converter
       def write_terminals(builder, s)
         builder.terminals do
           s.tokens.each do |t|
-            builder.t(token_attrs(s, t, 'T').merge({ 'xml:id' => "w#{t.id}"}))
+            builder.t(token_attrs(t, 'T').merge({ 'xml:id' => "w#{t.id}"}))
           end
         end
       end
 
-      def token_attrs(s, t, type)
+      def token_attrs(t, type)
         attrs = {}
 
         @features.each do |name, domain|
@@ -117,12 +117,12 @@ module PROIEL::Converter
               attrs[name] = t.lemma
             when :pos
               if t.empty_token_sort
-                attrs[name] = t.empty_token_sort + "-"
+                attrs[name] = t.empty_token_sort + '-'
               else
                 attrs[name] = t.pos
               end
             when *MORPHOLOGICAL_FEATURES
-              attrs[name] = name.to_s.split("_").map { |a| t.morphology_hash[a.to_sym] || '-' }.join
+              attrs[name] = name.to_s.split('_').map { |a| t.morphology_hash[a.to_sym] || '-' }.join
             else
               if t.respond_to?(name)
                 attrs[name] = t.send(name)
@@ -130,7 +130,7 @@ module PROIEL::Converter
                 raise "Do not know how to get required attribute #{name}"
               end
             end
-            attrs[name] ||= "--"
+            attrs[name] ||= '--'
           end
         end
 
@@ -151,7 +151,7 @@ module PROIEL::Converter
 
           # Add other NTs
           s.tokens.each do |t|
-            builder.nt(token_attrs(s, t, 'NT').merge('xml:id' => "p#{t.id}")) do
+            builder.nt(token_attrs(t, 'NT').merge('xml:id' => "p#{t.id}")) do
               # Add an edge to the correspoding terminal node
               builder.edge(idref: "w#{t.id}", label: '--')
 
@@ -168,23 +168,23 @@ module PROIEL::Converter
       end
 
       def write_root_edge(t, builder)
-        builder.edge('tiger2:type' => "prim", 'tiger2:target' => "p#{t.id}", :label => t.relation.tag)
+        builder.edge('tiger2:type' => 'prim', 'tiger2:target' => "p#{t.id}", :label => t.relation.tag)
       end
 
       def write_edges(t, builder)
         # Add an edge between this node and the correspoding terminal node unless
         # this is not a morphtaggable node.
-        builder.edge('tiger2:type' => "prim", 'tiger2:target' => "w#{t.id}", :label => '--') if t.is_morphtaggable? or t.empty_token_sort == 'P'
+        builder.edge('tiger2:type' => 'prim', 'tiger2:target' => "w#{t.id}", :label => '--') if t.is_morphtaggable? or t.empty_token_sort == 'P'
 
         # Add primary dependency edges including empty pro tokens if we are exporting info structure as well
-        t.dependents.each { |d| builder.edge('tiger2:type' => "prim", 'tiger2:target' => "p#{d.id}", :label => d.relation.tag) }
+        t.dependents.each { |d| builder.edge('tiger2:type' => 'prim', 'tiger2:target' => "p#{d.id}", :label => d.relation.tag) }
 
         # Add secondary dependency edges
         get_slashes(t).each do |se|
-          builder.edge('tiger2:type' => "sec", 'tiger2:target' => "p#{se.slashee_id}", :label => se.relation.tag)
+          builder.edge('tiger2:type' => 'sec', 'tiger2:target' => "p#{se.slashee_id}", :label => se.relation.tag)
         end
 
-        builder.edge('tiger2:type' => "coref", 'tiger2:target' => t.antecedent_id, :label => (t.information_status_tag == 'acc_inf' ? "inference" : "antecedent") )
+        builder.edge('tiger2:type' => 'coref', 'tiger2:target' => t.antecedent_id, :label => (t.information_status_tag == 'acc_inf' ? 'inference' : 'antecedent'))
       end
     end
   end

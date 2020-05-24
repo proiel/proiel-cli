@@ -65,7 +65,7 @@ module PROIEL::Converter
                                (tk.lemma.split(/[[:space:]]/)[i] || subtok),
                                tk.part_of_speech, # copy the postag
                                tk.morphology,
-                               (i == 0 ? tk.relation : "flat"),
+                               (i == 0 ? tk.relation : 'flat'),
                                nil, #empty_token_sort
                                tk.citation_part,
                                (i == 0 ? tk.presentation_before : nil),
@@ -225,7 +225,7 @@ module PROIEL::Converter
         @slashes = slashes
         @sentence = sentence
         @features = (morphology ? map_morphology(morphology) : '' )
-        @citation_part = "ref=" + (citation_part ? citation_part : "").gsub(/\s/, '_')
+        @citation_part = 'ref=' + (citation_part ? citation_part : '').gsub(/\s/, '_')
         @upos = nil
       end
 
@@ -389,7 +389,7 @@ module PROIEL::Converter
       end
 
       def conj_head
-        raise "Not a conjunct" unless @relation == 'conj'
+        raise 'Not a conjunct' unless @relation == 'conj'
         if head.relation == 'conj'
           head.conj_head
         else
@@ -409,7 +409,7 @@ module PROIEL::Converter
         if features == ''
           '_'
         else
-          features.split("|").sort.join("|")
+          features.split('|').sort.join('|')
         end
       end
 
@@ -451,7 +451,7 @@ module PROIEL::Converter
       end
 
       def find_appositive_head
-        raise "Not an apposition" unless @relation == 'apos'
+        raise 'Not an apposition' unless @relation == 'apos'
         if head.conjunction? and head.relation == 'apos'
           head.find_appositive_head
         else
@@ -576,15 +576,15 @@ module PROIEL::Converter
       end
 
       def has_preposition?
-        dependents.any? { |d| d.preposition? and d.relation == "case" }
+        dependents.any? { |d| d.preposition? and d.relation == 'case' }
       end
 
       def process_preposition!
-        raise "Only prepositions can be processed this way!" unless part_of_speech == 'R-'
+        raise 'Only prepositions can be processed this way!' unless part_of_speech == 'R-'
         obliques = dependents.select { |d| d.relation == 'obl' }
         raise "#{obliques.size} oblique dependents under #{to_n}\n#{to_graph}" if obliques.size > 1
         return if obliques.empty? #shouldn't really happen, but in practice
-        obliques.first.invert!("case") # , "adv")
+        obliques.first.invert!('case') # , "adv")
       end
 
       def remove_empties!
@@ -602,14 +602,14 @@ module PROIEL::Converter
       end
 
       def process_coordination!
-        raise "Only coordinations can be processed this way!" unless conjunction?
+        raise 'Only coordinations can be processed this way!' unless conjunction?
         return if dependents.reject { |d| d.relation == 'aux' }.empty?
         distribute_shared_modifiers!
-        dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id }.first.promote!("conj", "cc")
+        dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id }.first.promote!('conj', 'cc')
       end
 
       def distribute_shared_modifiers!
-        raise "Can only distribute over a conjunction!" unless conjunction?
+        raise 'Can only distribute over a conjunction!' unless conjunction?
         conjuncts, modifiers  = dependents.reject { |d| d.relation == 'aux' }.partition { |d|  d.relation == @relation or (d.relation == 'adv' and @relation == 'xadv') }
         first_conjunct = conjuncts.shift
         raise "No first conjunct under #{to_n}\n#{to_graph}" unless first_conjunct
@@ -628,7 +628,7 @@ module PROIEL::Converter
       # labels are also swapped, but new relations can be specified
       # for both the new dependent and the new head.
       def invert!(new_dependent_relation = nil, new_head_relation = nil)
-        raise "Cannot promote a token under root!" if @head_id == 0
+        raise 'Cannot promote a token under root!' if @head_id == 0
         new_dependent_relation ||= @relation
         new_head_relation ||= head.relation
         new_head_id = head.head_id
@@ -647,7 +647,7 @@ module PROIEL::Converter
       # if it is an empty node, destroyed.
 
       def promote!(new_sibling_relation = nil, new_dependent_relation = 'aux')
-        raise "Cannot promote a token under root!" if @head_id == 0
+        raise 'Cannot promote a token under root!' if @head_id == 0
         new_head_relation = head.relation
         new_head_id = head.head_id
 
