@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 module PROIEL
   module Converter
     class CoNLLU
@@ -145,7 +144,7 @@ module PROIEL
         { 
           'A-' => [['ADJ', lambda { |x| true } ]],
           'C-' => [['CCONJ', lambda { |x| true } ]],
-          'Df' => [['AUX', lambda(&:TAM_particle?)],
+          'Df' => [['AUX', lambda(&:tam_particle?)],
                    ['ADV', lambda(&:negation?), "Polarity=Neg"],
                    ['ADV', lambda { |x| true } ]
                   ],
@@ -175,7 +174,7 @@ module PROIEL
                    ['VERB', lambda { |x| true } ]],
           'S-' => [['DET', lambda { |x| true }, "Definite=Def|PronType=Dem"]], # (we only have definite articles)
           'X-' => [['X', lambda { |x| true } ]]
-                  }
+        }
       
       MORPHOLOGY_MAP = {
         :person => {'1' => 'Person=1', 

@@ -343,7 +343,7 @@ module PROIEL::Converter
         end
       end
 
-      def TAM_particle?
+      def tam_particle?
         @relation == 'aux' and TAM_PARTICLE_LEMMATA.include?([lemma, part_of_speech, language].join(','))
       end
 
