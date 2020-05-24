@@ -15,6 +15,8 @@ module PROIEL
       end
     end
   end
+
+  module Converter; end
 end
 
 def require_all(path)
