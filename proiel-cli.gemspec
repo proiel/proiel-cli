@@ -17,14 +17,14 @@ Gem::Specification.new do |spec|
   spec.executables   = %w(proiel)
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'builder', '~> 3.2.2'
-  spec.add_dependency 'mercenary', '~> 0.3.5'
-  spec.add_dependency 'colorize', '~> 0.7'
+  spec.add_dependency 'builder', '~> 3.2.4'
+  spec.add_dependency 'mercenary', '~> 0.4.0'
+  spec.add_dependency 'colorize', '~> 0.8'
   spec.add_dependency 'proiel', '~> 1.3'
-  spec.add_dependency 'ruby-progressbar', '~> 1.8'
-  spec.add_dependency 'pry', '~> 0.10'
+  spec.add_dependency 'ruby-progressbar', '~> 1.10.1'
+  spec.add_dependency 'pry', '~> 0.13.1'
 
-  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'bundler', '~> 2.1.4'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.6'
   spec.add_development_dependency 'simplecov', '~> 0.14'
