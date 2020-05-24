@@ -4,4 +4,6 @@ rvm:
   - 2.5.7
   - 2.6.5
   - 2.7.0
-before_install: gem install bundler -v 2.0.2
+dist: xenial
+os: linux
+before_install: gem install bundler -v 2.1.4
