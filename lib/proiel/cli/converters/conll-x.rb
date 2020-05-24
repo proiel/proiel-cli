@@ -10,7 +10,7 @@ module PROIEL::Converter
   # Sequences of whitespace in forms and lemmas are represented by '.'.
   class CoNLLX
     class << self
-      def process(tb, options)
+      def process(tb, _)
         tb.sources.each do |source|
           source.sentences.each do |sentence|
             process_sentence(tb, sentence)

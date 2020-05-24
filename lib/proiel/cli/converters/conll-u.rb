@@ -8,7 +8,7 @@ module PROIEL::Converter
   # annotation in order to produce a meaningful representation in CoNLL-U.
   class CoNLLU
     class << self
-      def process(tb, options = [])
+      def process(tb, _)
         error_count = 0
         sentence_count = 0
         tb.sources.each do |source|
@@ -503,7 +503,7 @@ module PROIEL::Converter
         when String
           possible_relations
         when Array
-          x = find_relation possible_relations.dup
+          find_relation(possible_relations.dup)
         when nil
           # do nothing: the token has already changed its relation
           @relation
@@ -590,7 +590,10 @@ module PROIEL::Converter
       def remove_empties!
         dependents.each(&:remove_empties!)
         if is_empty?
-          dependents.each { |d| d.head_id = head_id; d.relation = 'remnant' }
+          dependents.each do |d|
+            d.head_id = head_id
+            d.relation = 'remnant'
+          end
           @sentence.remove_token! self
         end
       end

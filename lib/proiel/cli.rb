@@ -24,6 +24,6 @@ module PROIEL
   module Converter; end
 end
 
-Dir[File.join(File.dirname(__FILE__), 'cli', '{commands,converters}', '*.rb')].each do |f|
+Dir[File.join(File.dirname(__FILE__), 'cli', '{commands,converters}', '*.rb')].sort.each do |f|
   require f
 end

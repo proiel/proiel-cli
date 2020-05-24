@@ -26,7 +26,7 @@ module PROIEL
 
           if options['glosses']
             languages = (options['gloss-languages'] || 'eng').split(',').map(&:to_sym)
-            if File.exists?(options['glosses'])
+            if File.exist?(options['glosses'])
               dict.add_external_glosses!(options['glosses'], languages)
             else
               STDERR.puts "#{options['glosses']} not found"

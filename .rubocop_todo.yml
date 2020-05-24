@@ -293,24 +293,6 @@ Lint/Debugger:
   Exclude:
     - 'lib/proiel/cli/commands/shell.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Lint/DeprecatedClassMethods:
-  Exclude:
-    - 'lib/proiel/cli/commands/dictionary.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Lint/NonDeterministicRequireOrder:
-  Exclude:
-    - 'lib/proiel/cli.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Lint/RedundantSplatExpansion:
-  Exclude:
-    - 'bin/proiel'
-
 # Offense count: 4
 Lint/ShadowingOuterLocalVariable:
   Exclude:
@@ -328,24 +310,6 @@ Lint/UnusedBlockArgument:
     - 'lib/proiel/cli/converters/conll-u.rb'
     - 'lib/proiel/cli/converters/conll-u/morphology.rb'
     - 'lib/proiel/cli/converters/conll-u/syntax.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'lib/proiel/cli/commands/tokenize.rb'
-    - 'lib/proiel/cli/commands/validate.rb'
-    - 'lib/proiel/cli/converters/conll-u.rb'
-    - 'lib/proiel/cli/converters/conll-x.rb'
-    - 'lib/proiel/cli/converters/tiger.rb'
-    - 'lib/proiel/cli/converters/tiger2.rb'
-
-# Offense count: 2
-Lint/UselessAssignment:
-  Exclude:
-    - 'lib/proiel/cli/commands/build.rb'
-    - 'lib/proiel/cli/converters/conll-u.rb'
 
 # Offense count: 39
 # Configuration parameters: IgnoredMethods.
@@ -366,7 +330,7 @@ Metrics/BlockNesting:
 # Offense count: 9
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 355
+  Max: 358
 
 # Offense count: 13
 # Configuration parameters: IgnoredMethods.
@@ -507,18 +471,6 @@ Style/EmptyElse:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/EmptyLiteral:
-  Exclude:
-    - 'lib/proiel/cli/commands/tokenize.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'proiel-cli.gemspec'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: each, for
 Style/For:
@@ -570,11 +522,6 @@ Style/HashSyntax:
     - 'lib/proiel/cli/converters/conll-u.rb'
     - 'lib/proiel/cli/converters/conll-u/morphology.rb'
     - 'lib/proiel/cli/converters/proielxml.rb'
-
-# Offense count: 2
-Style/IdenticalConditionalBranches:
-  Exclude:
-    - 'lib/proiel/cli/commands/build.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -715,13 +662,6 @@ Style/SafeNavigation:
   Exclude:
     - 'lib/proiel/cli/converters/conll-u.rb'
     - 'lib/proiel/cli/converters/conll-u/syntax.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'lib/proiel/cli/converters/conll-u.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

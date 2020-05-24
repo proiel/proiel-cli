@@ -10,7 +10,7 @@ module PROIEL::Converter
     OTHER_FEATURES = %i(lemma pos information_status antecedent_id word)
 
     class << self
-      def process(tb, options)
+      def process(tb, _)
         selected_features = MORPHOLOGICAL_FEATURES + OTHER_FEATURES
         @features = selected_features.map { |f| [f, 'FREC'] }.to_h
 
@@ -68,7 +68,7 @@ module PROIEL::Converter
         end
       end
 
-      def token_attrs(s, t, type)
+      def token_attrs(t, type)
         attrs = {}
 
         @features.each do |name, domain|
@@ -105,7 +105,7 @@ module PROIEL::Converter
       def write_terminals(builder, s)
         builder.terminals do
           s.tokens.each do |t|
-            builder.t(token_attrs(s, t, 'T').merge({ id: "w#{t.id}"}))
+            builder.t(token_attrs(t, 'T').merge({ id: "w#{t.id}"}))
           end
         end
       end
@@ -124,7 +124,7 @@ module PROIEL::Converter
 
           # Add other NTs
           s.tokens.each do |t|
-            builder.nt(token_attrs(s, t, 'NT').merge(id: "p#{t.id}")) do
+            builder.nt(token_attrs(t, 'NT').merge(id: "p#{t.id}")) do
               # Add an edge to the correspoding terminal node
               builder.edge(idref: "w#{t.id}", label: '--')
 

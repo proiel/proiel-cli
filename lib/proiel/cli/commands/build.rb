@@ -33,7 +33,6 @@ module PROIEL
           end
 
           output_filename, *input_filenames = args
-          dicts = {}
 
           tb = PROIEL::Treebank.new
           dict = PROIEL::Dictionary::Builder.new
@@ -66,10 +65,6 @@ module PROIEL
 
             tb = PROIEL::Treebank.new
             tb.load_from_xml(STDIN)
-            tb.sources.each do |source|
-              dicts[source.language] ||= PROIEL::Dictionary::Builder.new
-              dicts[source.language].add_source!(source)
-            end
           else
             tb = PROIEL::Treebank.new
 
@@ -77,11 +72,11 @@ module PROIEL
               STDERR.puts "Reading #{filename}...".green if options['verbose']
               tb.load_from_xml(filename)
             end
+          end
 
-            tb.sources.each do |source|
-              dicts[source.language] ||= PROIEL::Dictionary::Builder.new
-              dicts[source.language].add_source!(source)
-            end
+          tb.sources.each do |source|
+            dicts[source.language] ||= PROIEL::Dictionary::Builder.new
+            dicts[source.language].add_source!(source)
           end
 
           dicts.each do |language, dict|
