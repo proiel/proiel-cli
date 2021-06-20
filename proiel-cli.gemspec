@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ruby-progressbar', '~> 1.10.1'
 
   spec.add_development_dependency 'aruba', '~> 0.14'
-  spec.add_development_dependency 'bundler', '~> 2.1.4'
+  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'cucumber', '~> 3.1'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.6'
