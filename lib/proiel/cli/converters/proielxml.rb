@@ -67,7 +67,7 @@ module PROIEL::Converter
                     token: {}
                   }
 
-                  process_div(builder, tb, div, options, overrides)
+                  process_div(builder, tb, source, div, options, overrides)
                 end
               end
             end
@@ -104,7 +104,7 @@ module PROIEL::Converter
         end
       end
 
-      def process_div(builder, tb, div, options, overrides)
+      def process_div(builder, tb, source, div, options, overrides)
         mandatory_features = %i()
 
         optional_features = []
