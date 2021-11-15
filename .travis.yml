@@ -1,9 +1,9 @@
 language: ruby
 rvm:
-  - 2.4.9
-  - 2.5.7
-  - 2.6.5
-  - 2.7.0
+  - 2.4.10
+  - 2.5.9
+  - 2.6.8
+  - 2.7.4
 dist: xenial
 os: linux
 before_install: gem install bundler -v 2.1.4
