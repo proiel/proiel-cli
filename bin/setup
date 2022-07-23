@@ -1,8 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-IFS=$'\n\t'
-
-bundle install
-
-# Issue a warning if dot cannot be found
-command -v dot >/dev/null 2>&1 || { echo >&2; echo >&2 "Warning: dot binary not found. Please install graphviz."; exit 0; }
