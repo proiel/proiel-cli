@@ -254,6 +254,7 @@ module PROIEL
         for tag in 0..morph.length - 1
           res << MORPHOLOGY_MAP[MORPHOLOGY_POSITIONAL_TAG_SEQUENCE[tag]][morph[tag]]
         end
+        res = res.reject {|v| v == 'VerbForm=Part'} if res.include?('VerbForm=PartRes|Tense=Past')
         res.compact.join('|')
         end
 

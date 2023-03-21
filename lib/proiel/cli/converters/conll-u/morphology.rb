@@ -215,7 +215,7 @@ module PROIEL
         :tense  => {'p' => 'Tense=Pres', 
                     'i' => 'Tense=Past|Aspect=Imp', 
                     'r' => 'Tense=Past|Aspect=Perf', #'Tense=Perfect', 
-                    's' => 'Aspect=Res',
+                    's' => 'VerbForm=PartRes|Tense=Past',
                     # tags Perf is not universal
                     'a' => 'Tense=Past|Aspect=Perf', 
                     'u' => 'Tense=Past', 
