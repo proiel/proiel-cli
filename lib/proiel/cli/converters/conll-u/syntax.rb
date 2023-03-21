@@ -40,7 +40,7 @@ module PROIEL
                   ["flat:foreign", lambda(&:foreign?) ],
                   # We need some more distinctions to get Gothic and Armenian. Introduce language in the treebank? (Read from xml)
                   ["mark", lambda { |x| ['R-'].include? x.part_of_speech  } ], #'R-' as infinitive marker in Gothic
-                  ["aux", lambda { |x| ['Pk' ].include? x.part_of_speech  } ], #reflexive as valency reducer
+                  ["expl:pv", lambda { |x| ['Pk' ].include? x.part_of_speech  } ], #reflexive as valency reducer
                   ['amod', lambda { |x| x.preposition? } ], # Armenian DOM
                   ['fixed', lambda { |x| ['Px', 'Pr'].include? x.part_of_speech } ], # NB there are a lot of bogus annotations with 'Px'
                   
