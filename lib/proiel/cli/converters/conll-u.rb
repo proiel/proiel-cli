@@ -197,12 +197,14 @@ module PROIEL
         def restructure_graph!
           @tokens.delete_if { |n| n.empty_token_sort == 'P' }
           @tokens.select(&:preposition?).each(&:process_preposition!)
+          @tokens.select { |t| t.comparison_word? and t.dependents and t.dependents.select { |d|  ['sub','obj','obl','comp','adv'].include?(d.relation) }.any? }.each(&:process_comparison!)
           roots.each(&:change_coordinations!)
           @tokens.select(&:copula?).each(&:process_copula!)
           prune_empty_rootnodes!
           # do ellipses from left to right for proper remnant treatment
           @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id }.each(&:process_ellipsis!)
           demote_subjunctions!
+          #NB! apos gets overridden by process_comparison so some dislocations are lost
           @tokens.select { |t| t.relation == 'apos' and t.id < t.head_id }.each(&:process_dislocation!)
           # DIRTY: remove the rest of the empty nodes by attaching them
           # to their grandmother with remnant. This is the best way to
@@ -309,6 +311,10 @@ module PROIEL
           AUXILIARIES.include?([lemma, part_of_speech, language].join(',')) or (part_of_speech == "V-" and relation == 'aux')
         end
           
+        def comparison_word?
+          COMPARISON_LEMMATA.include?([lemma,part_of_speech,language].join(','))
+        end
+                                      
         def determiner?
           DETERMINERS.include? @part_of_speech
         end
@@ -554,6 +560,14 @@ module PROIEL
             # move any remaining discourse children to the new head (note that we need to keep some aux'es to get them as "fixed" dependents
             dependents.each { |d| d.head_id = pred.id unless d.relation == 'aux' and ['Px', 'Pr'].include? d.part_of_speech }
           end
+        end
+
+        def process_comparison!
+          cl = dependents.select { |d| ['sub','obj','obl','comp','adv'].include?(d.relation) }
+          head.relation = 'advcl:cmp' if head and head.part_of_speech == 'C-' and head.relation == relation
+          comp = cl.first
+          comp.invert!('mark','advcl:cmp')
+          dependents.each { |d| d.head_id = comp.id }
         end
 
         def process_dislocation!

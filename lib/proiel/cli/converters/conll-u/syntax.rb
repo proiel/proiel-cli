@@ -75,6 +75,7 @@ module PROIEL
                   ],
         "rel" => "acl", # add :relcl?
         "sub" => [["nsubj:pass", lambda { |x| x.head and x.head.passive? } ],
+                  #["obl", lambda { |x| x.head and x.head.part_of_speech == 'Df' } ],
                   ["nsubj", lambda { |x| true }],
                  ],
         "voc" => "vocative",
