@@ -68,7 +68,7 @@ module PROIEL
                                  (tk.lemma.split(/[[:space:]]/)[i] || subtok), 
                                  tk.part_of_speech, # copy the postag
                                  tk.morphology,
-                                 (i == 0 ? tk.relation : "flat"),
+                                 (i == 0 ? tk.relation : "fixed"),
                                  nil, #empty_token_sort
                                  tk.citation_part,
                                  (i == 0 ? tk.presentation_before : nil),
@@ -569,7 +569,7 @@ module PROIEL
           else
             pred.invert!('mark')
             # move any remaining discourse children to the new head (note that we need to keep some aux'es to get them as "fixed" dependents
-            dependents.each { |d| d.head_id = pred.id unless d.relation == 'aux' and ['Px', 'Pr'].include? d.part_of_speech }
+            dependents.each { |d| d.head_id = pred.id unless (d.relation == 'aux' and ['Px', 'Pr'].include? d.part_of_speech) or d.relation == 'fixed' }
           end
         end
 
