@@ -205,6 +205,7 @@ module PROIEL
                             'ὡς,Df,grc',
                             'ὡσεί,Df,grc',
                             'ὥσπερ,Df,grc',
+                            'ако,Df,orv',
                             'акъже,Df,orv',
                             'акы,Df,orv',
                             'акꙑ,Df,chu',

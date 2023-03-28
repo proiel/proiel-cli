@@ -9,13 +9,13 @@ module PROIEL
         "adv" =>  [["advcl", lambda(&:clausal?) ],
                    ["advmod", lambda { |x| x.adverb? } ],
                    ["advmod", lambda(&:adjectival?) ], # adjective for adverb
-                   ["obl", lambda { |x| x.nominal? or x.preposition? } ], 
+                   ["obl", lambda { |x| x.nominal? or x.preposition? or x.has_preposition? } ], 
                    ["advmod", lambda { |x| true } ],
                   ],
         "ag" => "obl:agent", # add :agent" once defined
         "apos" => [["flat:name", lambda { |x| x.proper_noun? and x.head and x.head.proper_noun? } ],
-                   ["appos", lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.nominal? } ],
                    ["acl", lambda { |x| x.clausal? and x.head and x.head.nominal? } ],  # add :relcl ?
+                   ["appos", lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.nominal? } ],
                    ["advcl", lambda(&:clausal?) ],
                    ["parataxis", lambda { |x| x.head and x.head.clausal? } ],
                    # what to do about sentential appositions? attempt here to make them parataxis, but there are some legitimate nominal appos under root nominals, so overgenerates slightly
