@@ -24,8 +24,8 @@ module PROIEL
         "arg" => "dep",
         "atr" => [["nummod", lambda(&:cardinal?) ],
                   ["det", lambda { |x| x.pronominal? and !(!x.genitive? and x.head and x.head.genitive?) } ], #TODO check
-                  ["nmod", lambda(&:nominal?) ], 
                   ["acl", lambda { |x| x.clausal? } ],  # add :relcl?
+                  ["nmod", lambda(&:nominal?) ], 
                   ["advmod", lambda { |x| x.head and x.head.clausal? } ],
                   ["amod", lambda { |x| true } ], #default
                  ],

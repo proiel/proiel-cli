@@ -281,11 +281,17 @@ module PROIEL
           @part_of_speech == 'Ma'
         end
 
-        # A node is clausal if it is a verb and not nominalized and not long-form; or it has a copula dependent; or it has a subject (e.g. in an absolute constructino without a verb; or if it is the root (e.g. in a nominal clause)
+        def relative?
+          @part_of_speech == 'Pr' or @part_of_speech == 'Dq'
+        end
+
+        # A node is clausal if it is a verb and not nominalized and not long-form; or it has a copula dependent; or it has a subject (e.g. in an absolute constructino without a verb; or it has a subjunction dependent; or it has a relative pronoun/adverb dependent; or if it is the root (e.g. in a nominal clause)
         def clausal?
           (@part_of_speech == 'V-' and !nominalized? and !long?) or
             dependents.any?(&:copula?) or
             dependents.any? { |d| ['sub', 'nsubj', 'nsubjpass', 'csubj', 'csubjpass'].include? d.relation  } or
+            dependents.any?(&:subjunction?) or
+            dependents.any?(&:relative?) or
             root?
         end
 
