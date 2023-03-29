@@ -62,10 +62,11 @@ module PROIEL
         "obl" => [# normally a preposition will be subordinate to its noun, this captures adverbial use of prepositions
                   ["advmod", lambda { |x| x.adverb? } ], 
                   ["obl", lambda { |x| x.has_preposition? or x.preposition? } ],
-                  ["iobj", lambda(&:nominal?) ],# if nominal (NB check for presence of article!) TODO: should be "obj" if the verb is monovalent (even by elision)
-                  ["iobj", lambda(&:adjectival?) ], # OBL adjectives are nominalized 
+                  ["obl", lambda { |x| x.head and x.head.adverb? } ],
+                  ["obl:arg", lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.clausal? } ],# if nominal (NB check for presence of article!) TODO: should be "obj" if the verb is monovalent (even by elision)
+                  #["obl:arg", lambda(&:adjectival?) ], # OBL adjectives are nominalized 
                   ["advcl", lambda(&:clausal?) ], # this seems to happen with ad libros legendos etc. but check closer!
-                  ["iobj", lambda { |x| true } ], 
+                  ["obl", lambda { |x| true } ], 
                  ],
         "parpred" => "parataxis",
         "part" => "nmod",
