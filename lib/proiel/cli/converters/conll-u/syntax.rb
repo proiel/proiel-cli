@@ -10,7 +10,7 @@ module PROIEL
                    ["advmod", lambda { |x| x.adverb? } ],
                    ["advmod", lambda(&:adjectival?) ], # adjective for adverb
                    ["obl", lambda { |x| x.nominal? or x.preposition? or x.has_preposition? } ], 
-                   ["advmod", lambda { |x| true } ],
+                   ["obl", lambda { |x| true } ],
                   ],
         "ag" => "obl:agent", # add :agent" once defined
         "apos" => [["flat:name", lambda { |x| x.proper_noun? and x.head and x.head.proper_noun? } ],
@@ -26,7 +26,7 @@ module PROIEL
                   ["det", lambda { |x| x.pronominal? and !(!x.genitive? and x.head and x.head.genitive?) } ], #TODO check
                   ["acl", lambda { |x| x.clausal? } ],  # add :relcl?
                   ["nmod", lambda(&:nominal?) ], 
-                  ["advmod", lambda { |x| x.head and x.head.clausal? } ],
+                  ["advmod", lambda { |x| x.head and !x.head.nominal? and x.head.clausal? } ],
                   ["amod", lambda { |x| true } ], #default
                  ],
         "aux" => [["det", lambda(&:determiner?) ],
