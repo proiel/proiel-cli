@@ -80,7 +80,9 @@ module PROIEL
                   #["obl", lambda { |x| x.head and x.head.part_of_speech == 'Df' } ],
                   ["nsubj", lambda { |x| true }],
                  ],
-        "voc" => "vocative",
+        "voc" => [["discourse", lambda { |x| x.part_of_speech == 'I-' } ],
+                  ["vocative", lambda { |x| true } ],
+                 ],
         "xadv" => [["advcl", lambda(&:clausal?)], #add :contr ?
                    ["xcomp", lambda { |x| x.nominal? or x.pronominal? or x.cardinal?} ],
                    ["advmod", lambda { |x| true } ], # add :contr ?
