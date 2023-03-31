@@ -257,8 +257,8 @@ module PROIEL
                    ['PRON', lambda { |x| true }, "PronType=Prs|Reflex=Yes"]],
           'Pp' => [['PRON', lambda { |x| true }, "PronType=Prs"]],
           'Pr' => [['PRON', lambda { |x| true }, "PronType=Rel"]],
-          'Ps' => [['ADJ', lambda { |x| true }, "Poss=Yes"]],   ###  NB no evidence for a pronominal/determiner-like nature here
-          'Pt' => [['ADJ', lambda { |x| true }, "Poss=Yes|Reflex=Yes" ]],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Ps' => [['DET', lambda { |x| true }, "Poss=Yes"]],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Pt' => [['DET', lambda { |x| true }, "Poss=Yes|Reflex=Yes" ]],   ###  NB no evidence for a pronominal/determiner-like nature here
           'Px' => [['DET', lambda { |x| true } ]], 
           'Py' => [['PRON', lambda { |x| true } ]], 
           'R-' => [['ADP', lambda { |x| true } ]],

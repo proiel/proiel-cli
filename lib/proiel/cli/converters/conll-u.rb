@@ -385,7 +385,7 @@ module PROIEL
         end
 
         def pronominal?
-          @part_of_speech =~ /\AP[^st]/ # no evidence that possessives are pronoun/determiner-like
+          @part_of_speech =~ /\AP./ # no evidence that possessives are pronoun/determiner-like
         end
         
         def preposition?
@@ -526,7 +526,7 @@ module PROIEL
           possible_postags = POS_MAP[@part_of_speech]
           find_postag possible_postags.dup
           # ugly, but the ugliness comes from UDEP
-          @upos = 'ADJ' if @upos == 'DET' and @relation != 'det'
+          @upos = 'PRON' if @upos == 'DET' and @relation != 'det'
         end
 
         def relabel_graph!
