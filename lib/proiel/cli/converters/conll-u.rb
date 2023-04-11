@@ -713,8 +713,8 @@ module PROIEL
           # move all dependents of the former head to the new one
           siblings.each do |t|
             t.head_id = @id
-            # ugly hack to avoid overwriting the aux relation here (aux siblings aren't really siblings)
-            t.relation = new_sibling_relation if (new_sibling_relation and t.relation != 'aux')
+            # ugly hack to avoid overwriting the aux relation here (aux siblings aren't really siblings), now also includes conj, cc
+            t.relation = new_sibling_relation if (new_sibling_relation and !['aux','conj','cc'].include?(t.relation))
           end
 
           # remove the former head if it was empty
