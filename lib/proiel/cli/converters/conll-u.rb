@@ -115,8 +115,22 @@ module PROIEL
           restructure_graph!
           relabel_graph!
           check_directionality!
+          distribute_conjunctions!
           map_part_of_speech!
           self
+        end
+
+        def distribute_conjunctions!
+          @tokens.select { |t| t.has_conjunct? }.each do |h|
+            conjuncts = h.dependents.select { |d| d.relation == 'conj' }
+            conjunctions = h.dependents.select { |d| d.relation == 'cc' }
+            conjunctions.each do |c|
+              if c.id > h.id
+                new_head = conjuncts.select { |cj| cj.id > c.id }.first
+                c.head_id = new_head.id if new_head
+              end
+            end
+          end
         end
 
         def check_directionality!
@@ -302,6 +316,10 @@ module PROIEL
 
         def coordinated?
           head and head.conjunction? and head.relation == @relation
+        end
+
+        def has_conjunct?
+          dependents.any? { |d| d.relation == 'conj' }
         end
 
         # Returns +true+ if the node has an xobj dependent and either 1)
