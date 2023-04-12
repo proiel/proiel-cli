@@ -328,8 +328,9 @@ module PROIEL
                     'c' => 'Degree=Cmp', 
                     's' => 'Degree=Sup' },
         # The whole strength category is not universal
-        #Now changed to pan-Slavic policy, but Gothic officially retains Strength feature
-        :strength => {'s' => 'Variant=Short'},
+         :strength => {'s' => 'Strength=Strong',
+                       'w' => 'Strength=Weak' },
+        
         :inflection => {},
       }
     end

@@ -271,6 +271,8 @@ module PROIEL
           res << MORPHOLOGY_MAP[MORPHOLOGY_POSITIONAL_TAG_SEQUENCE[tag]][morph[tag]]
         end
         res = res.reject {|v| v == 'VerbForm=Part'} if res.include?('VerbForm=PartRes|Tense=Past')
+        res = res.reject {|s| s == 'Strength=Weak' } unless @language == 'got'
+        res = res.map { |s| s == 'Strength=Strong' ? 'Variant=Short' : s } unless @language == 'got'
         res.compact.join('|')
         end
 
