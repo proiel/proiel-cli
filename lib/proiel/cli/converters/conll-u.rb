@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'proiel/cli/converters/conll-u/morphology'
 require 'proiel/cli/converters/conll-u/syntax'
 
@@ -273,6 +274,7 @@ module PROIEL
         res = res.reject {|v| v == 'VerbForm=Part'} if res.include?('VerbForm=PartRes|Tense=Past')
         res = res.reject {|s| s == 'Strength=Weak' } unless @language == 'got'
         res = res.map { |s| s == 'Strength=Strong' ? 'Variant=Short' : s } unless @language == 'got'
+        res << 'Polarity=Neg' if ['не.быти','не.бꙑти'].include?(@lemma)
         res.compact.join('|')
         end
 
@@ -475,7 +477,7 @@ module PROIEL
         def to_conll
           [@id, 
            @form, 
-           @baselemma, 
+           @baselemma.gsub(/не\./,''), 
            @upos, 
            @part_of_speech, 
            format_features(@features), 
