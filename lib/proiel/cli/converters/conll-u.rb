@@ -307,7 +307,7 @@ module PROIEL
         def clausal?
           (@part_of_speech == 'V-' and !nominalized? and !has_preposition?) or
             dependents.any?(&:copula?) or
-            dependents.any? { |d| ['sub', 'nsubj', 'nsubjpass', 'csubj', 'csubjpass'].include? d.relation  } or
+            dependents.any? { |d| ['sub', 'nsubj','nsubj:outer', 'nsubj:pass', 'csubj', 'csubj:pass'].include? d.relation  } or
             dependents.any?(&:subjunction?) or
             relative? or
             dependents.any?(&:relative?) or
@@ -336,6 +336,10 @@ module PROIEL
            dependents.any? { |d| d.relation == 'xobj' } )
         end
 
+        def has_copula?
+          dependents.any?(&:copula?)
+        end
+
         def auxiliary?
           AUXILIARIES.include?([lemma, part_of_speech, language].join(',')) or (part_of_speech == "V-" and relation == 'aux')
         end
@@ -358,6 +362,10 @@ module PROIEL
 
         def has_content?
           @empty_token_sort.nil? or @empty_token_sort == ''
+        end
+
+        def has_subject?
+          dependents.any? { |d| ['sub','nsubj','nsubj:pass','csubj','csubj:pass','nsubj:outer'].include?(d.relation) }
         end
 
         def interjection?
@@ -618,7 +626,7 @@ module PROIEL
           sub = dependents.select { |d| d.relation == 'sub' }.first
           new_head = find_highest_daughter
           new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
-          sub.relation = 'nsubj:outer' if sub and new_head_sub
+          sub.relation = 'nsubj:outer' if sub and new_head_sub 
           new_head.promote!('orphan')
           
 #          dependents.each do |d|
@@ -654,6 +662,7 @@ module PROIEL
           sub = dependents.select { |d| d.relation == 'sub' }.first
           new_head = predicates.first
           new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
+          
           sub.relation = 'nsubj:outer' if sub and new_head_sub
           predicates.first.promote!(nil, 'cop')
         end

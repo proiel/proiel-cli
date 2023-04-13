@@ -47,8 +47,8 @@ module PROIEL
                   
                   # MISANNOTATION  IF A NOUN or a 'Pi' or a 'Pp' or a 'Ps'
                  ],
-        "comp" => [['csubj:pass', lambda { |x| x.head and x.head.passive? } ],
-                   ['csubj', lambda { |x| x.head and x.head.copula? } ],
+        "comp" => [['csubj:pass', lambda { |x| x.head and x.head.passive? and !x.head.has_subject?} ],
+                   ['csubj', lambda { |x| x.head and x.head.has_copula? and !x.head.has_subject?} ], 
                    ['ccomp', lambda { |x| true } ],
                   ],
         "expl" => "expl",
