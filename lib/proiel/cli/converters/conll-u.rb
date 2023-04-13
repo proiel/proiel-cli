@@ -615,7 +615,10 @@ module PROIEL
             return
           end
 
+          sub = dependents.select { |d| d.relation == 'sub' }.first
           new_head = find_highest_daughter
+          new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
+          sub.relation = 'nsubj:outer' if sub and new_head_sub
           new_head.promote!('orphan')
           
 #          dependents.each do |d|
@@ -648,6 +651,10 @@ module PROIEL
         def process_copula!
           predicates = dependents.select { |d| d.relation == 'xobj' }
           raise "#{predicates.size} predicates under #{to_n}\n#{to_graph}" if predicates.size != 1
+          sub = dependents.select { |d| d.relation == 'sub' }.first
+          new_head = predicates.first
+          new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
+          sub.relation = 'nsubj:outer' if sub and new_head_sub
           predicates.first.promote!(nil, 'cop')
         end
 
