@@ -562,6 +562,7 @@ module PROIEL
           find_postag possible_postags.dup
           # ugly, but the ugliness comes from UDEP
           @upos = 'PRON' if @upos == 'DET' and @relation != 'det'
+          @upos = REL_TO_POS[@relation] if  @upos == 'X'
         end
 
         def relabel_graph!

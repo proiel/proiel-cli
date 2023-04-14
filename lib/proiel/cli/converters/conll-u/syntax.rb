@@ -3,6 +3,31 @@ module PROIEL
     class CoNLLU
 
       OBLIQUENESS_HIERARCHY = ["nsubj", "obj", "iobj", "obl", "advmod", "csubj", "xcomp", "ccomp", "advcl"]
+      REL_TO_POS = {
+        'acl' => 'VERB',
+        'advcl' => 'VERB',
+        'advmod' => 'ADV',
+        'amod' => 'ADJ',
+        'appos' => 'NOUN',
+        'ccomp' => 'VERB',
+        'csubj' => 'VERB',
+        'dep' => 'X',
+        'det' => 'DET',
+        'fixed' => 'X',
+        'flat:foreign' => 'X',
+        'flat:name' => 'PROPN',
+        'nmod' => 'NOUN',
+        'nsubj' => 'NOUN',
+        'nummod' => 'NUM',
+        'obj' => 'NOUN',
+        'obl' => 'NOUN',
+        'obl:agent' => 'NOUN',
+        'obl:arg' => 'NOUN',
+        'parataxis' => 'VERB',
+        'root' => 'VERB',
+        'vocative' => 'NOUN',
+        'xcomp' => 'VERB'
+       }
       
       RELATION_MAPPING = {
         "adnom" => "dep",
