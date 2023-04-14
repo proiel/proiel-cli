@@ -303,6 +303,10 @@ module PROIEL
           @part_of_speech == 'Pr' or @part_of_speech == 'Dq'
         end
 
+        def orphan?
+          relation == 'orphan'
+        end
+
         # A node is clausal if it is a verb and not nominalized; or it has a copula dependent; or it has a subject (e.g. in an absolute construction without a verb; or it has a subjunction dependent; or it is a relative pronoun/adverb or has a relative pronoun/adverb dependent; or if it is the root (e.g. in a nominal clause)
         def clausal?
           (@part_of_speech == 'V-' and !nominalized? and !has_preposition?) or
@@ -311,6 +315,7 @@ module PROIEL
             dependents.any?(&:subjunction?) or
             relative? or
             dependents.any?(&:relative?) or
+            dependents.any?(&:orphan?) or
             root?
         end
 

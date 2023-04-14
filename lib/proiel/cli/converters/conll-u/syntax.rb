@@ -15,15 +15,15 @@ module PROIEL
         "ag" => "obl:agent", # add :agent" once defined
         "apos" => [["flat:name", lambda { |x| x.proper_noun? and x.head and x.head.proper_noun? } ],
                    ["acl", lambda { |x| x.clausal? and x.head and x.head.nominal? } ],  # add :relcl ?
-                   ["appos", lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.nominal? } ],
                    ["advcl", lambda(&:clausal?) ],
+                   ["appos", lambda { |x| (x.nominal? or x.adjectival?) and x.head and x.head.nominal? } ],
                    ["parataxis", lambda { |x| x.head and x.head.clausal? } ],
                    # what to do about sentential appositions? attempt here to make them parataxis, but there are some legitimate nominal appos under root nominals, so overgenerates slightly
                    ["appos", lambda { |x| true } ],
                   ],
         "arg" => "dep",
         "atr" => [["nummod", lambda(&:cardinal?) ],
-                  ["det", lambda { |x| x.pronominal? and !(!x.genitive? and x.head and x.head.genitive?) } ], #TODO check
+                  ["det", lambda { |x| x.pronominal? and !x.clausal? and !(!x.genitive? and x.head and x.head.genitive?) } ], #TODO check
                   ["acl", lambda { |x| x.clausal? } ],  # add :relcl?
                   ["nmod", lambda(&:nominal?) ], 
                   ["advmod", lambda { |x| x.head and !x.head.nominal? and x.head.clausal? } ],
