@@ -30,6 +30,7 @@ module PROIEL
                   ["amod", lambda { |x| true } ], #default
                  ],
         "aux" => [["det", lambda(&:determiner?) ],
+                  ['fixed', lambda { |x| x.head and x.head.subjunction? } ],
                   ["aux:pass", lambda { |x| x.clausal? and x.head.passive?  } ],
                   ["aux", lambda(&:clausal?) ], #v2 probably want the modal particle an to go here too in 
                   ["advmod", lambda(&:negation?) ],
