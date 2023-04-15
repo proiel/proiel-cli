@@ -303,6 +303,10 @@ module PROIEL
           @part_of_speech == 'Pr' or @part_of_speech == 'Dq'
         end
 
+        def verb?
+          @part_of_speech == 'V-' or @empty_token_sort == 'V'
+        end
+
         def orphan?
           relation == 'orphan'
         end
