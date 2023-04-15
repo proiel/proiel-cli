@@ -41,7 +41,8 @@ module PROIEL
         "adv" =>  [["advcl", lambda(&:clausal?) ],
                    ["advmod", lambda { |x| x.adverb? } ],
                    ["advmod", lambda(&:adjectival?) ], # adjective for adverb
-                   ["obl", lambda { |x| x.nominal? or x.preposition? or x.has_preposition? } ], 
+                   ["obl", lambda { |x| x.nominal? or x.preposition? or x.has_preposition? } ],
+                   ["advcl", lambda(&:subjunction?) ],
                    ["obl", lambda { |x| true } ],
                   ],
         "ag" => "obl:agent", # add :agent" once defined

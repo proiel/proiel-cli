@@ -215,10 +215,10 @@ module PROIEL
           @tokens.select { |t| t.comparison_word? and t.dependents and t.dependents.select { |d|  ['sub','obj','obl','comp','adv'].include?(d.relation) }.any? }.each(&:process_comparison!)
           roots.each(&:change_coordinations!)
           @tokens.select(&:copula?).each(&:process_copula!)
+          demote_subjunctions!
           prune_empty_rootnodes!
           # do ellipses from left to right for proper remnant treatment
           @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id }.each(&:process_ellipsis!)
-          demote_subjunctions!
           #NB! apos gets overridden by process_comparison so some dislocations are lost
           @tokens.select { |t| t.relation == 'apos' and t.id < t.head_id }.each(&:process_dislocation!)
           # DIRTY: remove the rest of the empty nodes by attaching them
