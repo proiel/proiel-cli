@@ -44,7 +44,7 @@ Feature: Grepping
     Then the output should contain "est omnis divisa in partes tres"
 
   Scenario: Searching with the pattern "^i" on token level
-    When I run `bin/proiel grep --level token '^i' ../../features/dummy-proiel-xml-2.0.xml`
+    When I run `proiel grep --level token '^i' ../../features/dummy-proiel-xml-2.0.xml`
     Then the output should contain "incolunt"
     Then the output should contain "inter"
     Then the output should contain "important"
@@ -53,7 +53,7 @@ Feature: Grepping
     Then the output should not contain "lingua"
 
   Scenario: Searching with the pattern "i" on token level
-    When I run `bin/proiel grep --level token 'i' ../../features/dummy-proiel-xml-2.0.xml`
+    When I run `proiel grep --level token 'i' ../../features/dummy-proiel-xml-2.0.xml`
     Then the output should contain "incolunt"
     Then the output should contain "inter"
     Then the output should contain "important"
@@ -62,13 +62,13 @@ Feature: Grepping
     Then the output should contain "lingua"
 
   Scenario: Searching with the pattern "^G" on sentence level
-    When I run `bin/proiel grep --level sentence '^G' ../../features/dummy-proiel-xml-2.0.xml`
+    When I run `proiel grep --level sentence '^G' ../../features/dummy-proiel-xml-2.0.xml`
     Then the output should contain "Gallia"
     Then the output should contain "Gallos"
     Then the output should not contain "Germanis"
 
   Scenario: Searching with the pattern "G" on sentence level
-    When I run `bin/proiel grep --level sentence 'G' ../../features/dummy-proiel-xml-2.0.xml`
+    When I run `proiel grep --level sentence 'G' ../../features/dummy-proiel-xml-2.0.xml`
     Then the output should contain "Gallia"
     Then the output should contain "Gallos"
     Then the output should contain "Germanis"
