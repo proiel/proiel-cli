@@ -175,14 +175,17 @@ module PROIEL
         def prune_empty_rootnodes!
           unless (empty_roots = roots.select { |r| r.empty_token_sort == 'V' }).empty?
             empty_roots.each do |r|
-              # promote the first dependent to root
-              new_root = r.dependents.first
-              new_root.head_id = 0
-              new_root.relation = r.relation
-              r.dependents.each { |d| d.head_id = new_root.id }
-              remove_token! r
+              # promote xobj to  root if there is one
+              xobjs = r.dependents.select { |d| d.relation == 'xobj' }
+              if xobjs.any?
+                new_root = xobjs.first
+                new_root.head_id = 0
+                new_root.relation = r.relation
+                r.dependents.each { |d| d.head_id = new_root.id }
+                remove_token! r
+              end
             end
-            prune_empty_rootnodes!
+            #prune_empty_rootnodes!
           end
         end
 
