@@ -65,6 +65,7 @@ module PROIEL
                  ],
         "aux" => [["det", lambda(&:determiner?) ],
                   ['fixed', lambda { |x| x.head and x.head.subjunction? } ],
+                  ['fixed', lambda { |x| x.head and x.head.conjunction? } ],
                   ['fixed', lambda { |x| x.head and x.head.adverb? and x.relative? } ],
                   ['fixed', lambda { |x| x.head and x.head.pronominal? and x.verb? } ],
                   ["aux:pass", lambda { |x| x.clausal? and x.head.passive?  } ],
