@@ -675,7 +675,6 @@ module PROIEL
           sub = dependents.select { |d| d.relation == 'sub' }.first
           new_head = predicates.first
           new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
-          
           sub.relation = 'nsubj:outer' if sub and new_head_sub
           predicates.first.promote!(nil, 'cop')
         end

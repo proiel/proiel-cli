@@ -6,7 +6,7 @@ module PROIEL
       # try to guess deponency based on the lemma
       DEPONENTS = { 'lat' => /r\Z/,
                     'grc' => /ομαι\Z/ }
-      COPULAR_LEMMATA = ['sum,V-,lat', 'eo#2,V-,lat','εἰμί#1,V-,grc', 'быти,V-,orv','бꙑти,V-,chu']
+      COPULAR_LEMMATA = ['sum,V-,lat', 'eo#2,V-,lat','εἰμί#1,V-,grc', 'быти,V-,orv','стати#2,V-,orv','бꙑти,V-,chu']
       AUXILIARIES = COPULAR_LEMMATA + []
       DETERMINERS = ['S-', 'Pd', 'Px'] 
       NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat', 
