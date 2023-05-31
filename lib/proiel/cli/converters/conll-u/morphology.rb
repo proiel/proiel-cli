@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 module PROIEL
   module Converter
     class CoNLLU
@@ -8,8 +7,8 @@ module PROIEL
                     'grc' => /ομαι\Z/ }
       COPULAR_LEMMATA = ['sum,V-,lat', 'eo#2,V-,lat','εἰμί#1,V-,grc', 'быти,V-,orv','стати#2,V-,orv','бꙑти,V-,chu']
       AUXILIARIES = COPULAR_LEMMATA + []
-      DETERMINERS = ['S-', 'Pd', 'Px'] 
-      NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat', 
+      DETERMINERS = ['S-', 'Pd', 'Px']
+      NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat',
                           'μή,Df,grc',
                           'μήγε,Df,grc',
                           'μηδαμῶς,Df,grc',
@@ -44,10 +43,10 @@ module PROIEL
                           'ниже,Df,orv',
                           'нѣ,Df,orv',
                          ]
-      
+
       TAM_PARTICLE_LEMMATA = ['ἄν,Df,grc',
                              ]
-                              
+
       PARTICLE_LEMMATA = [ 'at,Df,lat',
                            'atque,Df,lat',
                            'autem,Df,lat',
@@ -231,9 +230,9 @@ module PROIEL
                             'ꙗкоже,Df,chu'
                            ]
 
-      
-      POS_MAP = 
-        { 
+
+      POS_MAP =
+        {
           'A-' => [['ADJ', lambda { |x| true } ]],
           'C-' => [['CCONJ', lambda { |x| true } ]],
           'Df' => [['AUX', lambda(&:TAM_particle?)],
@@ -245,13 +244,13 @@ module PROIEL
           'F-' => [['X', lambda { |x| true } ]],
           'G-' => [['SCONJ', lambda { |x| true } ]],
           'I-' => [['INTJ', lambda { |x| true } ]],
-          'Ma' => [['NUM', lambda { |x| true } ]], 
-          'Mo' => [['ADJ', lambda { |x| true } ]], 
+          'Ma' => [['NUM', lambda { |x| true } ]],
+          'Mo' => [['ADJ', lambda { |x| true } ]],
           'N-' => [['SCONJ', lambda { |x| true } ]], #irrelevant for our purposes
           'Nb' => [['NOUN', lambda { |x| true } ]],
           'Ne' => [['PROPN', lambda { |x| true } ]],
           'Pc' => [['PRON', lambda { |x| true }, "PronType=Rcp"]],
-          'Pd' => [['DET', lambda { |x| true } ]], 
+          'Pd' => [['DET', lambda { |x| true } ]],
           'Pi' => [['PRON', lambda { |x| true }, "PronType=Int"]],
           'Pk' => [['AUX', lambda { |x| x.relation == 'aux' }],
                    ['PRON', lambda { |x| true }, "PronType=Prs|Reflex=Yes"]],
@@ -259,52 +258,52 @@ module PROIEL
           'Pr' => [['PRON', lambda { |x| true }, "PronType=Rel"]],
           'Ps' => [['DET', lambda { |x| true }, "Poss=Yes"]],   ###  NB no evidence for a pronominal/determiner-like nature here
           'Pt' => [['DET', lambda { |x| true }, "Poss=Yes|Reflex=Yes" ]],   ###  NB no evidence for a pronominal/determiner-like nature here
-          'Px' => [['DET', lambda { |x| true } ]], 
-          'Py' => [['PRON', lambda { |x| true } ]], 
+          'Px' => [['DET', lambda { |x| true } ]],
+          'Py' => [['PRON', lambda { |x| true } ]],
           'R-' => [['ADP', lambda { |x| true } ]],
           'V-' => [['AUX', lambda(&:auxiliary?)],
                    ['VERB', lambda { |x| true } ]],
           'S-' => [['DET', lambda { |x| true }, "Definite=Def|PronType=Dem"]], # (we only have definite articles)
           'X-' => [['X', lambda { |x| true } ]]
                   }
-      
+
       MORPHOLOGY_MAP = {
-        :person => {'1' => 'Person=1', 
-                    '2' => 'Person=2', 
-                    '3' => 'Person=3'  } , 
-        :number => {'s' => 'Number=Sing', 
-                    'd' => 'Number=Dual', 
+        :person => {'1' => 'Person=1',
+                    '2' => 'Person=2',
+                    '3' => 'Person=3'  } ,
+        :number => {'s' => 'Number=Sing',
+                    'd' => 'Number=Dual',
                     'p' => 'Number=Plur'  } ,
-        :tense  => {'p' => 'Tense=Pres', 
-                    'i' => 'Tense=Past|Aspect=Imp', 
-                    'r' => 'Tense=Past|Aspect=Perf', #'Tense=Perfect', 
+        :tense  => {'p' => 'Tense=Pres',
+                    'i' => 'Tense=Past|Aspect=Imp',
+                    'r' => 'Tense=Past|Aspect=Perf', #'Tense=Perfect',
                     's' => 'VerbForm=PartRes|Tense=Past',
                     # tags Perf is not universal
-                    'a' => 'Tense=Past|Aspect=Perf', 
-                    'u' => 'Tense=Past', 
-                    'l' => 'Tense=Pqp', 
-                    'f' => 'Tense=Fut', 
+                    'a' => 'Tense=Past|Aspect=Perf',
+                    'u' => 'Tense=Past',
+                    'l' => 'Tense=Pqp',
+                    'f' => 'Tense=Fut',
                     # tag FutPerfect is not universal
-                    't' => 'Tense=Fut|Aspect=Perf', #FutPerfect' 
+                    't' => 'Tense=Fut|Aspect=Perf', #FutPerfect'
                       },
-        :mood =>   {'i' => 'VerbForm=Fin|Mood=Ind', 
-                    's' => 'VerbForm=Fin|Mood=Sub', 
-                    'm' => 'VerbForm=Fin|Mood=Imp', 
-                    'o' => 'VerbForm=Fin|Mood=Opt', 
-                    'n' => 'VerbForm=Inf', 
-                    'p' => 'VerbForm=Part', 
-                    'd' => 'VerbForm=Ger', 
+        :mood =>   {'i' => 'VerbForm=Fin|Mood=Ind',
+                    's' => 'VerbForm=Fin|Mood=Sub',
+                    'm' => 'VerbForm=Fin|Mood=Imp',
+                    'o' => 'VerbForm=Fin|Mood=Opt',
+                    'n' => 'VerbForm=Inf',
+                    'p' => 'VerbForm=Part',
+                    'd' => 'VerbForm=Ger',
                     # Gdv (gerundive) is not universal
-                    'g' => 'VerbForm=Gdv', 
-                    'u' => 'VerbForm=Sup', 
-                    'e'=> 'VerbForm=Fin|Mood=Ind,Sub', 
-                    'f'=> 'VerbForm=Fin|Mood=Imp,Ind', 
-                    'h'=> 'VerbForm=Fin|Mood=Imp,Sub', 
+                    'g' => 'VerbForm=Gdv',
+                    'u' => 'VerbForm=Sup',
+                    'e'=> 'VerbForm=Fin|Mood=Ind,Sub',
+                    'f'=> 'VerbForm=Fin|Mood=Imp,Ind',
+                    'h'=> 'VerbForm=Fin|Mood=Imp,Sub',
                     't' => 'VerbForm=Fin' },
-        :voice =>  {'a' => 'Voice=Act', 
+        :voice =>  {'a' => 'Voice=Act',
                     # Med is not universal
-                    'm' => 'Voice=Mid', 
-                    'p' => 'Voice=Pass', 
+                    'm' => 'Voice=Mid',
+                    'p' => 'Voice=Pass',
                     'e' => 'Voice=Mid,Pass' },
         :gender => {'m' => 'Gender=Masc',
                     'f' => 'Gender=Fem',
@@ -312,28 +311,28 @@ module PROIEL
                     'p' => 'Gender=Fem,Masc',
                     'o' => 'Gender=Masc,Neut',
                     'r' => 'Gender=Fem,Neut' },
-        :case =>   {'n' => 'Case=Nom', 
-                    'a' => 'Case=Acc', 
+        :case =>   {'n' => 'Case=Nom',
+                    'a' => 'Case=Acc',
                     # Obl(ique) is not universal
-                    'o' => 'Case=Obl', 
-                    'g' => 'Case=Gen', 
-                    'c' => 'Case=Dat,Gen', 
-                    'e' => 'Case=Acc,Dat', 
-                    'd' => 'Case=Dat', 
-                    'b' => 'Case=Abl', 
-                    'i' => 'Case=Ins', 
-                    'l' => 'Case=Loc', 
+                    'o' => 'Case=Obl',
+                    'g' => 'Case=Gen',
+                    'c' => 'Case=Dat,Gen',
+                    'e' => 'Case=Acc,Dat',
+                    'd' => 'Case=Dat',
+                    'b' => 'Case=Abl',
+                    'i' => 'Case=Ins',
+                    'l' => 'Case=Loc',
                     'v' => 'Case=Voc' },
-        :degree => {'p' => 'Degree=Pos', 
-                    'c' => 'Degree=Cmp', 
+        :degree => {'p' => 'Degree=Pos',
+                    'c' => 'Degree=Cmp',
                     's' => 'Degree=Sup' },
         # The whole strength category is not universal
-         :strength => {'s' => 'Strength=Strong',
-                       'w' => 'Strength=Weak' },
-        
+        :strength => {'s' => 'Strength=Strong',
+                      'w' => 'Strength=Weak' },
+
         :inflection => {},
       }
     end
   end
 end
-    
+
