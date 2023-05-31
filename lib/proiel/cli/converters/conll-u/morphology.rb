@@ -5,7 +5,7 @@ module PROIEL
       # try to guess deponency based on the lemma
       DEPONENTS = { 'lat' => /r\Z/,
                     'grc' => /ομαι\Z/ }
-      COPULAR_LEMMATA = ['sum,V-,lat', 'εἰμί#1,V-,grc', 'быти,V-,orv','бꙑти,V-,chu']
+      COPULAR_LEMMATA = ['sum,V-,lat', 'eo#2,V-,lat','εἰμί#1,V-,grc', 'быти,V-,orv','стати#2,V-,orv','бꙑти,V-,chu']
       AUXILIARIES = COPULAR_LEMMATA + []
       DETERMINERS = ['S-', 'Pd', 'Px']
       NEGATION_LEMMATA = ['non,Df,lat', 'ne,Df,lat',
@@ -51,19 +51,25 @@ module PROIEL
                            'atque,Df,lat',
                            'autem,Df,lat',
                            'certe,Df,lat',
+                           'en,Df,lat',
+                           'equidem,Df,lat',
                            'ergo,Df,lat',
                            'et,Df,lat',
                            'enim,Df,lat',
+                           'etenim,Df,lat',
                            'etiam,Df,lat',
                            'igitur,Df,lat',
                            'immo,Df,lat',
                            'itaque,Df,lat',
                            'nam,Df,lat',
+                           'namque,Df,lat',
                            'nonne,Df,lat',
                            'nonne,Du,lat',
+                           'num,Df,lat',
                            'quidem,Df,lat',
                            'quoque,Df,lat',
                            'sic,Df,lat',
+                           'siquidem,Df,lat',
                            'tamen,Df,lat',
                            'tum,Df,lat',
                            'tunc,Df,lat',
@@ -167,7 +173,63 @@ module PROIEL
                            'якоже,Df,orv',
                          ]
 
-
+      COMPARISON_LEMMATA = ['alja,Df,got',
+                            'ar̄awel,Df,xcl',
+                            'atque,Df,lat',
+                            'baycʻ,Df,xcl',
+                            'etʻe,Df,xcl',
+                            'ibrew,Df,xcl',
+                            'ibrew z-,Df,xcl',
+                            'kʻan z,Df,xcl',
+                            'licet,Df,lat',
+                            'nibai,Df,got',
+                            'nisi,Df,lat',
+                            'orpēs,Df,xcl',
+                            'praeterquam,Df,lat',
+                            'quam,Df,lat',
+                            'quasi,Df,lat',
+                            'quemadmodum,Df,lat',
+                            'si,Df,lat',
+                            'sicut,Df,lat',
+                            'swaswe,Df,got',
+                            'swe,Df,got',
+                            'tamquam,Df,lat',
+                            'tʻe,Df,xcl',
+                            'ut,Df,lat',
+                            'velut,Df,lat',
+                            'þau,Df,got',
+                            'ἅτε,Df,grc',
+                            'εἰ,Df,grc',
+                            'ἤ,Df,grc',
+                            'ἤπερ,Df,grc',
+                            'καθάπερ,Df,grc',
+                            'καθώς,Df,grc',
+                            'οἷα,Df,grc',
+                            'ὁμοίως,Df,grc',
+                            'ὅτι,Df,grc',
+                            'ὡς,Df,grc',
+                            'ὡσεί,Df,grc',
+                            'ὥσπερ,Df,grc',
+                            'ако,Df,orv',
+                            'акъже,Df,orv',
+                            'акы,Df,orv',
+                            'акꙑ,Df,chu',
+                            'будьто,Df,orv',
+                            'како,Df,orv',
+                            'ли,Df,chu',
+                            'неже,Df,chu',
+                            'нежели,Df,chu',
+                            'нежели,Df,orv',
+                            'окꙑ,Df,chu',
+                            'развѣ,Df,chu',
+                            'тъкъмо,Df,chu',
+                            'чьто,Df,orv',
+                            'яко,Df,orv',
+                            'якоже,Df,orv',
+                            'ꙗко,Df,chu',
+                            'ꙗкоже,Df,chu'
+                           ]
+ 
       POS_MAP =
         {
           'A-' => [['ADJ', lambda { |x| true } ]],
@@ -193,8 +255,8 @@ module PROIEL
                    ['PRON', lambda { |x| true }, 'PronType=Prs|Reflex=Yes']],
           'Pp' => [['PRON', lambda { |x| true }, 'PronType=Prs']],
           'Pr' => [['PRON', lambda { |x| true }, 'PronType=Rel']],
-          'Ps' => [['ADJ', lambda { |x| true }, 'Poss=Yes']],   ###  NB no evidence for a pronominal/determiner-like nature here
-          'Pt' => [['ADJ', lambda { |x| true }, 'Poss=Yes|Reflex=Yes' ]],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Ps' => [['DET', lambda { |x| true }, 'Poss=Yes']],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Pt' => [['DET', lambda { |x| true }, 'Poss=Yes|Reflex=Yes' ]],   ###  NB no evidence for a pronominal/determiner-like nature here
           'Px' => [['DET', lambda { |x| true } ]],
           'Py' => [['PRON', lambda { |x| true } ]],
           'R-' => [['ADP', lambda { |x| true } ]],
@@ -202,7 +264,7 @@ module PROIEL
                    ['VERB', lambda { |x| true } ]],
           'S-' => [['DET', lambda { |x| true }, 'Definite=Def|PronType=Dem']], # (we only have definite articles)
           'X-' => [['X', lambda { |x| true } ]]
-        }
+      }
 
       MORPHOLOGY_MAP = {
         :person => {'1' => 'Person=1',
@@ -214,7 +276,7 @@ module PROIEL
         :tense  => {'p' => 'Tense=Pres',
                     'i' => 'Tense=Past|Aspect=Imp',
                     'r' => 'Tense=Past|Aspect=Perf', #'Tense=Perfect',
-                    's' => 'Aspect=Res',
+                    's' => 'VerbForm=PartRes|Tense=Past',
                     # tags Perf is not universal
                     'a' => 'Tense=Past|Aspect=Perf',
                     'u' => 'Tense=Past',
@@ -264,8 +326,9 @@ module PROIEL
                     'c' => 'Degree=Cmp',
                     's' => 'Degree=Sup' },
         # The whole strength category is not universal
-        :strength => {'w' => 'Strength=Weak',
-                      's' => 'Strength=Strong'},
+        :strength => {'s' => 'Strength=Strong',
+                      'w' => 'Strength=Weak' },
+
         :inflection => {},
       }
     end
