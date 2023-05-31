@@ -45,7 +45,7 @@ module PROIEL
                    ['advcl', lambda(&:subjunction?) ],
                    ['obl', lambda { |x| true } ],
                   ],
-        'ag' => 'obl:agent', # add :agent" once defined
+        'ag' => 'obl:agent', # add :agent' once defined
         'apos' => [['flat:name', lambda { |x| x.proper_noun? and x.head and x.head.proper_noun? } ],
                    ['acl', lambda { |x| x.clausal? and x.head and x.head.nominal? } ],  # add :relcl ?
 

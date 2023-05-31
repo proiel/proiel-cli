@@ -686,7 +686,7 @@ module PROIEL::Converter
         mods = dependents.select { |d| d.relation != 'obl' and !(d.relation == 'aux' and d.preposition?) }
         raise "#{obliques.size} oblique dependents under #{to_n}\n#{to_graph}" if obliques.size > 1
         return if obliques.empty? #shouldn't really happen, but in practice
-        obliques.first.invert!("case") # , "adv")
+        obliques.first.invert!('case') # , "adv")
         doublepreps.each { |p| p.head_id = obliques.first.id and p.relation = 'case' }
         mods.each { |m| m.head_id = obliques.first.id }
       end
