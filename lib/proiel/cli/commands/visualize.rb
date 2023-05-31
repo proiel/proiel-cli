@@ -22,24 +22,24 @@ module PROIEL
           layout = options['layout'] || 'classic'
 
           unless LAYOUTS.include?(layout)
-            STDERR.puts "Invalid layout"
+            STDERR.puts 'Invalid layout'
             exit 1
           end
 
           if objects != 'sentences' and objects != 'divs' and objects != 'sources' and objects.to_i.to_s != objects
-            STDERR.puts "Invalid object type"
+            STDERR.puts 'Invalid object type'
             exit 1
           end
 
           if format != 'png' and format != 'svg' and format != 'dot'
-            STDERR.puts "Invalid format"
+            STDERR.puts 'Invalid format'
             exit 1
           end
 
           tb = PROIEL::Treebank.new
 
           if args.empty?
-            STDERR.puts "Reading from standard input...".green if options['verbose']
+            STDERR.puts 'Reading from standard input...'.green if options['verbose']
             tb.load_from_xml(STDIN)
           else
             args.each do |filename|
@@ -52,7 +52,7 @@ module PROIEL
           tb.sources.each do |source|
             case objects
             when 'sources'
-              puts "This can take a very, very long time... Be patient!"
+              puts 'This can take a very, very long time... Be patient!'
               save_graph layout, format, source
             when 'divs'
               save_graphs source.divs, layout, format, source.id, source.divs.count

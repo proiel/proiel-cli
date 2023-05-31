@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'proiel/cli/converters/conll-u/morphology'
 require 'proiel/cli/converters/conll-u/syntax'
 
@@ -64,11 +65,11 @@ module PROIEL
                                  (i == 0 ? tk.id : 1000 + offset), # id
                                  (i == 0 ? tk.head_id : tk.id), # head_id
                                  subtok,
-                                 # hope the lemmas split the same way as the tokens. Grab the form is you don't find a lemma
+                                 # hope the lemmas split the same way as the tokens. Grab the form if you don't find a lemma
                                  (tk.lemma.split(/[[:space:]]/)[i] || subtok), 
                                  tk.part_of_speech, # copy the postag
                                  tk.morphology,
-                                 (i == 0 ? tk.relation : "flat"),
+                                 (i == 0 ? tk.relation : "fixed"),
                                  nil, #empty_token_sort
                                  tk.citation_part,
                                  (i == 0 ? tk.presentation_before : nil),
@@ -114,8 +115,32 @@ module PROIEL
         def convert
           restructure_graph!
           relabel_graph!
+          check_directionality!
+          distribute_conjunctions!
           map_part_of_speech!
           self
+        end
+
+        def distribute_conjunctions!
+          @tokens.select { |t| t.has_conjunct? }.each do |h|
+            conjuncts = h.dependents.select { |d| d.relation == 'conj' }
+            conjunctions = h.dependents.select { |d| d.relation == 'cc' }
+            conjunctions.each do |c|
+              if c.id > h.id
+                new_head = conjuncts.select { |cj| cj.id > c.id }.first
+                c.head_id = new_head.id if new_head
+              end
+            end
+          end
+        end
+
+        def check_directionality!
+          @tokens.select { |t| ['fixed', 'flat:foreign', 'flat:name'].include? t.relation }.each do |f|
+            f.promote!(nil, f.relation) if f.id < f.head.id
+          end
+          @tokens.select { |t| t.relation == 'conj' }.each do |f|
+            raise "conj must go left-to-right" if f.id < f.head.id
+          end
         end
 
         def find_token(identifier)
@@ -150,14 +175,17 @@ module PROIEL
         def prune_empty_rootnodes!
           unless (empty_roots = roots.select { |r| r.empty_token_sort == 'V' }).empty?
             empty_roots.each do |r|
-              # promote the first dependent to root
-              new_root = r.dependents.first
-              new_root.head_id = 0
-              new_root.relation = r.relation
-              r.dependents.each { |d| d.head_id = new_root.id }
-              remove_token! r
+              # promote xobj to  root if there is one
+              xobjs = r.dependents.select { |d| d.relation == 'xobj' }
+              if xobjs.any?
+                new_root = xobjs.first
+                new_root.head_id = 0
+                new_root.relation = r.relation
+                r.dependents.each { |d| d.head_id = new_root.id }
+                remove_token! r
+              end
             end
-            prune_empty_rootnodes!
+            #prune_empty_rootnodes!
           end
         end
 
@@ -187,12 +215,15 @@ module PROIEL
         def restructure_graph!
           @tokens.delete_if { |n| n.empty_token_sort == 'P' }
           @tokens.select(&:preposition?).each(&:process_preposition!)
+          @tokens.select { |t| t.comparison_word? and t.dependents and t.dependents.select { |d|  ['sub','obj','obl','comp','adv'].include?(d.relation) }.any? }.each(&:process_comparison!)
           roots.each(&:change_coordinations!)
           @tokens.select(&:copula?).each(&:process_copula!)
+          demote_subjunctions!
           prune_empty_rootnodes!
           # do ellipses from left to right for proper remnant treatment
           @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id }.each(&:process_ellipsis!)
-          demote_subjunctions!
+          #NB! apos gets overridden by process_comparison so some dislocations are lost
+          @tokens.select { |t| t.relation == 'apos' and t.id < t.head_id }.each(&:process_dislocation!)
           # DIRTY: remove the rest of the empty nodes by attaching them
           # to their grandmother with remnant. This is the best way to
           # do it given the current state of the UDEP scheme, but
@@ -220,6 +251,7 @@ module PROIEL
           @head_id = head_id
           @form = form
           @lemma = lemma
+          @baselemma, @variant = @lemma.split("#")
           @part_of_speech = part_of_speech
           @language = language
           @morphology = morphology
@@ -242,6 +274,10 @@ module PROIEL
         for tag in 0..morph.length - 1
           res << MORPHOLOGY_MAP[MORPHOLOGY_POSITIONAL_TAG_SEQUENCE[tag]][morph[tag]]
         end
+        res = res.reject {|v| v == 'VerbForm=Part'} if res.include?('VerbForm=PartRes|Tense=Past')
+        res = res.reject {|s| s == 'Strength=Weak' } unless @language == 'got'
+        res = res.map { |s| s == 'Strength=Strong' ? 'Variant=Short' : s } unless @language == 'got'
+        res << 'Polarity=Neg' if ['не.быти','не.бꙑти'].include?(@lemma)
         res.compact.join('|')
         end
 
@@ -266,11 +302,27 @@ module PROIEL
           @part_of_speech == 'Ma'
         end
 
-        # A node is clausal if it is a verb and not nominalized; or it has a copula dependent; or it has a subject (e.g. in an absolute constructino without a verb; or if it is the root (e.g. in a nominal clause)
+        def relative?
+          @part_of_speech == 'Pr' or @part_of_speech == 'Dq'
+        end
+
+        def verb?
+          @part_of_speech == 'V-' or @empty_token_sort == 'V'
+        end
+
+        def orphan?
+          relation == 'orphan'
+        end
+
+        # A node is clausal if it is a verb and not nominalized; or it has a copula dependent; or it has a subject (e.g. in an absolute construction without a verb; or it has a subjunction dependent; or it is a relative pronoun/adverb or has a relative pronoun/adverb dependent; or if it is the root (e.g. in a nominal clause)
         def clausal?
-          (@part_of_speech == 'V-' and !nominalized?) or
+          (@part_of_speech == 'V-' and !nominalized? and !has_preposition?) or
             dependents.any?(&:copula?) or
-            dependents.any? { |d| ['sub', 'nsubj', 'nsubjpass', 'csubj', 'csubjpass'].include? d.relation  } or
+            dependents.any? { |d| ['sub', 'nsubj','nsubj:outer', 'nsubj:pass', 'csubj', 'csubj:pass'].include? d.relation  } or
+            dependents.any?(&:subjunction?) or
+            relative? or
+            dependents.any?(&:relative?) or
+            dependents.any?(&:orphan?) or
             root?
         end
 
@@ -280,6 +332,10 @@ module PROIEL
 
         def coordinated?
           head and head.conjunction? and head.relation == @relation
+        end
+
+        def has_conjunct?
+          dependents.any? { |d| d.relation == 'conj' }
         end
 
         # Returns +true+ if the node has an xobj dependent and either 1)
@@ -292,10 +348,18 @@ module PROIEL
            dependents.any? { |d| d.relation == 'xobj' } )
         end
 
+        def has_copula?
+          dependents.any?(&:copula?)
+        end
+
         def auxiliary?
-          AUXILIARIES.include?([lemma, part_of_speech, language].join(','))
+          AUXILIARIES.include?([lemma, part_of_speech, language].join(',')) or (part_of_speech == "V-" and relation == 'aux')
         end
           
+        def comparison_word?
+          COMPARISON_LEMMATA.include?([lemma,part_of_speech,language].join(','))
+        end
+                                      
         def determiner?
           DETERMINERS.include? @part_of_speech
         end
@@ -310,6 +374,10 @@ module PROIEL
 
         def has_content?
           @empty_token_sort.nil? or @empty_token_sort == ''
+        end
+
+        def has_subject?
+          dependents.any? { |d| ['sub','nsubj','nsubj:pass','csubj','csubj:pass','nsubj:outer'].include?(d.relation) }
         end
 
         def interjection?
@@ -340,6 +408,10 @@ module PROIEL
           @part_of_speech =~ /\A[NPM]/ or nominalized?
         end
 
+        def long?
+          @morphology[8] == 'w'
+        end
+
         def nominalized?
           dependents.any? do |d|
             d.determiner? and ['atr', 'aux', 'det'].include? d.relation
@@ -355,7 +427,7 @@ module PROIEL
         end
 
         def pronominal?
-          @part_of_speech =~ /\AP[^st]/ # no evidence that possessives are pronoun/determiner-like
+          @part_of_speech =~ /\AP./ # no evidence that possessives are pronoun/determiner-like
         end
         
         def preposition?
@@ -416,17 +488,23 @@ module PROIEL
           end
         end
 
+        def miscellaneous
+          m = @citation_part
+          m += "|LId=#{@variant}" if @variant
+          m
+        end
+
         def to_conll
           [@id, 
            @form, 
-           @lemma, 
+           @baselemma.gsub(/не\./,''), 
            @upos, 
            @part_of_speech, 
            format_features(@features), 
            @head_id, 
            (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
            '_', # slashes here
-           @citation_part].join("\t")
+           miscellaneous].join("\t")
         end
 
         def to_s
@@ -490,7 +568,8 @@ module PROIEL
           possible_postags = POS_MAP[@part_of_speech]
           find_postag possible_postags.dup
           # ugly, but the ugliness comes from UDEP
-          @upos = 'ADJ' if @upos == 'DET' and @relation != 'det'
+          @upos = 'PRON' if @upos == 'DET' and @relation != 'det'
+          @upos = REL_TO_POS[@relation] if  @upos == 'X'
         end
 
         def relabel_graph!
@@ -532,8 +611,23 @@ module PROIEL
           # else demote the subjunction
           else
             pred.invert!('mark')
+            # move any remaining discourse children to the new head (note that we need to keep some aux'es to get them as "fixed" dependents
+            dependents.each { |d| d.head_id = pred.id unless (d.relation == 'aux' and ['Px', 'Pr'].include? d.part_of_speech) or d.relation == 'fixed' }
           end
         end
+
+        def process_comparison!
+          cl = dependents.select { |d| ['sub','obj','obl','comp','adv'].include?(d.relation) }
+          head.relation = 'advcl:cmp' if head and head.part_of_speech == 'C-' and head.relation == relation
+          comp = cl.first
+          comp.invert!('mark','advcl:cmp')
+          dependents.each { |d| d.head_id = comp.id }
+        end
+
+        def process_dislocation!
+          self.head_id = head.head_id unless head.root?
+          self.relation = "dislocated"
+         end
 
         def process_ellipsis!
           aux = dependents.select(&:auxiliary?).first
@@ -542,7 +636,10 @@ module PROIEL
             return
           end
 
+          sub = dependents.select { |d| d.relation == 'sub' }.first
           new_head = find_highest_daughter
+          new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
+          sub.relation = 'nsubj:outer' if sub and new_head_sub 
           new_head.promote!('orphan')
           
 #          dependents.each do |d|
@@ -575,6 +672,10 @@ module PROIEL
         def process_copula!
           predicates = dependents.select { |d| d.relation == 'xobj' }
           raise "#{predicates.size} predicates under #{to_n}\n#{to_graph}" if predicates.size != 1
+          sub = dependents.select { |d| d.relation == 'sub' }.first
+          new_head = predicates.first
+          new_head_sub = new_head.dependents.select { |d| d.relation == 'sub' }.first
+          sub.relation = 'nsubj:outer' if sub and new_head_sub
           predicates.first.promote!(nil, 'cop')
         end
 
@@ -585,10 +686,15 @@ module PROIEL
         def process_preposition!
           raise "Only prepositions can be processed this way!" unless part_of_speech == 'R-'
           obliques = dependents.select { |d| d.relation == 'obl' }
+          doublepreps = dependents.select { |d| d.relation == 'aux' and d.preposition? }
+          mods = dependents.select { |d| d.relation != 'obl' and !(d.relation == 'aux' and d.preposition?) }
           raise "#{obliques.size} oblique dependents under #{to_n}\n#{to_graph}" if obliques.size > 1
           return if obliques.empty? #shouldn't really happen, but in practice
           obliques.first.invert!("case") # , "adv")
+          doublepreps.each { |p| p.head_id = obliques.first.id and p.relation = 'case' }
+          mods.each { |m| m.head_id = obliques.first.id }
         end
+
 
         def remove_empties!
           dependents.each(&:remove_empties!)
@@ -657,8 +763,8 @@ module PROIEL
           # move all dependents of the former head to the new one
           siblings.each do |t|
             t.head_id = @id
-            # ugly hack to avoid overwriting the aux relation here (aux siblings aren't really siblings)
-            t.relation = new_sibling_relation if (new_sibling_relation and t.relation != 'aux')
+            # ugly hack to avoid overwriting the aux relation here (aux siblings aren't really siblings), now also includes conj, cc
+            t.relation = new_sibling_relation if (new_sibling_relation and !['aux','conj','cc'].include?(t.relation))
           end
 
           # remove the former head if it was empty

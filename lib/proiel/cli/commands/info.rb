@@ -45,7 +45,7 @@ module PROIEL
             puts "   Printed text: #{pretty_printed_text_info(source)}"
             puts "   Electr. text: #{pretty_electronic_text_info(source)}"
             puts "   Size:         #{n} sentence(s), #{s.token_count} token(s)"
-            puts "   Annotation:   %.2f%% reviewed, %.2f%% annotated" % [r, a]
+            puts '   Annotation:   %.2f%% reviewed, %.2f%% annotated' % [r, a]
           end
         end
 

@@ -12,7 +12,7 @@ module PROIEL
           end
         end
 
-        def process(args, options)
+        def process(args, _)
           if args.empty?
             STDERR.puts 'Missing filename. Use --help for more information.'
             exit 1
@@ -143,7 +143,7 @@ module PROIEL
         def read_body(f)
           f.rewind
 
-          Array.new.tap do |bdy|
+          [].tap do |bdy|
             f.each_line do |l|
               case l
               when /^%/

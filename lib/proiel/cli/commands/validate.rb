@@ -10,7 +10,7 @@ module PROIEL
           end
         end
 
-        def process(args, options)
+        def process(args, _)
           exit_code = 0
 
           if args.empty?
