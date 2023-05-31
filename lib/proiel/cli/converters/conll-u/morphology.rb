@@ -235,12 +235,12 @@ module PROIEL
         {
           'A-' => [['ADJ', lambda { |x| true } ]],
           'C-' => [['CCONJ', lambda { |x| true } ]],
-          'Df' => [['AUX', lambda(&:TAM_particle?)],
-                   ['ADV', lambda(&:negation?), "Polarity=Neg"],
+          'Df' => [['AUX', lambda(&:tam_particle?)],
+                   ['ADV', lambda(&:negation?), 'Polarity=Neg'],
                    ['ADV', lambda { |x| true } ]
                   ],
-          'Dq' => [['ADV', lambda { |x| true }, "PronType=Rel"]],
-          'Du' => [['ADV', lambda { |x| true }, "PronType=Int"]],
+          'Dq' => [['ADV', lambda { |x| true }, 'PronType=Rel']],
+          'Du' => [['ADV', lambda { |x| true }, 'PronType=Int']],
           'F-' => [['X', lambda { |x| true } ]],
           'G-' => [['SCONJ', lambda { |x| true } ]],
           'I-' => [['INTJ', lambda { |x| true } ]],
@@ -249,21 +249,21 @@ module PROIEL
           'N-' => [['SCONJ', lambda { |x| true } ]], #irrelevant for our purposes
           'Nb' => [['NOUN', lambda { |x| true } ]],
           'Ne' => [['PROPN', lambda { |x| true } ]],
-          'Pc' => [['PRON', lambda { |x| true }, "PronType=Rcp"]],
+          'Pc' => [['PRON', lambda { |x| true }, 'PronType=Rcp']],
           'Pd' => [['DET', lambda { |x| true } ]],
-          'Pi' => [['PRON', lambda { |x| true }, "PronType=Int"]],
+          'Pi' => [['PRON', lambda { |x| true }, 'PronType=Int']],
           'Pk' => [['AUX', lambda { |x| x.relation == 'aux' }],
-                   ['PRON', lambda { |x| true }, "PronType=Prs|Reflex=Yes"]],
-          'Pp' => [['PRON', lambda { |x| true }, "PronType=Prs"]],
-          'Pr' => [['PRON', lambda { |x| true }, "PronType=Rel"]],
-          'Ps' => [['DET', lambda { |x| true }, "Poss=Yes"]],   ###  NB no evidence for a pronominal/determiner-like nature here
-          'Pt' => [['DET', lambda { |x| true }, "Poss=Yes|Reflex=Yes" ]],   ###  NB no evidence for a pronominal/determiner-like nature here
+                   ['PRON', lambda { |x| true }, 'PronType=Prs|Reflex=Yes']],
+          'Pp' => [['PRON', lambda { |x| true }, 'PronType=Prs']],
+          'Pr' => [['PRON', lambda { |x| true }, 'PronType=Rel']],
+          'Ps' => [['DET', lambda { |x| true }, 'Poss=Yes']],   ###  NB no evidence for a pronominal/determiner-like nature here
+          'Pt' => [['DET', lambda { |x| true }, 'Poss=Yes|Reflex=Yes' ]],   ###  NB no evidence for a pronominal/determiner-like nature here
           'Px' => [['DET', lambda { |x| true } ]],
           'Py' => [['PRON', lambda { |x| true } ]],
           'R-' => [['ADP', lambda { |x| true } ]],
           'V-' => [['AUX', lambda(&:auxiliary?)],
                    ['VERB', lambda { |x| true } ]],
-          'S-' => [['DET', lambda { |x| true }, "Definite=Def|PronType=Dem"]], # (we only have definite articles)
+          'S-' => [['DET', lambda { |x| true }, 'Definite=Def|PronType=Dem']], # (we only have definite articles)
           'X-' => [['X', lambda { |x| true } ]]
                   }
 

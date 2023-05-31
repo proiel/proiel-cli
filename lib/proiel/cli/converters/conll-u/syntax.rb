@@ -111,7 +111,7 @@ module PROIEL
         'per' => 'dep',
         'pid' => ['ERROR', lambda { |x| raise 'Remaining pid edge!' } ],
         'pred' => [['root', lambda(&:root?) ],
-                   ['ERROR', lambda { |x| raise '#{x.to_n} (head_id #{x.head_id}) is not a root!' }],
+                   ['ERROR', lambda { |x| raise "#{x.to_n} (head_id #{x.head_id}) is not a root!" }],
                   ],
         'rel' => 'acl', # add :relcl?
         'sub' => [['nsubj:pass', lambda { |x| x.head and x.head.passive? } ],
