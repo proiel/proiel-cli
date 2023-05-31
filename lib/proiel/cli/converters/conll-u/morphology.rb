@@ -229,8 +229,7 @@ module PROIEL
                             'ꙗко,Df,chu',
                             'ꙗкоже,Df,chu'
                            ]
-
-
+ 
       POS_MAP =
         {
           'A-' => [['ADJ', lambda { |x| true } ]],
@@ -265,7 +264,7 @@ module PROIEL
                    ['VERB', lambda { |x| true } ]],
           'S-' => [['DET', lambda { |x| true }, 'Definite=Def|PronType=Dem']], # (we only have definite articles)
           'X-' => [['X', lambda { |x| true } ]]
-                  }
+      }
 
       MORPHOLOGY_MAP = {
         :person => {'1' => 'Person=1',
