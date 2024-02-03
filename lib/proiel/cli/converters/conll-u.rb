@@ -103,6 +103,9 @@ module PROIEL::Converter
                     t.empty_token_sort,
                     t.slashes.map { |relation, target_id| [id_to_number[target_id], relation] },
                     t.citation_part,
+                    t.id,
+                    t.information_status,
+                    t.antecedent_id,
                     self
                    )
         end
@@ -242,7 +245,7 @@ module PROIEL::Converter
       attr_reader :form
       attr_reader :citation_part
 
-      def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, citation_part, sentence)
+      def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, citation_part, proiel_id, info_status, antecedent_id, sentence)
         @id = id
         @head_id = head_id
         @form = form
@@ -257,6 +260,9 @@ module PROIEL::Converter
         @sentence = sentence
         @features = (morphology ? map_morphology(morphology) : '' )
         @citation_part = 'ref=' + (citation_part ? citation_part : '').gsub(/\s/, '_')
+        @proiel_id = 'proiel-id=' + proiel_id.to_s
+        @info_status = info_status
+        @antecedent_id = antecedent_id
         @upos = nil
       end
 
@@ -485,8 +491,10 @@ module PROIEL::Converter
       end
 
       def miscellaneous
-        m = @citation_part
+        m = @citation_part + "|" + @proiel_id
         m += "|LId=#{@variant}" if @variant
+        m += "|information-status=#{@info_status}" if @info_status
+        m += "|antecedent-proiel-id=#{@antecedent_id.to_s}" if @antecedent_id 
         m
       end
 
