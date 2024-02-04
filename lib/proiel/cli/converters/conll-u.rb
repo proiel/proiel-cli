@@ -51,8 +51,9 @@ module PROIEL::Converter
         # keep track of how many new tokens have been created
         offset = 0
 
-        sentence.tokens.reject { |t| t.empty_token_sort == 'P' }.each do |tk|
+        sentence.tokens.each do |tk|
 
+          # deal with tokens with space
           if tk.form =~ /[[:space:]]/
             subtoks = tk.form.split(/[[:space:]]/)
 
@@ -84,9 +85,20 @@ module PROIEL::Converter
           end
         end
 
+        # here we need to do some tricks with empty tokens
+        # empty C and V tokens always get high token numbers, so nothing to worry about
+        # but empty P tokens are placed around their verbs
+        # initialize token numbering at 1
+        i = 1
+        tks.each do |tk|
+          if tk.empty_token_sort != "P"
+            id_to_number[tk.id] = i.to_s
+            i += 1
+          else
+            p_number = tk.head.dependents.select { |d| d.empty_token_sort == "P" }.find_index { |p| p == tk }
 
-        tks.map(&:id).each_with_index.each do |id, i|
-          id_to_number[id] = i + 1
+            id_to_number[tk.id] = "#{i.to_s}.#{(p_number + 1).to_s}"
+          end
         end
 
         @tokens = tks.map do |t|
@@ -94,8 +106,8 @@ module PROIEL::Converter
           Token.new(id_to_number[t.id],
                     id_to_number[t.head_id],
                     #insert dots in any whitespace inside words and lemmata
-                    t.form.to_s.gsub(/[[:space:]]/, '.'),
-                    t.lemma.to_s.gsub(/[[:space:]]/, '.'),
+                    (t.form.to_s == '' ? '_' : t.form.to_s.gsub(/[[:space:]]/, '.')),
+                    (t.lemma.to_s == '' ? '_' : t.lemma.to_s.gsub(/[[:space:]]/, '.')),
                     t.part_of_speech,
                     t.language,
                     t.morphology,
@@ -104,7 +116,7 @@ module PROIEL::Converter
                     t.slashes.map { |relation, target_id| [id_to_number[target_id], relation] },
                     t.citation_part,
                     t.id,
-                    t.information_status,
+                    t.information_status,  # TODO we may want to get rid of the info_unannotatable tag here
                     t.antecedent_id,
                     self
                    )
@@ -133,6 +145,10 @@ module PROIEL::Converter
         end
       end
 
+      # TODO: to deal with empty tokens, we must use a string as index, not a number. This breaks some of these tests. Either
+      # 1) convert back to number here before we run the test
+      # 2) stay with id as a number, give empty p-tokens a sub_id attribute, and compose this at the end to give the id to use in the conll file
+      # 2) is probably best, but it may mess up with finding the heads of tokens? Because @id will not be unique
       def check_directionality!
         @tokens.select { |t| ['fixed', 'flat:foreign', 'flat:name'].include? t.relation }.each do |f|
           f.promote!(nil, f.relation) if f.id < f.head.id
@@ -212,7 +228,6 @@ module PROIEL::Converter
       end
 
       def restructure_graph!
-        @tokens.delete_if { |n| n.empty_token_sort == 'P' }
         @tokens.select(&:preposition?).each(&:process_preposition!)
         @tokens.select { |t| t.comparison_word? and t.dependents and t.dependents.select { |d|  ['sub','obj','obl','comp','adv'].include?(d.relation) }.any? }.each(&:process_comparison!)
         roots.each(&:change_coordinations!)
@@ -501,13 +516,13 @@ module PROIEL::Converter
       def to_conll
         [@id,
          @form,
-         @baselemma.gsub(/не\./,''),
+         @baselemma.to_s.gsub(/не\./,''),
          @upos,
-         @part_of_speech,
+         (@part_of_speech || '_'),
          format_features(@features),
          @head_id,
          (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
-         '_', # slashes here
+         "_", #"#{@head_id}:#{@relation}", # slashes will eventually go here
          miscellaneous].join("\t")
       end
 
@@ -567,10 +582,16 @@ module PROIEL::Converter
         end
       end
 
+      # TODO: we want empty P tokens to have part of speech PRON and then head:nsubj/obj in the DEPS column and MISC as the others
+      
       def map_part_of_speech!
         dependents.each(&:map_part_of_speech!)
         possible_postags = POS_MAP[@part_of_speech]
-        find_postag possible_postags.dup
+        if @empty_token_sort == "P"
+          @upos = "PRON"
+        else
+          find_postag possible_postags.dup
+        end
         # ugly, but the ugliness comes from UDEP
         @upos = 'PRON' if @upos == 'DET' and @relation != 'det'
         @upos = REL_TO_POS[@relation] if  @upos == 'X'
@@ -699,9 +720,10 @@ module PROIEL::Converter
         mods.each { |m| m.head_id = obliques.first.id }
       end
 
+      # TODO: this removes all empty nodes, irrespective of type. Does not work when we want to keep P type nodes
       def remove_empties!
         dependents.each(&:remove_empties!)
-        if is_empty?
+        if is_empty? and empty_token_sort != "P"
           dependents.each { |d| d.head_id = head_id; d.relation = 'remnant' }
           @sentence.remove_token! self
         end
