@@ -95,9 +95,13 @@ module PROIEL::Converter
             id_to_number[tk.id] = i.to_s
             i += 1
           else
-            p_number = tk.head.dependents.select { |d| d.empty_token_sort == "P" }.find_index { |p| p == tk }
-
-            id_to_number[tk.id] = "#{i.to_s}.#{(p_number + 1).to_s}"
+            p_number = tk.head.dependents.select { |d| d.empty_token_sort == "P" }.find_index { |p| p == tk } + 1
+            # if we have a subject, it will come before the verb and
+            # the counter is not yet incremented. Objects and obliques
+            # will be placed after their verb, so the counter will
+            # have been incremented and we must substract one.
+            tk.relation == "sub" ? h_number = i : h_number = i -1
+            id_to_number[tk.id] = "#{h_number.to_s}.#{(p_number).to_s}"
           end
         end
 
@@ -116,11 +120,12 @@ module PROIEL::Converter
                     t.slashes.map { |relation, target_id| [id_to_number[target_id], relation] },
                     t.citation_part,
                     t.id,
-                    t.information_status,  # TODO we may want to get rid of the info_unannotatable tag here
+                    (t.information_status == "info_unannotatable" ? nil : t.information_status), 
                     t.antecedent_id,
                     self
                    )
-        end
+        end.sort_by { |tk| [tk.id.split(".")[0].to_i, tk.id] }
+        # sort so that empty tokens come after their mother node
       end
 
       def convert
@@ -137,8 +142,8 @@ module PROIEL::Converter
           conjuncts = h.dependents.select { |d| d.relation == 'conj' }
           conjunctions = h.dependents.select { |d| d.relation == 'cc' }
           conjunctions.each do |c|
-            if c.id > h.id
-              new_head = conjuncts.select { |cj| cj.id > c.id }.first
+            if c.id.split(".")[0].to_i > h.id.split(".")[0].to_i
+              new_head = conjuncts.select { |cj| cj.id.split(".")[0].to_i > c.id.split(".")[0].to_i }.first
               c.head_id = new_head.id if new_head
             end
           end
@@ -151,10 +156,10 @@ module PROIEL::Converter
       # 2) is probably best, but it may mess up with finding the heads of tokens? Because @id will not be unique
       def check_directionality!
         @tokens.select { |t| ['fixed', 'flat:foreign', 'flat:name'].include? t.relation }.each do |f|
-          f.promote!(nil, f.relation) if f.id < f.head.id
+          f.promote!(nil, f.relation) if f.id.split(".")[0].to_i < f.head.id.split(".")[0].to_i
         end
         @tokens.select { |t| t.relation == 'conj' }.each do |f|
-          raise "conj must go left-to-right" if f.id < f.head.id
+          raise "conj must go left-to-right but dependent #{f.id} is to the left of head #{f.head.id}" if f.id.split(".")[0].to_i < f.head.id.split(".")[0].to_i
         end
       end
 
@@ -235,9 +240,9 @@ module PROIEL::Converter
         demote_subjunctions!
         prune_empty_rootnodes!
         # do ellipses from left to right for proper remnant treatment
-        @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id }.each(&:process_ellipsis!)
+        @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id.split(".")[0].to_i }.each(&:process_ellipsis!)
         #NB! apos gets overridden by process_comparison so some dislocations are lost
-        @tokens.select { |t| t.relation == 'apos' and t.id < t.head_id }.each(&:process_dislocation!)
+        @tokens.select { |t| t.relation == 'apos' and t.id.split(".")[0].to_i < t.head_id.split(".")[0].to_i }.each(&:process_dislocation!)
         # DIRTY: remove the rest of the empty nodes by attaching them
         # to their grandmother with remnant. This is the best way to
         # do it given the current state of the UDEP scheme, but
@@ -520,9 +525,10 @@ module PROIEL::Converter
          @upos,
          (@part_of_speech || '_'),
          format_features(@features),
-         @head_id,
-         (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
-         "_", #"#{@head_id}:#{@relation}", # slashes will eventually go here
+         (@empty_token_sort == "P" ? "_" : @head_id),
+         (@empty_token_sort == "P" ? "_" :
+            (@head_id == 0 ? 'root' : @relation)), # override non-root relations on root until we've found out how to handle unembedded reports etc
+         "#{@head_id}:#{@relation}", # slashes will eventually go here
          miscellaneous].join("\t")
       end
 
@@ -739,7 +745,7 @@ module PROIEL::Converter
         raise 'Only coordinations can be processed this way!' unless conjunction?
         return if dependents.reject { |d| d.relation == 'aux' }.empty?
         distribute_shared_modifiers!
-        dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id }.first.promote!('conj', 'cc')
+        dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id.split(".")[0].to_i }.first.promote!('conj', 'cc')
       end
 
       def distribute_shared_modifiers!
