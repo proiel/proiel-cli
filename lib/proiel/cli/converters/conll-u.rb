@@ -15,7 +15,11 @@ module PROIEL::Converter
           source.divs.each do |div|
             div.sentences.each do |sentence|
               sentence_count += 1
-              n = Sentence.new sentence
+              begin
+                n = Sentence.new sentence
+              rescue => e
+                STDERR.puts "Cannot initialize #{sentence.id} (#{sentence.citation}): #{e}"
+              end
               begin
                 # Do the conversion first to avoid spurious headers if the conversion fails
                 a = n.convert.to_conll
@@ -95,12 +99,27 @@ module PROIEL::Converter
             id_to_number[tk.id] = i.to_s
             i += 1
           else
-            p_number = tk.head.dependents.select { |d| d.empty_token_sort == "P" }.find_index { |p| p == tk } + 1
+            p_number = tk.head.dependents.select(&:pro?).find_index { |p| p == tk } + 1
             # if we have a subject, it will come before the verb and
             # the counter is not yet incremented. Objects and obliques
             # will be placed after their verb, so the counter will
             # have been incremented and we must substract one.
-            tk.relation == "sub" ? h_number = i : h_number = i -1
+            
+            # For obliques, there is the added complication that there
+            # could be an overt object, potentially of dominating
+            # other tokens, which could intervene between the verb and
+            # the pro-drop oblique, causing the counter to be
+            # incremented.
+
+
+            if tk.relation == "sub"
+              h_number = i
+            elsif tk.relation == "obj"
+              h_number = i - 1
+            else
+              intervening_tokens = tks[(tks.find_index { |h| h.id == tk.head_id } + 1)..(tks.index(tk) - 1)].reject(&:pro?).length
+              h_number = i - 1 - intervening_tokens
+            end              
             id_to_number[tk.id] = "#{h_number.to_s}.#{(p_number).to_s}"
           end
         end
