@@ -15,7 +15,11 @@ module PROIEL::Converter
           source.divs.each do |div|
             div.sentences.each do |sentence|
               sentence_count += 1
-              n = Sentence.new sentence
+              begin
+                n = Sentence.new sentence
+              rescue => e
+                STDERR.puts "Cannot initialize #{sentence.id} (#{sentence.citation}): #{e}"
+              end
               begin
                 # Do the conversion first to avoid spurious headers if the conversion fails
                 a = n.convert.to_conll
@@ -51,8 +55,9 @@ module PROIEL::Converter
         # keep track of how many new tokens have been created
         offset = 0
 
-        sentence.tokens.reject { |t| t.empty_token_sort == 'P' }.each do |tk|
+        sentence.tokens.each do |tk|
 
+          # deal with tokens with space
           if tk.form =~ /[[:space:]]/
             subtoks = tk.form.split(/[[:space:]]/)
 
@@ -84,9 +89,39 @@ module PROIEL::Converter
           end
         end
 
+        # here we need to do some tricks with empty tokens
+        # empty C and V tokens always get high token numbers, so nothing to worry about
+        # but empty P tokens are placed around their verbs
+        # initialize token numbering at 1
+        i = 1
+        tks.each do |tk|
+          if tk.empty_token_sort != "P"
+            id_to_number[tk.id] = i.to_s
+            i += 1
+          else
+            p_number = tk.head.dependents.select(&:pro?).find_index { |p| p == tk } + 1
+            # if we have a subject, it will come before the verb and
+            # the counter is not yet incremented. Objects and obliques
+            # will be placed after their verb, so the counter will
+            # have been incremented and we must substract one.
+            
+            # For obliques, there is the added complication that there
+            # could be an overt object, potentially of dominating
+            # other tokens, which could intervene between the verb and
+            # the pro-drop oblique, causing the counter to be
+            # incremented.
 
-        tks.map(&:id).each_with_index.each do |id, i|
-          id_to_number[id] = i + 1
+
+            if tk.relation == "sub"
+              h_number = i
+            elsif tk.relation == "obj"
+              h_number = i - 1
+            else
+              intervening_tokens = tks[(tks.find_index { |h| h.id == tk.head_id } + 1)..(tks.index(tk) - 1)].reject(&:pro?).length
+              h_number = i - 1 - intervening_tokens
+            end              
+            id_to_number[tk.id] = "#{h_number.to_s}.#{(p_number).to_s}"
+          end
         end
 
         @tokens = tks.map do |t|
@@ -94,8 +129,8 @@ module PROIEL::Converter
           Token.new(id_to_number[t.id],
                     id_to_number[t.head_id],
                     #insert dots in any whitespace inside words and lemmata
-                    t.form.to_s.gsub(/[[:space:]]/, '.'),
-                    t.lemma.to_s.gsub(/[[:space:]]/, '.'),
+                    (t.form.to_s == '' ? '_' : t.form.to_s.gsub(/[[:space:]]/, '.')),
+                    (t.lemma.to_s == '' ? '_' : t.lemma.to_s.gsub(/[[:space:]]/, '.')),
                     t.part_of_speech,
                     t.language,
                     t.morphology,
@@ -103,9 +138,13 @@ module PROIEL::Converter
                     t.empty_token_sort,
                     t.slashes.map { |relation, target_id| [id_to_number[target_id], relation] },
                     t.citation_part,
+                    t.id,
+                    (t.information_status == "info_unannotatable" ? nil : t.information_status), 
+                    t.antecedent_id,
                     self
                    )
-        end
+        end.sort_by { |tk| [tk.id.split(".")[0].to_i, tk.id] }
+        # sort so that empty tokens come after their mother node
       end
 
       def convert
@@ -122,20 +161,24 @@ module PROIEL::Converter
           conjuncts = h.dependents.select { |d| d.relation == 'conj' }
           conjunctions = h.dependents.select { |d| d.relation == 'cc' }
           conjunctions.each do |c|
-            if c.id > h.id
-              new_head = conjuncts.select { |cj| cj.id > c.id }.first
+            if c.id.split(".")[0].to_i > h.id.split(".")[0].to_i
+              new_head = conjuncts.select { |cj| cj.id.split(".")[0].to_i > c.id.split(".")[0].to_i }.first
               c.head_id = new_head.id if new_head
             end
           end
         end
       end
 
+      # TODO: to deal with empty tokens, we must use a string as index, not a number. This breaks some of these tests. Either
+      # 1) convert back to number here before we run the test
+      # 2) stay with id as a number, give empty p-tokens a sub_id attribute, and compose this at the end to give the id to use in the conll file
+      # 2) is probably best, but it may mess up with finding the heads of tokens? Because @id will not be unique
       def check_directionality!
         @tokens.select { |t| ['fixed', 'flat:foreign', 'flat:name'].include? t.relation }.each do |f|
-          f.promote!(nil, f.relation) if f.id < f.head.id
+          f.promote!(nil, f.relation) if f.id.split(".")[0].to_i < f.head.id.split(".")[0].to_i
         end
         @tokens.select { |t| t.relation == 'conj' }.each do |f|
-          raise "conj must go left-to-right" if f.id < f.head.id
+          raise "conj must go left-to-right but dependent #{f.id} is to the left of head #{f.head.id}" if f.id.split(".")[0].to_i < f.head.id.split(".")[0].to_i
         end
       end
 
@@ -209,7 +252,6 @@ module PROIEL::Converter
       end
 
       def restructure_graph!
-        @tokens.delete_if { |n| n.empty_token_sort == 'P' }
         @tokens.select(&:preposition?).each(&:process_preposition!)
         @tokens.select { |t| t.comparison_word? and t.dependents and t.dependents.select { |d|  ['sub','obj','obl','comp','adv'].include?(d.relation) }.any? }.each(&:process_comparison!)
         roots.each(&:change_coordinations!)
@@ -217,9 +259,9 @@ module PROIEL::Converter
         demote_subjunctions!
         prune_empty_rootnodes!
         # do ellipses from left to right for proper remnant treatment
-        @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id }.each(&:process_ellipsis!)
+        @tokens.select(&:ellipsis?).sort_by { |e| e.left_corner.id.split(".")[0].to_i }.each(&:process_ellipsis!)
         #NB! apos gets overridden by process_comparison so some dislocations are lost
-        @tokens.select { |t| t.relation == 'apos' and t.id < t.head_id }.each(&:process_dislocation!)
+        @tokens.select { |t| t.relation == 'apos' and t.id.split(".")[0].to_i < t.head_id.split(".")[0].to_i }.each(&:process_dislocation!)
         # DIRTY: remove the rest of the empty nodes by attaching them
         # to their grandmother with remnant. This is the best way to
         # do it given the current state of the UDEP scheme, but
@@ -242,7 +284,7 @@ module PROIEL::Converter
       attr_reader :form
       attr_reader :citation_part
 
-      def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, citation_part, sentence)
+      def initialize(id, head_id, form, lemma, part_of_speech, language, morphology, relation, empty_token_sort, slashes, citation_part, proiel_id, info_status, antecedent_id, sentence)
         @id = id
         @head_id = head_id
         @form = form
@@ -257,6 +299,9 @@ module PROIEL::Converter
         @sentence = sentence
         @features = (morphology ? map_morphology(morphology) : '' )
         @citation_part = 'ref=' + (citation_part ? citation_part : '').gsub(/\s/, '_')
+        @proiel_id = 'proiel-id=' + proiel_id.to_s
+        @info_status = info_status
+        @antecedent_id = antecedent_id
         @upos = nil
       end
 
@@ -485,21 +530,24 @@ module PROIEL::Converter
       end
 
       def miscellaneous
-        m = @citation_part
+        m = @citation_part + "|" + @proiel_id
         m += "|LId=#{@variant}" if @variant
+        m += "|information-status=#{@info_status}" if @info_status
+        m += "|antecedent-proiel-id=#{@antecedent_id.to_s}" if @antecedent_id 
         m
       end
 
       def to_conll
         [@id,
          @form,
-         @baselemma.gsub(/не\./,''),
+         @baselemma.to_s.gsub(/не\./,''),
          @upos,
-         @part_of_speech,
+         (@part_of_speech || '_'),
          format_features(@features),
-         @head_id,
-         (@head_id == 0 ? 'root' : @relation), # override non-root relations on root until we've found out how to handle unembedded reports etc
-         '_', # slashes here
+         (@empty_token_sort == "P" ? "_" : @head_id),
+         (@empty_token_sort == "P" ? "_" :
+            (@head_id == 0 ? 'root' : @relation)), # override non-root relations on root until we've found out how to handle unembedded reports etc
+         "#{@head_id}:#{@relation}", # slashes will eventually go here
          miscellaneous].join("\t")
       end
 
@@ -559,10 +607,16 @@ module PROIEL::Converter
         end
       end
 
+      # TODO: we want empty P tokens to have part of speech PRON and then head:nsubj/obj in the DEPS column and MISC as the others
+      
       def map_part_of_speech!
         dependents.each(&:map_part_of_speech!)
         possible_postags = POS_MAP[@part_of_speech]
-        find_postag possible_postags.dup
+        if @empty_token_sort == "P"
+          @upos = "PRON"
+        else
+          find_postag possible_postags.dup
+        end
         # ugly, but the ugliness comes from UDEP
         @upos = 'PRON' if @upos == 'DET' and @relation != 'det'
         @upos = REL_TO_POS[@relation] if  @upos == 'X'
@@ -691,9 +745,10 @@ module PROIEL::Converter
         mods.each { |m| m.head_id = obliques.first.id }
       end
 
+      # TODO: this removes all empty nodes, irrespective of type. Does not work when we want to keep P type nodes
       def remove_empties!
         dependents.each(&:remove_empties!)
-        if is_empty?
+        if is_empty? and empty_token_sort != "P"
           dependents.each { |d| d.head_id = head_id; d.relation = 'remnant' }
           @sentence.remove_token! self
         end
@@ -709,7 +764,7 @@ module PROIEL::Converter
         raise 'Only coordinations can be processed this way!' unless conjunction?
         return if dependents.reject { |d| d.relation == 'aux' }.empty?
         distribute_shared_modifiers!
-        dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id }.first.promote!('conj', 'cc')
+        dependents.reject { |d| d.relation == 'aux' }.sort_by { |d| d.left_corner.id.split(".")[0].to_i }.first.promote!('conj', 'cc')
       end
 
       def distribute_shared_modifiers!
