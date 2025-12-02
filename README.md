@@ -42,7 +42,7 @@ Bug reports and pull requests are welcome on [GitHub](https://github.com/proiel/
 
 ## Development
 
-To contribute to development, check out the git repository from [GitHub](https://github.com/proiel/proiel-cli) and run `bin/setup` to install all development dependencies. Then run `rake` to run the tests.
+To contribute to development, check out the git repository from [GitHub](https://github.com/proiel/proiel-cli) and run `bundle install` to install all development dependencies. Then run `rake` to run the tests.
 
 To install a development version of this gem, run `bundle exec rake install`.
 
