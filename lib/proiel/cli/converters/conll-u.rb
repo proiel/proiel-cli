@@ -135,7 +135,7 @@ module PROIEL::Converter
           f.promote!(nil, f.relation) if f.id < f.head.id
         end
         @tokens.select { |t| t.relation == 'conj' }.each do |f|
-          raise "conj must go left-to-right" if f.id < f.head.id
+          raise "conj must go left-to-right (id: #{f.id}, head_id: #{f.head.id}, form: #{f.form}, head_form: #{f.head.form})" if f.id < f.head.id
         end
       end
 
