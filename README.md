@@ -46,4 +46,12 @@ To contribute to development, check out the git repository from [GitHub](https:/
 
 To install a development version of this gem, run `bundle exec rake install`.
 
-To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the gem to [rubygems.org](https://rubygems.org).
+### Releasing a new version
+
+To release a new version:
+
+1.  Update the version number in `lib/proiel/cli/version.rb`.
+2.  Run `bundle exec rake release`. This will:
+    *   Create a git tag for the version.
+    *   Push git commits and tags to the remote repository.
+    *   Push the `.gem` file to [rubygems.org](https://rubygems.org).
